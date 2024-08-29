@@ -18,5 +18,5 @@ import {FormsModule} from '@angular/forms';
 export class AppComponent {
   title = 'Rowerowe Gminy';
   events: string[] = [];
-  opened: boolean = true;
+  opened: boolean = false;
 }

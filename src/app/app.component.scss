@@ -1,3 +1,11 @@
+@use '@angular/material' as mat;
+
+$theme: mat.define-theme();
+
+// .primary-nav {
+//   @include mat.nav-color($theme,  $color-variant: primary)
+// }
+
 .example-spacer {
   flex: 1 1 auto;
 }
@@ -31,6 +39,4 @@
 mat-sidenav {
   padding: 1ch;
 }
-mat-sidenav-content {
-  // padding: 2ch;
-}
+

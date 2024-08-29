@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+import '../../utils/TileLayer.Grayscale'
 
 //https://www.digitalocean.com/community/tutorials/angular-angular-and-leaflet
 
@@ -18,6 +19,7 @@ export class MapComponent implements AfterViewInit{
       center: [ 52.11433333, 19.42366667 ],
       zoom: 7
     });
+
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
