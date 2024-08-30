@@ -1,6 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import '../../utils/TileLayer.Grayscale'
 
 //https://www.digitalocean.com/community/tutorials/angular-angular-and-leaflet
 
