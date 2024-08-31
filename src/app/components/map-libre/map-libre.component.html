@@ -11,7 +11,7 @@
   <!-- <ng-container *ngIf="fcStatic as features"> -->
   <mgl-geojson-source id="borders" [data]="nfc.data"> </mgl-geojson-source>
   <mgl-layer
-    [id]="nfc.name"
+    id="borders"
     type="fill"
     source="borders"
     (layerClick)="onLayerClick($event)"
@@ -23,7 +23,7 @@
   >
   </mgl-layer>
   <mgl-layer
-    [id]="nfc.name + 'line'"
+    id="borders-lines"
     type="line"
     source="borders"
     [paint]="{

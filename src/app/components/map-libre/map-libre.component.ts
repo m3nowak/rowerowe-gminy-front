@@ -107,6 +107,10 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   ) {
     let teryt = this.extractTerytFromEvent(event);
     this.selectedFeature$.next(teryt);
+    //TODO: ogarnąć kolorki za pomocą https://docs.mapbox.com/mapbox-gl-js/example/hover-styles/
+    this.mapCp!.setPaintProperty('borders', 'fill-color', this.genRandomColor());
+    this.mapCp!.setFeatureState({ source: 'borders', id: event.features![0].id! }, { hover: true });
+    // this.mapCp!.getLayer('borders')?.setPaintProperty('fill-color', this.genRandomColor());
     if (teryt) {
       console.log('Layer click TERYT:', teryt);
     } else {
