@@ -1,0 +1,31 @@
+<!-- https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json -->
+<mgl-map class="map-container h-flex-content"
+[style]="'/map-style.json'"
+[zoom]="[6]"
+[center]="[ 19.42366667,52.11433333]"
+(mapLoad)="onMapLoad($event)"
+>
+<ng-container *ngIf="(featureCollection$ | async) as nfc">
+<!-- <ng-container *ngIf="fcStatic as features"> -->
+    <mgl-geojson-source id="borders" [data]="nfc.data"> </mgl-geojson-source>
+    <mgl-layer
+    [id]="nfc.name"
+    type="fill"
+    source="borders"
+    [paint]="{
+        'fill-antialias': true,
+        'fill-color': '#088',
+        'fill-opacity': 0.8,
+    }">
+    </mgl-layer>
+    <mgl-layer
+    [id]="nfc.name + 'line'"
+    type="line"
+    source="borders"
+    [paint]="{
+        'line-color': '#fff',
+        'line-width': 1,
+    }">
+    </mgl-layer>
+</ng-container>
+</mgl-map>

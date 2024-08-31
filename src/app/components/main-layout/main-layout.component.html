@@ -4,6 +4,17 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span>Roweowe Gminy</span>
+  <!-- <span class="mini-spacer"></span>
+  <a mat-raised-button routerLink="/leaflet" [routerLinkActive]="['is-active']">Leaflet</a>
+  <a mat-raised-button routerLink="/libre" [routerLinkActive]="['is-active']">MapLibre</a> -->
+  <span class="mini-spacer">
+  </span>
+  <mat-button-toggle-group [formControl]="shapeTypeControl" aria-label="Font Style">
+    <mat-button-toggle value="0">Państwo</mat-button-toggle>
+    <mat-button-toggle value="1">Województwa</mat-button-toggle>
+    <mat-button-toggle value="2">Powiaty</mat-button-toggle>
+    <mat-button-toggle value="3">Gminy</mat-button-toggle>
+  </mat-button-toggle-group>
   <span class="spacer"></span>
   <button mat-icon-button>
     <mat-icon>share</mat-icon>

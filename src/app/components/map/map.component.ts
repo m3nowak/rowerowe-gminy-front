@@ -8,7 +8,8 @@ import {
 import * as L from 'leaflet';
 import { BordersService } from '../../services/borders.service';
 import { BehaviorSubject, filter, Observable, of } from 'rxjs';
-import { Feature, FeatureCollection } from '../../models/geo';
+// import { Feature, FeatureCollection } from '../../models/geo';
+import { FeatureCollection, Feature } from 'geojson';
 
 //https://www.digitalocean.com/community/tutorials/angular-angular-and-leaflet
 
@@ -44,17 +45,19 @@ export class MapComponent implements AfterViewInit, OnInit {
       };
     }
   }
-  onEachFeature = (feature: any, layer: any) => {
-    if (feature.properties && feature.properties.TERYT) {
-      let name = feature.properties.name;
-      let teryt = feature.properties.TERYT;
+  onEachFeature = (feature: Feature, layer: any) => {
+    if (feature.properties && feature.properties['TERYT']) {
+      let name = feature.properties['name'];
+      let teryt = feature.properties['TERYT'];
       let message = `Cześć, jestem ${name} a mój kod TERYT to ${teryt}`;
       layer.bindPopup(message);
       layer.on('click', () => {
-        console.log(message)
-        feature.properties.selected = !feature.properties.selected;
-        console.log(feature.properties.selected)
-        layer.setStyle(this.featureColorFunction(feature));
+        if(feature.properties){
+          console.log(message)
+          feature.properties['selected'] = !feature.properties['selected'];
+          console.log(feature.properties['selected'])
+          layer.setStyle(this.featureColorFunction(feature));
+        }
       });
     }
   };
@@ -65,22 +68,7 @@ export class MapComponent implements AfterViewInit, OnInit {
       let features = featureCollection.features;
       for (let i = 0; i < features.length; i++) {
         let feature = features[i];
-        let style = function(feature: any){
-          if(feature.properties.selected){
-            return {
-              color: '#00ff78',
-              weight: 5,
-              opacity: 0.35,
-            }}
-          else{
-            return {
-              color: '#ff7800',
-              weight: 5,
-              opacity: 0.35,
-            };
-          }
-        }
-        feature.properties.selected = false;
+        feature.properties!['selected'] = false;
         L.geoJSON(feature as any, {
           style: this.featureColorFunction,
           onEachFeature: this.onEachFeature,
@@ -112,7 +100,7 @@ export class MapComponent implements AfterViewInit, OnInit {
   }
   ngOnInit(): void {
     this.bordersService.communesBorders().subscribe((featureCollection) => {
-      this.featureCollection$.next(featureCollection);
+      this.featureCollection$.next(featureCollection.features);
     });
   }
 }
