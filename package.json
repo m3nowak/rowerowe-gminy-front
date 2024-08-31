@@ -20,7 +20,9 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "@maplibre/ngx-maplibre-gl": "^18.1.1",
     "leaflet": "^1.9.4",
+    "maplibre-gl": "^4.6.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"

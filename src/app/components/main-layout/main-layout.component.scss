@@ -1,0 +1,33 @@
+.main-toolbar {
+  display: flex;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.drawer-container {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+.drawer-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-contnet-inner {
+  flex: 1 1 auto;
+
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.drawer {
+    padding: 1ch;
+}

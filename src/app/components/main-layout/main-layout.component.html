@@ -1,0 +1,20 @@
+<div class="main-container">
+<mat-toolbar class="main-toolbar">
+  <button mat-icon-button (click)="toggleDrawer()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Roweowe Gminy</span>
+  <span class="spacer"></span>
+  <button mat-icon-button>
+    <mat-icon>share</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-drawer-container class="drawer-container" hasBackdrop="false">
+    <mat-drawer class="drawer" mode="push" [opened]="drawerOpen">I'm a drawer</mat-drawer>
+    <mat-drawer-content class="drawer-content h-flex-container">
+        <!-- <span style="background-color: red;" class="drawer-contnet-inner">a</span> -->
+        <ng-content></ng-content>
+    </mat-drawer-content>
+  </mat-drawer-container>
+  
+</div>
