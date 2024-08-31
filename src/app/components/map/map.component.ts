@@ -8,7 +8,7 @@ import {
 import * as L from 'leaflet';
 import { BordersService } from '../../services/borders.service';
 import { BehaviorSubject, filter, Observable, of } from 'rxjs';
-import { FeatureCollection } from '../../models/geo';
+import { Feature, FeatureCollection } from '../../models/geo';
 
 //https://www.digitalocean.com/community/tutorials/angular-angular-and-leaflet
 
@@ -26,7 +26,38 @@ export class MapComponent implements AfterViewInit, OnInit {
 
   bordersService = inject(BordersService);
 
-  featureCollection$: BehaviorSubject<FeatureCollection | undefined> = new BehaviorSubject<FeatureCollection | undefined>(undefined);
+  featureCollection$: BehaviorSubject<FeatureCollection | undefined> =
+    new BehaviorSubject<FeatureCollection | undefined>(undefined);
+
+  featureColorFunction = (feature: any) => {
+    if(feature.properties.selected){
+      return {
+        color: '#00ff78',
+        weight: 5,
+        opacity: 0.35,
+      }}
+    else{
+      return {
+        color: '#ff7800',
+        weight: 5,
+        opacity: 0.35,
+      };
+    }
+  }
+  onEachFeature = (feature: any, layer: any) => {
+    if (feature.properties && feature.properties.TERYT) {
+      let name = feature.properties.name;
+      let teryt = feature.properties.TERYT;
+      let message = `Cześć, jestem ${name} a mój kod TERYT to ${teryt}`;
+      layer.bindPopup(message);
+      layer.on('click', () => {
+        console.log(message)
+        feature.properties.selected = !feature.properties.selected;
+        console.log(feature.properties.selected)
+        layer.setStyle(this.featureColorFunction(feature));
+      });
+    }
+  };
 
   mapFeaturesSub = this.featureCollection$
     .pipe(filter((featureCollection) => featureCollection !== undefined))
@@ -34,12 +65,26 @@ export class MapComponent implements AfterViewInit, OnInit {
       let features = featureCollection.features;
       for (let i = 0; i < features.length; i++) {
         let feature = features[i];
-        let style = {
-          color: '#ff7800',
-          weight: 5,
-          opacity: 0.35,
-        };
-        L.geoJSON(feature as any, { style: style }).addTo(this.map);
+        let style = function(feature: any){
+          if(feature.properties.selected){
+            return {
+              color: '#00ff78',
+              weight: 5,
+              opacity: 0.35,
+            }}
+          else{
+            return {
+              color: '#ff7800',
+              weight: 5,
+              opacity: 0.35,
+            };
+          }
+        }
+        feature.properties.selected = false;
+        L.geoJSON(feature as any, {
+          style: this.featureColorFunction,
+          onEachFeature: this.onEachFeature,
+        }).addTo(this.map);
       }
     });
 
@@ -60,24 +105,6 @@ export class MapComponent implements AfterViewInit, OnInit {
     );
 
     tiles.addTo(this.map);
-
-    // //get json file
-    // fetch(
-    //   'https://eu2.contabostorage.com/9556be5764414357ae3184b95da10055:rowerowegminy.pl/counties.json'
-    // ).then((response) =>
-    //   response.json().then((data) => {
-    //     let features = data.features;
-    //     for (let i = 0; i < features.length; i++) {
-    //       let feature = features[i];
-    //       let style = {
-    //         color: '#ff7800',
-    //         weight: 5,
-    //         opacity: 0.35,
-    //       };
-    //       L.geoJSON(feature, { style: style }).addTo(this.map);
-    //     }
-    //   })
-    // );
   }
 
   ngAfterViewInit(): void {
