@@ -17,7 +17,7 @@ export class MapDisplayControlComponent {
   opacity: number = 100;
   brightnessMin: number = 0;
   brightnessMax: number = 100;
-  saturation: number = 0;
+  saturation: number = -100;
   contrast: number = 0;
 
   mapDisplaySvc = inject(MapDisplayService);

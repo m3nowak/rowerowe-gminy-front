@@ -58,7 +58,8 @@ export class MapLibreComponent implements OnInit, OnDestroy {
     this.mapDisplaySvcSub = this.mapDisplaySvc.currentSettings$.subscribe((style) => {
       if (this.mapCp && style) {
         this.mapCp.setStyle(style);
-        this.mapCp.redraw();
+        //this.mapCp.getLayer('osm')!
+        //this.mapCp.redraw();
       }
       console.log('MapLibreComponent: Map style updated');
     });
