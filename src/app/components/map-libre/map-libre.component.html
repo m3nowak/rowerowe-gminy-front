@@ -1,7 +1,7 @@
 <!-- https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json -->
 <mgl-map
   class="map-container h-flex-content"
-  [style]="mapDisplaySvc.currentSettings()"
+  [style]="(mapDisplaySettings$ | async)!"
   [zoom]="[6]"
   [center]="[19.42366667, 52.11433333]"
   (mapLoad)="onMapLoad($event)"

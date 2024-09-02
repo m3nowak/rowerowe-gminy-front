@@ -41,20 +41,35 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   featureCollection$ = new BehaviorSubject<GeoJSONFeatureNamed | undefined>(undefined);
   selectedCoords$ = new BehaviorSubject<LngLat | undefined>(undefined);
   selectedFeature$ = new BehaviorSubject<FeatureClickData | undefined>(undefined);
+  mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(
+    filter((s) => s !== undefined),
+    tap((s) => {
+      console.log('MapLibreComponent: Map style updated', s);
+    }),
+  );
 
 
   routeSub: Subscription | undefined;
   bordersServiceSub: Subscription | undefined;
+  mapDisplaySvcSub: Subscription | undefined;
+
 
   constructor() {
-    effect(() => {
-      let cs = this.mapDisplaySvc.currentSettings();
-      if (this.mapCp && cs) {
-        this.mapCp.setStyle(cs);
+    this.mapDisplaySvcSub = this.mapDisplaySvc.currentSettings$.subscribe((style) => {
+      if (this.mapCp && style) {
+        this.mapCp.setStyle(style);
         this.mapCp.redraw();
       }
       console.log('MapLibreComponent: Map style updated');
     });
+    // effect(() => {
+    //   let cs = this.mapDisplaySvc.currentSettings();
+    //   if (this.mapCp && cs) {
+    //     this.mapCp.setStyle(cs);
+    //     this.mapCp.redraw();
+    //   }
+    //   console.log('MapLibreComponent: Map style updated');
+    // });
   }
 
   ngOnInit(): void {

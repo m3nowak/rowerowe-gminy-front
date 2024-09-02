@@ -13,7 +13,10 @@
     {
       "id": "osm",
       "type": "raster",
-      "source": "osm"
+      "source": "osm",
+      "paint": {
+        "raster-saturation": -1
+      }
     }
   ]
 }

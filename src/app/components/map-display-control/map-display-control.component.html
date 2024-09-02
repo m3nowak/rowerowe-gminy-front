@@ -13,11 +13,11 @@
         <input matSliderEndThumb  [(ngModel)]="brightnessMax" (valueChange)="onValueChange()">
     </mat-slider>
     <label>Saturation</label>
-    <mat-slider min="0" max="100" >
+    <mat-slider min="-100" max="100" >
         <input matSliderThumb [(ngModel)]="saturation" (valueChange)="onValueChange()">
     </mat-slider>
     <label>Contrast</label>
-    <mat-slider min="0" max="100">
+    <mat-slider min="-100" max="100">
         <input matSliderThumb [(ngModel)]="contrast" (valueChange)="onValueChange()">
     </mat-slider>
 </div>
