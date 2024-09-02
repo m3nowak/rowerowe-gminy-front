@@ -1,7 +1,7 @@
 <!-- https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json -->
 <mgl-map
   class="map-container h-flex-content"
-  [style]="'/map-style.json'"
+  [style]="mapDisplaySvc.currentSettings()"
   [zoom]="[6]"
   [center]="[19.42366667, 52.11433333]"
   (mapLoad)="onMapLoad($event)"
@@ -17,8 +17,13 @@
     (layerClick)="onLayerClick($event)"
     [paint]="{
         'fill-antialias': true,
-        'fill-color': '#088',
-        'fill-opacity': 0.8,
+        'fill-color': [
+          'case',
+          ['boolean', ['feature-state', 'selected'], false],
+          '#088',
+          '#808'
+        ],
+        'fill-opacity': 0.5,
     }"
   >
   </mgl-layer>
@@ -32,9 +37,10 @@
     }"
   >
   </mgl-layer>
-  } @if (selectedFeature$ | async; as selectedFeature){
+  } 
+  <!-- @if (selectedFeature$ | async; as selectedFeature){
   <mgl-popup [lngLat]="selectedFeature.lngLat" [closeButton]="false" [closeOnClick]="false">
     <span class="map-popup">Nazwa: {{ selectedFeature.name }}, kod TERYT: {{ selectedFeature.teryt }}</span>
   </mgl-popup>
-  }
+  } -->
 </mgl-map>

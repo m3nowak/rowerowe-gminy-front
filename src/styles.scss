@@ -11,3 +11,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     display: flex;
     flex-direction: column;
 }
+
+.v-flex-content {
+    flex: 1 1 auto;
+}
+
+.v-flex-container {
+    display: flex;
+    flex-direction: row;
+}

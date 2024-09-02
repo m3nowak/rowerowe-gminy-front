@@ -1,0 +1,23 @@
+<div class="h-flex-container">
+    <label>Opacity</label>
+    <mat-slider min="0" max="100">
+        <input matSliderThumb [(ngModel)]="opacity" (valueChange)="onValueChange()">
+    </mat-slider>
+    <label>Hue Rotation</label>
+    <mat-slider min="0" max="360">
+        <input matSliderThumb [(ngModel)]="hueRotation" (valueChange)="onValueChange()">
+    </mat-slider>
+    <label>Brightness</label>
+    <mat-slider min="0" max="100">
+        <input matSliderStartThumb [(ngModel)]="brightnessMin" (valueChange)="onValueChange()">
+        <input matSliderEndThumb  [(ngModel)]="brightnessMax" (valueChange)="onValueChange()">
+    </mat-slider>
+    <label>Saturation</label>
+    <mat-slider min="0" max="100" >
+        <input matSliderThumb [(ngModel)]="saturation" (valueChange)="onValueChange()">
+    </mat-slider>
+    <label>Contrast</label>
+    <mat-slider min="0" max="100">
+        <input matSliderThumb [(ngModel)]="contrast" (valueChange)="onValueChange()">
+    </mat-slider>
+</div>

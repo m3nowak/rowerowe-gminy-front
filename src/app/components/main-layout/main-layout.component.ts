@@ -14,6 +14,7 @@ import {
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { MapDisplayControlComponent } from '../map-display-control/map-display-control.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -28,6 +29,7 @@ import { Subscription } from 'rxjs';
     RouterLinkActive,
     MatButtonToggleModule,
     ReactiveFormsModule,
+    MapDisplayControlComponent
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',

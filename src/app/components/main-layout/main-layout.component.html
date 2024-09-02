@@ -1,31 +1,34 @@
 <div class="main-container">
-<mat-toolbar class="main-toolbar">
-  <button mat-icon-button (click)="toggleDrawer()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>Roweowe Gminy</span>
-  <!-- <span class="mini-spacer"></span>
+  <mat-toolbar class="main-toolbar">
+    <button mat-icon-button (click)="toggleDrawer()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Roweowe Gminy</span>
+    <!-- <span class="mini-spacer"></span>
   <a mat-raised-button routerLink="/leaflet" [routerLinkActive]="['is-active']">Leaflet</a>
   <a mat-raised-button routerLink="/libre" [routerLinkActive]="['is-active']">MapLibre</a> -->
-  <span class="mini-spacer">
-  </span>
-  <mat-button-toggle-group [formControl]="shapeTypeControl" aria-label="Font Style">
-    <mat-button-toggle value="0">Państwo</mat-button-toggle>
-    <mat-button-toggle value="1">Województwa</mat-button-toggle>
-    <mat-button-toggle value="2">Powiaty</mat-button-toggle>
-    <mat-button-toggle value="3">Gminy</mat-button-toggle>
-  </mat-button-toggle-group>
-  <span class="spacer"></span>
-  <button mat-icon-button>
-    <mat-icon>share</mat-icon>
-  </button>
-</mat-toolbar>
-<mat-drawer-container class="drawer-container" hasBackdrop="false">
-    <mat-drawer class="drawer" mode="push" [opened]="drawerOpen">I'm a drawer</mat-drawer>
+    <span class="mini-spacer"> </span>
+
+    <span class="spacer"></span>
+    <button mat-icon-button>
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-drawer-container class="drawer-container" hasBackdrop="false">
+    <mat-drawer class="drawer-container drawer" mode="push" [opened]="drawerOpen">
+      <div class="h-flex-container">
+        <mat-button-toggle-group [formControl]="shapeTypeControl" [vertical]="true" class="h-flex-content">
+          <mat-button-toggle value="0">Państwo</mat-button-toggle>
+          <mat-button-toggle value="1">Województwa</mat-button-toggle>
+          <mat-button-toggle value="2">Powiaty</mat-button-toggle>
+          <mat-button-toggle value="3">Gminy</mat-button-toggle>
+        </mat-button-toggle-group>
+        <app-map-display-control />
+      </div>
+    </mat-drawer>
     <mat-drawer-content class="drawer-content h-flex-container">
-        <!-- <span style="background-color: red;" class="drawer-contnet-inner">a</span> -->
-        <ng-content></ng-content>
+      <!-- <span style="background-color: red;" class="drawer-contnet-inner">a</span> -->
+      <ng-content></ng-content>
     </mat-drawer-content>
   </mat-drawer-container>
-  
 </div>
