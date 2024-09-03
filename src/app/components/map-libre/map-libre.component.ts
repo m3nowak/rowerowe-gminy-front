@@ -1,6 +1,6 @@
 import { Component, effect, HostBinding, inject, OnDestroy, OnInit } from '@angular/core';
-import { MapComponent as BaseMapComponent, EventData, GeoJSONSourceComponent, LayerComponent, PopupComponent } from '@maplibre/ngx-maplibre-gl';
-import { Map as LibreMap, LngLat, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import { AttributionControlDirective, MapComponent as BaseMapComponent, ControlComponent, EventData, GeoJSONSourceComponent, LayerComponent, PopupComponent } from '@maplibre/ngx-maplibre-gl';
+import { AttributionControl, AttributionControlOptions, Map as LibreMap, LngLat, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
 import { BehaviorSubject, filter, Subscription, map, switchMap, tap } from 'rxjs';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
@@ -25,7 +25,7 @@ interface GeoJSONFeatureNamed {
 @Component({
   selector: 'app-map-libre',
   standalone: true,
-  imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, NgIf, AsyncPipe, MapPopupComponent],
+  imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, NgIf, AsyncPipe, MapPopupComponent, ControlComponent, AttributionControlDirective],
   templateUrl: './map-libre.component.html',
   styleUrl: './map-libre.component.scss',
 })
@@ -56,6 +56,10 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   bordersServiceSub: Subscription | undefined;
   mapDisplaySvcSub: Subscription | undefined;
 
+  aco: any = {
+    position: "top-left"
+
+  };
 
   constructor() {
     this.mapDisplaySvcSub = this.mapDisplaySvc.currentSettings$.subscribe((style) => {
