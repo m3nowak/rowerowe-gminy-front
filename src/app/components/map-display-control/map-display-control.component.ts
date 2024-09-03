@@ -1,16 +1,17 @@
 import { Component, inject } from '@angular/core';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatLabel } from '@angular/material/form-field';
 import { MapDisplaySettings } from '../../models/map-display-settings';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MapDisplayService } from '../../services/map-display.service';
 
 @Component({
   selector: 'app-map-display-control',
   standalone: true,
-  imports: [MatSliderModule, FormsModule, MatLabel],
+  imports: [MatSliderModule, FormsModule, MatLabel, MatExpansionModule],
   templateUrl: './map-display-control.component.html',
-  styleUrl: './map-display-control.component.scss'
+  styleUrl: './map-display-control.component.scss',
 })
 export class MapDisplayControlComponent {
   hueRotation: number = 0;
@@ -29,9 +30,8 @@ export class MapDisplayControlComponent {
       brightnessMin: this.brightnessMin,
       brightnessMax: this.brightnessMax,
       saturation: this.saturation,
-      contrast: this.contrast
+      contrast: this.contrast,
     };
     this.mapDisplaySvc.updateSettings(settings);
   }
-
 }

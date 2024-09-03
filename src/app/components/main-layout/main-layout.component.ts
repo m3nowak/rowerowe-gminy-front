@@ -5,16 +5,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MapComponent } from '@maplibre/ngx-maplibre-gl';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MapDisplayControlComponent } from '../map-display-control/map-display-control.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-main-layout',
@@ -29,7 +27,10 @@ import { MapDisplayControlComponent } from '../map-display-control/map-display-c
     RouterLinkActive,
     MatButtonToggleModule,
     ReactiveFormsModule,
-    MapDisplayControlComponent
+    MapDisplayControlComponent,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
@@ -57,7 +58,7 @@ export class MainLayoutComponent implements OnInit {
       });
     });
     this.fixFcSub = this.activatedRoute.queryParams.subscribe((params) => {
-      let selectedDetail = params['detail'] ?? 0;
+      let selectedDetail = params['detail'] ?? 4;
 
       this.shapeTypeControl.setValue(selectedDetail);
     });

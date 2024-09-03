@@ -4,9 +4,11 @@ import { Map as LibreMap, LngLat, MapGeoJSONFeature, MapMouseEvent } from 'mapli
 import { BordersService } from '../../services/borders.service';
 import { BehaviorSubject, filter, Subscription, map, switchMap, tap } from 'rxjs';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, HashLocationStrategy, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MapDisplayService } from '../../services/map-display.service';
+import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
+import { MapPopupComponent } from '../map-popup/map-popup.component';
 
 interface FeatureClickData {
   id: string;
@@ -23,7 +25,7 @@ interface GeoJSONFeatureNamed {
 @Component({
   selector: 'app-map-libre',
   standalone: true,
-  imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, NgIf, AsyncPipe, PopupComponent],
+  imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, NgIf, AsyncPipe, MapPopupComponent],
   templateUrl: './map-libre.component.html',
   styleUrl: './map-libre.component.scss',
 })
@@ -34,9 +36,10 @@ export class MapLibreComponent implements OnInit, OnDestroy {
 
   activeRoute = inject(ActivatedRoute);
   bordersService = inject(BordersService);
+  geoFeatureDataService = inject(GeoFeatureDataService);
   mapDisplaySvc = inject(MapDisplayService);
 
-  
+  showPopup = true;
 
   featureCollection$ = new BehaviorSubject<GeoJSONFeatureNamed | undefined>(undefined);
   selectedCoords$ = new BehaviorSubject<LngLat | undefined>(undefined);
@@ -91,7 +94,7 @@ export class MapLibreComponent implements OnInit, OnDestroy {
 
   private featureCollectionAssignMetadata(fc: FeatureCollection<Geometry, GeoJsonProperties>): FeatureCollection<Geometry, GeoJsonProperties> {
     let features = fc.features.map((feature, index) => {
-      let teryt = feature.properties?.['TERYT'];
+      //let teryt = feature.properties?.['TERYT'];
       // if (teryt) {
       //   let id = this.terytToFeatureId(teryt);
       //   return { ...feature, id };
@@ -100,11 +103,11 @@ export class MapLibreComponent implements OnInit, OnDestroy {
       //   let id = `fallback-${index}`;
       //   return { ...feature, id };
       // }
-      let id = feature.properties?.['TERYT'];
-      let state = {'hover': false};
-
-
-      return { ...feature, id, state };
+      let properties = feature?.properties ?? {};
+      if (!properties.hasOwnProperty('isUnlocked')) {
+        properties['isUnlocked'] = true;
+      }
+      return { ...feature, properties };
     });
     return { ...fc, features };
   }
@@ -124,6 +127,8 @@ export class MapLibreComponent implements OnInit, OnDestroy {
               return this.bordersService.countiesBorders();
             case '3':
               return this.bordersService.communesBorders();
+            case '4':
+              return this.geoFeatureDataService.featureCollection$;
             default:
               return this.bordersService.countryBorders();
           }
@@ -170,7 +175,6 @@ export class MapLibreComponent implements OnInit, OnDestroy {
     //TODO: ogarnąć kolorki za pomocą https://docs.mapbox.com/mapbox-gl-js/example/hover-styles/
     let state = this.mapCp!.getFeatureState({ source: 'borders', id: event.features![0].id! });
     console.log('Layer click feature:', feature);
-    console.log('Layer click state:', state);
     let isSelected = state.selected || false;
     this.mapCp!.setFeatureState({ source: 'borders', id: event.features![0].id! }, { selected: !isSelected });
     // this.mapCp!.getLayer('borders')?.setPaintProperty('fill-color', this.genRandomColor());
@@ -184,5 +188,9 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   onMapLoad(mapP: LibreMap) {
     this.mapCp = mapP;
     this.setupRouteSub();
+  }
+
+  popupClose() {
+    this.showPopup = false;
   }
 }

@@ -15,6 +15,10 @@ import { NamedFeatureCollection } from '../models/geo-ext';
 export class BordersService {
   constructor(private http: HttpClient) { }
 
+  allBorders(): Observable<FeatureCollection> {
+    return this.http.get<FeatureCollection>(environment.baseBorderUrl + 'combo200.json')
+  }
+
   countryBorders(): Observable<NamedFeatureCollection> {
     return this.http.get<FeatureCollection>(environment.baseBorderUrl + 'country.json').pipe(
       map((fc) => {

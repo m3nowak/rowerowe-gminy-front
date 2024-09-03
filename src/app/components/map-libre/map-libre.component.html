@@ -1,4 +1,5 @@
 <!-- https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json -->
+<div class="h-flex-content h-flex-container">
 <mgl-map
   class="map-container h-flex-content"
   [style]="(mapDisplaySettings$ | async)!"
@@ -9,21 +10,27 @@
 >
   @if (featureCollection$ | async; as nfc){
   <!-- <ng-container *ngIf="fcStatic as features"> -->
-  <mgl-geojson-source id="borders" [data]="nfc.data"> </mgl-geojson-source>
+  <mgl-geojson-source id="borders" [data]="nfc.data" promoteId="TERYT"> </mgl-geojson-source>
   <mgl-layer
     id="borders"
     type="fill"
     source="borders"
+    [filter]="['get', 'isUnlocked']"
     (layerClick)="onLayerClick($event)"
     [paint]="{
         'fill-antialias': true,
         'fill-color': [
-          'case',
-          ['boolean', ['feature-state', 'selected'], false],
-          '#088',
-          '#808'
+          'match',
+          ['get', 'type'],
+          'WOJ',
+          '#581D89',
+          'POW',
+          '#004080',
+          'GMI',
+          '#1B9300',
+          '#C94C00'
         ],
-        'fill-opacity': 0.5,
+        'fill-opacity': 0.50,
     }"
   >
   </mgl-layer>
@@ -31,9 +38,18 @@
     id="borders-lines"
     type="line"
     source="borders"
+    [filter]="['==', ['get', 'type'], 'GMI']"
     [paint]="{
-        'line-color': '#fff',
-        'line-width': 1,
+        'line-color': '#400',
+        'line-width': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          6,
+          0,
+          24,
+          2
+        ],
     }"
   >
   </mgl-layer>
@@ -44,3 +60,9 @@
   </mgl-popup>
   } -->
 </mgl-map>
+@if (showPopup) {
+<div class="map-popup h-flex-container">
+  <app-map-popup class="h-flex-content h-flex-container" (close)="popupClose()"/>
+</div>
+}
+</div>

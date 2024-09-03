@@ -1,0 +1,16 @@
+<mat-card class="h-flex-content container" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Wrocław</mat-card-title>
+      <mat-card-subtitle>Miasto</mat-card-subtitle>
+      <img mat-card-sm-image src="https://upload.wikimedia.org/wikipedia/commons/0/07/Herb_wroclaw.svg" />
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content class="content">
+    {{ longText }}
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button>Wikipedia</button>
+    <button mat-button (click)="closeBtnPressed()">Zamknij</button>
+  </mat-card-actions>
+</mat-card>
