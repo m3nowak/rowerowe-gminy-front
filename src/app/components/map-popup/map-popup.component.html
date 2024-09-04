@@ -1,16 +1,25 @@
 <mat-card class="h-flex-content container" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title>Wrocław</mat-card-title>
-      <mat-card-subtitle>Miasto</mat-card-subtitle>
-      <img mat-card-sm-image src="https://upload.wikimedia.org/wikipedia/commons/0/07/Herb_wroclaw.svg" />
+      <mat-card-title>Nazwa Regionu</mat-card-title>
+      <mat-card-subtitle>Typ Regionu</mat-card-subtitle>
+      @if(regionId()) {
+        <img mat-card-sm-image src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Blank_shield_with_border.svg" />
+      }
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content class="content">
-    {{ longText }}
+    @if(regionId(); as regionId) {
+      <p>Region ID: {{ regionId }}</p>
+    }
+    @else {
+      <p>Brak wybranego regionu</p>
+    }
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-button>Wikipedia</button>
+    @if(regionId()) {
+      <button mat-button (click)="switchToParent()">Wyżej</button>
+    }
     <button mat-button (click)="closeBtnPressed()">Zamknij</button>
   </mat-card-actions>
 </mat-card>

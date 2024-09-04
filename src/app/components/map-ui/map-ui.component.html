@@ -1,0 +1,9 @@
+<div class="h-flex-content h-flex-container">
+  <app-map-libre class="map-container h-flex-content" [(regionId)]="selectedRegionId"/>
+
+  @if (showPopup()) {
+  <div class="map-popup h-flex-container">
+    <app-map-popup class="h-flex-content h-flex-container" (close)="unassignRegionId()" [(regionId)]="selectedRegionId" />
+  </div>
+  }
+</div>

@@ -1,10 +1,10 @@
-import { Component, effect, HostBinding, inject, OnDestroy, OnInit } from '@angular/core';
-import { AttributionControlDirective, MapComponent as BaseMapComponent, ControlComponent, EventData, GeoJSONSourceComponent, LayerComponent, PopupComponent } from '@maplibre/ngx-maplibre-gl';
-import { AttributionControl, AttributionControlOptions, Map as LibreMap, LngLat, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import { Component, computed, effect, EventEmitter, HostBinding, inject, model, OnDestroy, OnInit, Output, signal, WritableSignal } from '@angular/core';
+import { AttributionControlDirective, MapComponent as BaseMapComponent, ControlComponent, GeoJSONSourceComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
+import { Map as LibreMap, LngLat, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
 import { BehaviorSubject, filter, Subscription, map, switchMap, tap } from 'rxjs';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
-import { AsyncPipe, HashLocationStrategy, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MapDisplayService } from '../../services/map-display.service';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
@@ -32,6 +32,8 @@ interface GeoJSONFeatureNamed {
 export class MapLibreComponent implements OnInit, OnDestroy {
   @HostBinding('class') class = 'h-flex-content h-flex-container';
 
+  regionId = model<string | undefined>(undefined);
+
   mapCp: LibreMap | undefined;
 
   activeRoute = inject(ActivatedRoute);
@@ -44,44 +46,30 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   featureCollection$ = new BehaviorSubject<GeoJSONFeatureNamed | undefined>(undefined);
   selectedCoords$ = new BehaviorSubject<LngLat | undefined>(undefined);
   selectedFeature$ = new BehaviorSubject<FeatureClickData | undefined>(undefined);
-  mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(
-    filter((s) => s !== undefined),
-    tap((s) => {
-      console.log('MapLibreComponent: Map style updated', s);
-    }),
-  );
+  mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(filter((s) => s !== undefined));
 
+  bordersSelectedFilter = computed<any>(() => {
+    let teryt = this.regionId();
+    if (teryt) {
+      return ['==', ['get', 'TERYT'], teryt];
+    } else {
+      return false;
+    }
+  });
 
   routeSub: Subscription | undefined;
   bordersServiceSub: Subscription | undefined;
   mapDisplaySvcSub: Subscription | undefined;
 
-  aco: any = {
-    position: "top-left"
-
-  };
-
   constructor() {
     this.mapDisplaySvcSub = this.mapDisplaySvc.currentSettings$.subscribe((style) => {
       if (this.mapCp && style) {
         this.mapCp.setStyle(style);
-        //this.mapCp.getLayer('osm')!
-        //this.mapCp.redraw();
       }
-      console.log('MapLibreComponent: Map style updated');
     });
-    // effect(() => {
-    //   let cs = this.mapDisplaySvc.currentSettings();
-    //   if (this.mapCp && cs) {
-    //     this.mapCp.setStyle(cs);
-    //     this.mapCp.redraw();
-    //   }
-    //   console.log('MapLibreComponent: Map style updated');
-    // });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     if (this.routeSub) {
@@ -90,23 +78,12 @@ export class MapLibreComponent implements OnInit, OnDestroy {
     if (this.bordersServiceSub) {
       this.bordersServiceSub.unsubscribe();
     }
+    if (this.mapDisplaySvcSub) {
+      this.mapDisplaySvcSub.unsubscribe();
+    }
   }
-
-  private terytToFeatureId(teryt: string): string {
-    return `PL${teryt}`;
-  }
-
   private featureCollectionAssignMetadata(fc: FeatureCollection<Geometry, GeoJsonProperties>): FeatureCollection<Geometry, GeoJsonProperties> {
     let features = fc.features.map((feature, index) => {
-      //let teryt = feature.properties?.['TERYT'];
-      // if (teryt) {
-      //   let id = this.terytToFeatureId(teryt);
-      //   return { ...feature, id };
-      // }
-      // else {
-      //   let id = `fallback-${index}`;
-      //   return { ...feature, id };
-      // }
       let properties = feature?.properties ?? {};
       if (!properties.hasOwnProperty('isUnlocked')) {
         properties['isUnlocked'] = true;
@@ -147,26 +124,9 @@ export class MapLibreComponent implements OnInit, OnDestroy {
       )
       .subscribe((fc) => {
         this.featureCollection$.next(fc);
-        //this.mapCp?.redraw();
       });
   }
 
-  private extractTerytFromEvent(event: MapMouseEvent & { features?: MapGeoJSONFeature[] }): FeatureClickData | undefined {
-    if (event.features && event.features.length > 0) {
-      let feature = event.features[0];
-      if (feature.properties && feature.properties['TERYT']) {
-        let id = feature.id as string;
-        let teryt = feature.properties['TERYT'];
-        let name = feature.properties['name'];
-        let lngLat = event.lngLat;
-        return { id, teryt, name, lngLat };
-      }
-    }
-    return undefined;
-  }
-  genRandomColor(): string {
-    return '#' + Math.floor(Math.random() * 16777215).toString(16);
-  }
   onLayerClick(
     event: MapMouseEvent & {
       features?: MapGeoJSONFeature[];
@@ -174,27 +134,12 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   ) {
     let feature = event.features![0];
     console.log('Layer click feature id:', feature.id);
-    let teryt = this.extractTerytFromEvent(event);
-    this.selectedFeature$.next(teryt);
-    //TODO: ogarnąć kolorki za pomocą https://docs.mapbox.com/mapbox-gl-js/example/hover-styles/
-    let state = this.mapCp!.getFeatureState({ source: 'borders', id: event.features![0].id! });
-    console.log('Layer click feature:', feature);
-    let isSelected = state.selected || false;
-    this.mapCp!.setFeatureState({ source: 'borders', id: event.features![0].id! }, { selected: !isSelected });
-    // this.mapCp!.getLayer('borders')?.setPaintProperty('fill-color', this.genRandomColor());
-    if (teryt) {
-      console.log('Layer click TERYT:', teryt);
-    } else {
-      console.log('Layer click without TERYT');
-    }
+    let teryt = feature.id as string;
+    this.regionId.set(teryt);
   }
 
   onMapLoad(mapP: LibreMap) {
     this.mapCp = mapP;
     this.setupRouteSub();
-  }
-
-  popupClose() {
-    this.showPopup = false;
   }
 }

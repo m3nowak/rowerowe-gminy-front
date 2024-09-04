@@ -1,7 +1,5 @@
-<!-- https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json -->
-<div class="h-flex-content h-flex-container">
 <mgl-map
-  class="map-container h-flex-content"
+  class="map-container h-flex-content h-flex-container"
   [style]="(mapDisplaySettings$ | async)!"
   [zoom]="[6]"
   [center]="[19.42366667, 52.11433333]"
@@ -13,13 +11,12 @@
   @if (featureCollection$ | async; as nfc){
   <!-- <ng-container *ngIf="fcStatic as features"> -->
   <mgl-geojson-source id="borders" [data]="nfc.data" promoteId="TERYT"> </mgl-geojson-source>
-  
+
   <mgl-layer
     id="borders"
     type="fill"
     source="borders"
     [filter]="['get', 'isUnlocked']"
-    (layerClick)="onLayerClick($event)"
     [paint]="{
         'fill-antialias': true,
         'fill-color': [
@@ -35,8 +32,26 @@
         ],
         'fill-opacity': 0.50,
     }"
-  >
-  </mgl-layer>
+  />
+  <mgl-layer
+    id="borders-clickable"
+    type="fill"
+    source="borders"
+    [filter]="['==', ['get', 'type'], 'GMI']"
+    (layerClick)="onLayerClick($event)"
+    [paint]="{
+        'fill-opacity': 0,
+      }"
+  />
+  <mgl-layer
+    id="borders-selected"
+    type="fill"
+    source="borders"
+    [filter]="bordersSelectedFilter()"
+    [paint]="{
+        'fill-opacity': 0.5,
+      }"
+  />
   <mgl-layer
     id="borders-lines"
     type="line"
@@ -48,24 +63,12 @@
           'interpolate',
           ['linear'],
           ['zoom'],
-          6,
+          8,
           0,
-          24,
-          2
+          16,
+          3
         ],
     }"
-  >
-  </mgl-layer>
-  } 
-  <!-- @if (selectedFeature$ | async; as selectedFeature){
-  <mgl-popup [lngLat]="selectedFeature.lngLat" [closeButton]="false" [closeOnClick]="false">
-    <span class="map-popup">Nazwa: {{ selectedFeature.name }}, kod TERYT: {{ selectedFeature.teryt }}</span>
-  </mgl-popup>
-  } -->
+  />
+  }
 </mgl-map>
-@if (showPopup) {
-<div class="map-popup h-flex-container">
-  <app-map-popup class="h-flex-content h-flex-container" (close)="popupClose()"/>
-</div>
-}
-</div>
