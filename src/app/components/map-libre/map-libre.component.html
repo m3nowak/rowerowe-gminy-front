@@ -9,7 +9,7 @@
   [preserveDrawingBuffer]="true"
   [attributionControl]="false"
 >
-  <mgl-control mglAttribution position="top-left" [compact]="true" [customAttribution]="'Mapbox | geoportal.gov.pl'"></mgl-control>
+  <mgl-control mglAttribution position="top-left" [compact]="true" [customAttribution]="'MapLibre | geoportal.gov.pl'"></mgl-control>
   @if (featureCollection$ | async; as nfc){
   <!-- <ng-container *ngIf="fcStatic as features"> -->
   <mgl-geojson-source id="borders" [data]="nfc.data" promoteId="TERYT"> </mgl-geojson-source>
