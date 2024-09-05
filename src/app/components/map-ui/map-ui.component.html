@@ -1,5 +1,8 @@
 <div class="h-flex-content h-flex-container">
-  <app-map-libre class="map-container h-flex-content" [(regionId)]="selectedRegionId"/>
+  <div class="h-flex-content" [class.ui-hidden]="this.admSvc.isAvailable()" >
+    <span>Ładowanie danych, {{this.admSvc.loadProgress()}}%</span>
+  </div>
+  <app-map-libre class="h-flex-content" [class.ui-hidden]="!this.admSvc.isAvailable()" [(regionId)]="selectedRegionId"/>
 
   @if (showPopup()) {
   <div class="map-popup h-flex-container">

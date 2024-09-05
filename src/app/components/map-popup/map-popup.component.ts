@@ -1,6 +1,7 @@
-import { Component, EventEmitter, input, model, Output } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, input, model, Output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { AdmService } from '../../services/adm.service';
 
 @Component({
   selector: 'app-map-popup',
@@ -12,7 +13,63 @@ import { MatCardModule } from '@angular/material/card';
 export class MapPopupComponent {
   @Output() close = new EventEmitter();
 
+  admSvc = inject(AdmService);
+
   regionId = model<string | undefined>(undefined);
+
+  regionInfo = computed(() => {
+    let regionId = this.regionId();
+    if (regionId) {
+      return this.admSvc.getAdmInfo(regionId);
+    }
+    return undefined;
+  })
+
+  coaLink = computed(() => {
+    let regionInfo = this.regionInfo();
+    if (regionInfo) {
+      if (regionInfo.coa_link) {
+        return regionInfo.coa_link;
+      }
+      else {
+        return 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Blank_shield_with_border.svg'
+      }
+    }
+    return undefined;
+  })
+
+  coaIsSvg = computed(() => {
+    let coaLink = this.coaLink();
+    if (coaLink) {
+      return coaLink.endsWith('.svg');
+    }
+    return false;
+  })
+
+  typeInfoExt = computed(() => {
+    switch (this.regionInfo()?.type) {
+      case 'PAN':
+        return 'Państwo';
+      case 'POW':
+        return 'Powiat';
+      case 'GMI':
+        return 'Gmina';
+      case 'WOJ':
+        return 'Województwo';
+      default:
+        return '';
+  }})
+
+  escapeMnppEffect = effect(() => {
+    let regionInfo = this.regionInfo();
+    if (regionInfo && regionInfo.is_mnpp) {
+      this.switchToParent();
+    }
+  }, { allowSignalWrites: true });
+
+  ef1 = effect(() => {
+    console.log('COA', this.coaIsSvg(), this.coaLink());
+  })
 
   closeBtnPressed() {
     this.close.emit();

@@ -1,24 +1,25 @@
 <mat-card class="h-flex-content container" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title>Nazwa Regionu</mat-card-title>
-      <mat-card-subtitle>Typ Regionu</mat-card-subtitle>
-      @if(regionId()) {
-        <img mat-card-sm-image src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Blank_shield_with_border.svg" />
+      <mat-card-title>{{ regionInfo()?.name }}</mat-card-title>
+      <mat-card-subtitle>{{ typeInfoExt() }}</mat-card-subtitle>
+      @if(coaIsSvg()) {
+      <img mat-card-sm-image [src]="coaLink()" />
+      } @else {
+      <object mat-card-sm-image [data]="coaLink()" type="image/svg+xml">Coś się popsuło z wyświetlaniem herbu</object>
       }
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content class="content">
-    @if(regionId(); as regionId) {
-      <p>Region ID: {{ regionId }}</p>
-    }
-    @else {
-      <p>Brak wybranego regionu</p>
+    @if(regionInfo(); as regionInfo) {
+    <p>Region ID: {{ regionInfo.TERYT }}</p>
+    <p>Powierzchnia: {{ regionInfo.area }} km<sup>2</sup></p>
+    <p>Liczba ludności: {{ regionInfo.population }}</p>
     }
   </mat-card-content>
   <mat-card-actions align="end">
     @if(regionId()) {
-      <button mat-button (click)="switchToParent()">Wyżej</button>
+    <button mat-button (click)="switchToParent()">Wyżej</button>
     }
     <button mat-button (click)="closeBtnPressed()">Zamknij</button>
   </mat-card-actions>
