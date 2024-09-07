@@ -2,12 +2,14 @@
   <mat-card-header>
     <mat-card-title-group>
       <mat-card-title>{{ regionInfo()?.name }}</mat-card-title>
-      <mat-card-subtitle>{{ typeInfoExt() }}</mat-card-subtitle>
-      @if(coaIsSvg()) {
-      <img mat-card-sm-image [src]="coaLink()" />
-      } @else {
-      <object mat-card-sm-image [data]="coaLink()" type="image/svg+xml">Coś się popsuło z wyświetlaniem herbu</object>
+      @if(subtypeInfoExt(); as subtypeInfo) {
+        <mat-card-subtitle>{{ subtypeInfo }}</mat-card-subtitle>
       }
+      @else{
+        <mat-card-subtitle>{{ typeInfoExt() }}</mat-card-subtitle>
+      }
+      <img mat-card-sm-image [src]="coaLink()" />
+
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content class="content">

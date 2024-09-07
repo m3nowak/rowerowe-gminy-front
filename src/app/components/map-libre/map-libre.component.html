@@ -8,27 +8,27 @@
   [attributionControl]="false"
 >
   <mgl-control mglAttribution position="top-left" [compact]="true" [customAttribution]="'MapLibre | geoportal.gov.pl'"></mgl-control>
-  @if (featureCollection$ | async; as nfc){
+  @if (geoFeatureDataSvc.borderInfoExt(); as bi){
   <!-- <ng-container *ngIf="fcStatic as features"> -->
-  <mgl-geojson-source id="borders" [data]="nfc.data" promoteId="TERYT"> </mgl-geojson-source>
+  <mgl-geojson-source id="borders" [data]="bi" promoteId="TERYT"> </mgl-geojson-source>
 
   <mgl-layer
-    id="borders"
+    id="borders-unlocked"
     type="fill"
     source="borders"
-    [filter]="['get', 'isUnlocked']"
+    [filter]="['!=', ['get', 'unlockedArea'], 'NONE']"
     [paint]="{
         'fill-antialias': true,
         'fill-color': [
           'match',
-          ['get', 'type'],
+          ['get', 'unlockedArea'],
           'WOJ',
           '#581D89',
           'POW',
           '#004080',
           'GMI',
           '#1B9300',
-          '#C94C00'
+          '#000000'
         ],
         'fill-opacity': 0.50,
     }"
@@ -37,7 +37,6 @@
     id="borders-clickable"
     type="fill"
     source="borders"
-    [filter]="['==', ['get', 'type'], 'GMI']"
     (layerClick)="onLayerClick($event)"
     [paint]="{
         'fill-opacity': 0,
@@ -56,7 +55,6 @@
     id="borders-lines"
     type="line"
     source="borders"
-    [filter]="['==', ['get', 'type'], 'GMI']"
     [paint]="{
         'line-color': '#400',
         'line-width': [

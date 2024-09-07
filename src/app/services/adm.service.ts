@@ -4,6 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AdmInfo } from '../models/adm-info';
 import { environment } from '../../environments/environment';
 import { CustomNGXLoggerService } from 'ngx-logger';
+import { LoadingInfo } from '../models/loading_info';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,8 @@ export class AdmService implements OnDestroy{
 
   isAvailable = computed(() => this.admInfo() !== undefined);
 
-  private _loadProgress = signal<number | undefined>(0);
+  private _loadProgress = signal<LoadingInfo>({total: 1, loaded: 1});
+
 
   loadProgress = computed(() => this._loadProgress());
 
@@ -34,8 +36,9 @@ export class AdmService implements OnDestroy{
 
   getAdmInfo(regionId: string): AdmInfo | undefined {
     const admInfo = this.admInfo();
+    let regionIdshort = regionId.substring(0, 6);
     if (admInfo) {
-      return admInfo.get(regionId);
+      return admInfo.get(regionIdshort);
     }
     return undefined;
   }
@@ -46,18 +49,15 @@ export class AdmService implements OnDestroy{
     });
     this.downloadSub = this.http.request<AdmInfo[]>(request).subscribe((event) => {
       if (event.type === HttpEventType.DownloadProgress) {
-        let percentage = undefined;
-        if (event.total) {
-          percentage =  Math.floor(event.loaded / event.total * 100);
-        }
-        this._loadProgress.set(percentage);
-        this.loggerSvc.info('Download progress', percentage);
+        let total = event.total || event.loaded  ;
+        this._loadProgress.set({total: total, loaded: event.loaded});
+        this.loggerSvc.info('Download progress', event.loaded, total);
       }
       if (event.type === HttpEventType.Response) {
         if (event.body) {
           this.admInfo.set(this.buildAdmInfoMap(event.body));
           this.youForgotPoland();
-          this._loadProgress.set(100);
+          this._loadProgress.update((lp) => ({total: lp.total, loaded: lp.total}));
         }
         else {
           this.loggerSvc.error('No data received');
@@ -66,7 +66,15 @@ export class AdmService implements OnDestroy{
     });
   }
   private buildAdmInfoMap(admInfo: AdmInfo[]): Map<string, AdmInfo> {
-    return new Map(admInfo.map((ai) => [ai.TERYT, ai]));
+    return new Map(admInfo.map((ai) => {
+      let teryt = ai.TERYT;
+      let typeDigit = undefined;
+      if (teryt.length === 7){
+        typeDigit = Number(teryt[teryt.length - 1]);
+        teryt = teryt.substring(0, 6);
+      }
+      return [teryt, {...ai, subtypeDigit: typeDigit}];
+    }));
   }
 
   private youForgotPoland() {

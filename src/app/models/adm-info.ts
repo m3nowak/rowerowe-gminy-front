@@ -7,4 +7,5 @@ export interface AdmInfo {
     coa_link: string;
     is_mnpp: boolean;
     type: string;
+    subtypeDigit?: number;
 }

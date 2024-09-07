@@ -38,14 +38,6 @@ export class MapPopupComponent {
     return undefined;
   })
 
-  coaIsSvg = computed(() => {
-    let coaLink = this.coaLink();
-    if (coaLink) {
-      return coaLink.endsWith('.svg');
-    }
-    return false;
-  })
-
   typeInfoExt = computed(() => {
     switch (this.regionInfo()?.type) {
       case 'PAN':
@@ -60,6 +52,18 @@ export class MapPopupComponent {
         return '';
   }})
 
+  subtypeInfoExt = computed(() => {
+    switch (this.regionInfo()?.subtypeDigit) {
+      case 1:
+        return 'gmina miejska';
+      case 2:
+        return 'gmina wiejska';
+      case 3:
+        return 'gmina miejsko-wiejska';
+      default:
+        return undefined;
+  }})
+
   escapeMnppEffect = effect(() => {
     let regionInfo = this.regionInfo();
     if (regionInfo && regionInfo.is_mnpp) {
@@ -68,7 +72,7 @@ export class MapPopupComponent {
   }, { allowSignalWrites: true });
 
   ef1 = effect(() => {
-    console.log('COA', this.coaIsSvg(), this.coaLink());
+    console.log('COA', this.coaLink());
   })
 
   closeBtnPressed() {

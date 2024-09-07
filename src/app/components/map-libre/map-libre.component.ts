@@ -9,17 +9,13 @@ import { ActivatedRoute } from '@angular/router';
 import { MapDisplayService } from '../../services/map-display.service';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
+import { CustomNGXLoggerService } from 'ngx-logger';
 
 interface FeatureClickData {
   id: string;
   teryt: string;
   name: string;
   lngLat: LngLat;
-}
-
-interface GeoJSONFeatureNamed {
-  name: string;
-  data: FeatureCollection<Geometry, GeoJsonProperties>;
 }
 
 @Component({
@@ -36,22 +32,29 @@ export class MapLibreComponent implements OnInit, OnDestroy {
 
   mapCp: LibreMap | undefined;
 
+  loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
+    partialConfig: { context: 'MapLibreComponent' },
+  });
   activeRoute = inject(ActivatedRoute);
   bordersService = inject(BordersService);
-  geoFeatureDataService = inject(GeoFeatureDataService);
   mapDisplaySvc = inject(MapDisplayService);
+  geoFeatureDataSvc = inject(GeoFeatureDataService);
 
-  showPopup = true;
-
-  featureCollection$ = new BehaviorSubject<GeoJSONFeatureNamed | undefined>(undefined);
-  selectedCoords$ = new BehaviorSubject<LngLat | undefined>(undefined);
-  selectedFeature$ = new BehaviorSubject<FeatureClickData | undefined>(undefined);
   mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(filter((s) => s !== undefined));
 
   bordersSelectedFilter = computed<any>(() => {
-    let teryt = this.regionId();
-    if (teryt) {
-      return ['==', ['get', 'TERYT'], teryt];
+    let regionId = this.regionId();
+    if (regionId) {
+      let filter = [
+        'let',
+        'country',
+        '0',
+        ['any', ['==', ['get', 'TERYT'], regionId], ['==', ['get', 'COU_ID'], regionId], ['==', ['get', 'VOI_ID'], regionId], ['==', ['var', 'country'], regionId]],
+        // somehow ['==', '0', regionId] does not work
+      ];
+
+      this.loggerSvc.info('Borders selected filter', filter);
+      return filter;
     } else {
       return false;
     }
@@ -82,50 +85,6 @@ export class MapLibreComponent implements OnInit, OnDestroy {
       this.mapDisplaySvcSub.unsubscribe();
     }
   }
-  private featureCollectionAssignMetadata(fc: FeatureCollection<Geometry, GeoJsonProperties>): FeatureCollection<Geometry, GeoJsonProperties> {
-    let features = fc.features.map((feature, index) => {
-      let properties = feature?.properties ?? {};
-      if (!properties.hasOwnProperty('isUnlocked')) {
-        properties['isUnlocked'] = true;
-      }
-      return { ...feature, properties };
-    });
-    return { ...fc, features };
-  }
-
-  setupRouteSub() {
-    this.routeSub = this.activeRoute.queryParams
-      .pipe(
-        map((params) => params['detail'] ?? 0),
-        tap((detail) => {
-          console.log('Detail level: ', detail);
-        }),
-        switchMap((detail) => {
-          switch (detail) {
-            case '1':
-              return this.bordersService.voivodeshipsBorders();
-            case '2':
-              return this.bordersService.countiesBorders();
-            case '3':
-              return this.bordersService.communesBorders();
-            case '4':
-              return this.geoFeatureDataService.featureCollection$;
-            default:
-              return this.bordersService.countryBorders();
-          }
-        }),
-        tap((fc) => {
-          console.log('Feature collection loaded elements: ' + fc.features.features.length);
-        }),
-        map((fc) => ({
-          name: `borders-${fc.name}`,
-          data: this.featureCollectionAssignMetadata(fc.features),
-        }))
-      )
-      .subscribe((fc) => {
-        this.featureCollection$.next(fc);
-      });
-  }
 
   onLayerClick(
     event: MapMouseEvent & {
@@ -133,13 +92,12 @@ export class MapLibreComponent implements OnInit, OnDestroy {
     }
   ) {
     let feature = event.features![0];
-    console.log('Layer click feature id:', feature.id);
+    console.log('Layer click feature id:', feature.id, feature);
     let teryt = feature.id as string;
     this.regionId.set(teryt);
   }
 
   onMapLoad(mapP: LibreMap) {
     this.mapCp = mapP;
-    this.setupRouteSub();
   }
 }
