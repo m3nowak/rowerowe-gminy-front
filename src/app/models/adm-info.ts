@@ -5,7 +5,8 @@ export interface AdmInfo {
     population: number;
     link: string;
     coa_link: string;
-    is_mnpp: boolean;
     type: string;
+    has_one_child: boolean;
+    only_child: boolean;
     subtypeDigit?: number;
 }

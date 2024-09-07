@@ -2,6 +2,7 @@ import { Component, computed, effect, EventEmitter, inject, input, model, Output
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AdmService } from '../../services/adm.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-map-popup',
@@ -29,10 +30,7 @@ export class MapPopupComponent {
     let regionInfo = this.regionInfo();
     if (regionInfo) {
       if (regionInfo.coa_link) {
-        return regionInfo.coa_link;
-      }
-      else {
-        return 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Blank_shield_with_border.svg'
+        return environment.coaBaseUrl + regionInfo.coa_link;
       }
     }
     return undefined;
@@ -41,32 +39,41 @@ export class MapPopupComponent {
   typeInfoExt = computed(() => {
     switch (this.regionInfo()?.type) {
       case 'PAN':
-        return 'Państwo';
+        return 'państwo';
       case 'POW':
-        return 'Powiat';
+        return 'powiat';
       case 'GMI':
-        return 'Gmina';
+        return 'gmina';
       case 'WOJ':
-        return 'Województwo';
+        return 'województwo';
       default:
         return '';
   }})
 
   subtypeInfoExt = computed(() => {
-    switch (this.regionInfo()?.subtypeDigit) {
-      case 1:
-        return 'gmina miejska';
-      case 2:
-        return 'gmina wiejska';
-      case 3:
-        return 'gmina miejsko-wiejska';
-      default:
-        return undefined;
-  }})
+    if(this.regionInfo()?.subtypeDigit){
+      switch (this.regionInfo()?.subtypeDigit) {
+        case 1:
+          return 'gmina miejska';
+        case 2:
+          return 'gmina wiejska';
+        case 3:
+          return 'gmina miejsko-wiejska';
+        default:
+          return undefined;
+    }
+    }
+    else if(this.regionInfo()?.type === 'POW' && this.regionInfo()?.has_one_child){
+      return 'miasto powiat';
+    }
+    else {
+      return undefined;
+    }
+   })
 
   escapeMnppEffect = effect(() => {
     let regionInfo = this.regionInfo();
-    if (regionInfo && regionInfo.is_mnpp) {
+    if (regionInfo && regionInfo.only_child) {
       this.switchToParent();
     }
   }, { allowSignalWrites: true });

@@ -86,9 +86,10 @@ export class AdmService implements OnDestroy{
           area: 312696,
           population: 37636508,
           link: 'wiki/Polska',
-          coa_link: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Herb_Polski.svg',
-          is_mnpp: false,
+          coa_link: '0.svg',
           type: 'PAN',
+          has_one_child: false,
+          only_child: false,
         });
       }
       return admInfo;

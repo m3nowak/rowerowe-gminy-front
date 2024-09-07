@@ -2,14 +2,17 @@
   <mat-card-header>
     <mat-card-title-group>
       <mat-card-title>{{ regionInfo()?.name }}</mat-card-title>
-      @if(subtypeInfoExt(); as subtypeInfo) {
-        <mat-card-subtitle>{{ subtypeInfo }}</mat-card-subtitle>
-      }
-      @else{
-        <mat-card-subtitle>{{ typeInfoExt() }}</mat-card-subtitle>
-      }
-      <img mat-card-sm-image [src]="coaLink()" />
 
+      <mat-card-subtitle>
+        @if(subtypeInfoExt(); as subtypeInfo) {
+        {{ subtypeInfo }}
+        } @else{
+        {{ typeInfoExt() }}
+        }
+      </mat-card-subtitle>
+      @if(coaLink(); as coaLink) {
+      <img mat-card-sm-image class="card-img" [src]="coaLink" />
+      }
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content class="content">

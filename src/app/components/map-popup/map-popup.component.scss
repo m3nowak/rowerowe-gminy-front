@@ -1,13 +1,14 @@
-.header {
-
-}
 .content {
     flex-grow: 1;
 }
-.footer {
 
-}
 .container {
     display: flex;
     flex-direction: column;
+}
+.card-img {
+    width: unset;
+    height: unset;
+    max-width: 80px;
+    max-height: 80px;
 }
