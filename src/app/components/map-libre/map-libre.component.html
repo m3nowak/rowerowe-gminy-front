@@ -16,7 +16,7 @@
     id="borders-unlocked"
     type="fill"
     source="borders"
-    [filter]="['!=', ['get', 'unlockedArea'], 'NONE']"
+
     [paint]="{
         'fill-antialias': true,
         'fill-color': [
@@ -28,9 +28,15 @@
           '#004080',
           'GMI',
           '#1B9300',
-          '#000000'
+          '#000'
         ],
-        'fill-opacity': 0.50,
+        'fill-opacity': [
+          'match',
+          ['get', 'unlockedArea'],
+          'NONE',
+          0.2,
+          0.6
+        ],
     }"
   />
   <mgl-layer
