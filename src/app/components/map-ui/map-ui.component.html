@@ -1,5 +1,5 @@
 <div class="h-flex-content h-flex-container">
-  <div class="h-flex-content" [class.ui-hidden]="this.admSvc.isAvailable()" >
+  <div class="h-flex-content" [class.ui-hidden]="dataAvailable()" >
     <span>Ładowanie danych, {{this.loadProgressPercent()}}%</span>
   </div>
   <app-map-libre class="h-flex-content" [class.ui-hidden]="!this.admSvc.isAvailable()" [(regionId)]="selectedRegionId"/>

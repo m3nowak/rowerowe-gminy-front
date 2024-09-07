@@ -24,6 +24,9 @@ export class MapUiComponent implements OnInit {
     let lp2 = this.bordersSvc.loadProgress();
     return Math.round((lp1.loaded + lp2.loaded) / (lp1.total + lp2.total) * 100);
   });
+
+  dataAvailable = computed(() => this.admSvc.isAvailable() && this.bordersSvc.isAvailable());
+
   showPopup = computed(() => this.selectedRegionId() !== undefined);
   ef1 = effect(
     () => {
