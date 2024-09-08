@@ -10,14 +10,17 @@
     <span class="mini-spacer"> </span>
 
     <span class="spacer"></span>
-    <button mat-icon-button>
-      <mat-icon>share</mat-icon>
+    @if(extAuthSvc.isLoggedIn()) {
+    <span>Zalogowano</span>
+    }
+    <button mat-icon-button (click)="extAuthSvc.logIn()">
+      <mat-icon>login</mat-icon>
     </button>
   </mat-toolbar>
   <mat-drawer-container class="drawer-container" hasBackdrop="false">
     <mat-drawer class="drawer-container drawer" mode="push" [opened]="drawerOpen">
       <div class="h-flex-container">
-        <mat-form-field>
+        <!-- <mat-form-field>
           <mat-label>Dane</mat-label>
           <mat-select [formControl]="shapeTypeControl" class="h-flex-content">
             <mat-option value="0">Państwo</mat-option>
@@ -26,7 +29,7 @@
             <mat-option value="3">Gminy</mat-option>
             <mat-option value="4">Demo</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
         <app-map-display-control />
       </div>
     </mat-drawer>

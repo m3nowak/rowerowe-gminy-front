@@ -5,5 +5,7 @@ export const environment = {
     admInfoUrl: 'https://static.rowerowegminy.pl/adm/combolc.json.gz',
     borderInfoUrl: "https://static.rowerowegminy.pl/gs200.json.gz",
     coaBaseUrl: 'https://static.rowerowegminy.pl/coa/',
-    loggerLevel: NgxLoggerLevel.WARN
+    loggerLevel: NgxLoggerLevel.WARN,
+    clientId: "133568",
+    localBaseUrl: 'http://rowerowegminy.pl/',
 };

@@ -13,6 +13,8 @@ import { MapDisplayControlComponent } from '../map-display-control/map-display-c
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { environment } from '../../../environments/environment';
+import { ExtAuthService } from '../../services/ext-auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -37,9 +39,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class MainLayoutComponent implements OnInit {
   drawerOpen = false;
-  shapeTypeControl = new FormControl('0');
+  // shapeTypeControl = new FormControl('0');
   routerSvc = inject(Router);
   activatedRoute = inject(ActivatedRoute);
+  extAuthSvc = inject(ExtAuthService);
 
   fixFcSub: Subscription | undefined;
 
@@ -47,20 +50,9 @@ export class MainLayoutComponent implements OnInit {
     this.drawerOpen = !this.drawerOpen;
   }
 
-  ngOnInit(): void {
-    this.shapeTypeControl.valueChanges.subscribe((value) => {
-      //add value to QS
-      let qp = { detail: value };
-      this.routerSvc.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: qp,
-        queryParamsHandling: 'merge',
-      });
-    });
-    this.fixFcSub = this.activatedRoute.queryParams.subscribe((params) => {
-      let selectedDetail = params['detail'] ?? 4;
 
-      this.shapeTypeControl.setValue(selectedDetail);
-    });
+
+  ngOnInit(): void {
+
   }
 }
