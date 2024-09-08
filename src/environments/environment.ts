@@ -1,6 +1,9 @@
+import { NgxLoggerLevel } from "ngx-logger";
+
 export const environment = {
-    baseBorderUrl: 'https://eu2.contabostorage.com/9556be5764414357ae3184b95da10055:rowerowegminy.pl/geojsonfixedlite/',
-    admInfoUrl: 'https://eu2.contabostorage.com/9556be5764414357ae3184b95da10055:rowerowegminy.pl/adm/combolc.json',
-    borderInfoUrl: "https://eu2.contabostorage.com/9556be5764414357ae3184b95da10055:rowerowegminy.pl/gs200.json",
-    coaBaseUrl: 'https://eu2.contabostorage.com/9556be5764414357ae3184b95da10055:rowerowegminy.pl/coa/',
+    baseBorderUrl: 'https://static.rowerowegminy.pl/geojsonfixedlite/',
+    admInfoUrl: 'https://static.rowerowegminy.pl/adm/combolc.json.gz',
+    borderInfoUrl: "https://static.rowerowegminy.pl/gs200.json",
+    coaBaseUrl: 'https://static.rowerowegminy.pl/coa/',
+    loggerLevel: NgxLoggerLevel.WARN
 };

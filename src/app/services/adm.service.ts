@@ -1,10 +1,11 @@
-import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpProgressEvent, HttpRequest } from '@angular/common/http';
 import { computed, inject, Injectable, OnDestroy, Signal, signal } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { filter, Observable, of, shareReplay, Subscription, switchMap, tap } from 'rxjs';
 import { AdmInfo } from '../models/adm-info';
 import { environment } from '../../environments/environment';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { LoadingInfo } from '../models/loading_info';
+import { gunzip } from '../utils/gunzip';
 
 @Injectable({
   providedIn: 'root',
@@ -24,10 +25,13 @@ export class AdmService implements OnDestroy {
 
   loadProgress = computed(() => this._loadProgress());
 
+  private downloadStarted = false;
+  private progressSub: Subscription | undefined;
   private downloadSub: Subscription | undefined;
 
   startDownload() {
-    if (!this.downloadSub) {
+    if (!this.downloadStarted) {
+      this.downloadStarted = true;
       this._startDownload();
     }
   }
@@ -42,20 +46,33 @@ export class AdmService implements OnDestroy {
   }
 
   private _startDownload() {
-    const request = new HttpRequest<AdmInfo[]>('GET', environment.admInfoUrl, {
+    const request = new HttpRequest<Blob>('GET', environment.admInfoUrl, {
       reportProgress: true,
+      responseType: 'blob'
     });
-    this.downloadSub = this.http.request<AdmInfo[]>(request).subscribe((event) => {
-      if (event.type === HttpEventType.DownloadProgress) {
-        let total = event.total;
-        if (total) {
-          this._loadProgress.set({ total: total, loaded: event.loaded });
-        }
-        this.loggerSvc.info('Download progress', event.loaded, total);
+    let request$ = this.http.request<Blob>(request).pipe(
+      shareReplay(1)
+    );
+    this.progressSub = request$.pipe(
+      filter((event) => event.type === HttpEventType.DownloadProgress)
+    ).subscribe((event) => {
+      let eventCast = event as HttpProgressEvent;
+      let total = eventCast.total;
+      if (total) {
+        this._loadProgress.set({ total: total, loaded: eventCast.loaded });
       }
-      if (event.type === HttpEventType.Response) {
-        if (event.body) {
-          this.admInfo.set(this.buildAdmInfoMap(event.body));
+      this.loggerSvc.info('Download progress', eventCast.loaded, total);
+    });
+
+    this.downloadSub = request$.pipe(
+      filter((event) => event.type === HttpEventType.Response),
+      switchMap((event) => event.body ? gunzip<AdmInfo[]>(event.body) : of(undefined)),
+      tap((ail) => {
+        this.loggerSvc.info('Data received', ail);
+      })
+    ).subscribe((admInfoList) => {
+        if (admInfoList) {
+          this.admInfo.set(this.buildAdmInfoMap(admInfoList));
           this.youForgotPoland();
           this._loadProgress.update((lp) => {
             if (lp) {
@@ -68,7 +85,7 @@ export class AdmService implements OnDestroy {
           this.loggerSvc.error('No data received');
         }
       }
-    });
+    );
   }
   private buildAdmInfoMap(admInfo: AdmInfo[]): Map<string, AdmInfo> {
     return new Map(
@@ -106,6 +123,9 @@ export class AdmService implements OnDestroy {
   ngOnDestroy(): void {
     if (this.downloadSub) {
       this.downloadSub.unsubscribe();
+    }
+    if (this.progressSub) {
+      this.progressSub.unsubscribe();
     }
   }
 }

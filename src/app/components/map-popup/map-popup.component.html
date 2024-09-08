@@ -10,9 +10,7 @@
         {{ typeInfoExt() }}
         }
       </mat-card-subtitle>
-      @if(coaLink(); as coaLink) {
-      <img mat-card-sm-image class="card-img" [src]="coaLink" />
-      }
+      <img mat-card-sm-image [class.card-img]="coaLink()" [class.card-img-hidden]="!coaLink()" [src]="coaLink()" />
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content class="content">

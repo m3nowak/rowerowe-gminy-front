@@ -1,16 +1,17 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
-import { map, Observable, Subscription } from 'rxjs';
+import { computed, inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { HttpClient, HttpEventType, HttpProgressEvent, HttpRequest } from '@angular/common/http';
+import { filter, map, Observable, of, shareReplay, Subscription, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 import { GeoJsonTypes, FeatureCollection } from 'geojson';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { LoadingInfo } from '../models/loading_info';
+import { gunzip } from '../utils/gunzip';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BordersService {
+export class BordersService implements OnDestroy {
   private http = inject(HttpClient);
 
   private loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
@@ -27,29 +28,43 @@ export class BordersService {
 
   loadProgress = computed(() => this._loadProgress());
 
+  private downloadStarted = false;
+  private progressSub: Subscription | undefined;
   private downloadSub: Subscription | undefined;
 
   startDownload() {
-    if (!this.downloadSub) {
+    if (!this.downloadStarted) {
+      this.downloadStarted = true;
       this._startDownload();
     }
   }
 
   private _startDownload() {
-    const request = new HttpRequest<FeatureCollection>('GET', environment.borderInfoUrl, {
+    const request = new HttpRequest<Blob>('GET', environment.borderInfoUrl, {
       reportProgress: true,
+      responseType: 'blob'
     });
-    this.downloadSub = this.http.request<FeatureCollection>(request).subscribe((event) => {
-      if (event.type === HttpEventType.DownloadProgress) {
-        let total = event.total;
-        if (total) {
-          this._loadProgress.set({ total: total, loaded: event.loaded });
-        }
-        this.loggerSvc.info('Download progress', event.loaded, total);
+    let request$ = this.http.request<Blob>(request).pipe(
+      shareReplay(1)
+    );
+
+    this.progressSub = request$.pipe(
+      filter((event) => event.type === HttpEventType.DownloadProgress)
+    ).subscribe((event) => {
+      let eventCast = event as HttpProgressEvent;
+      let total = eventCast.total;
+      if (total) {
+        this._loadProgress.set({ total: total, loaded: eventCast.loaded });
       }
-      if (event.type === HttpEventType.Response) {
-        if (event.body) {
-          this._borderInfo.set(event.body);
+      this.loggerSvc.info('Download progress', eventCast.loaded, total);
+    });
+
+    this.downloadSub = request$.pipe(
+      filter((event) => event.type === HttpEventType.Response),
+      switchMap((event) => event.body ? gunzip<FeatureCollection>(event.body) : of(undefined)),
+    ).subscribe((fc) => {
+        if (fc) {
+          this._borderInfo.set(fc);
           this._loadProgress.update((lp) => {
             if (lp) {
               return { total: lp.total, loaded: lp.total };
@@ -61,6 +76,15 @@ export class BordersService {
           this.loggerSvc.error('No data received');
         }
       }
-    });
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.downloadSub) {
+      this.downloadSub.unsubscribe();
+    }
+    if (this.progressSub) {
+      this.progressSub.unsubscribe();
+    }
   }
 }
