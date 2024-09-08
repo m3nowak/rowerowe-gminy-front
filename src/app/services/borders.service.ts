@@ -23,7 +23,7 @@ export class BordersService {
 
   isAvailable = computed(() => this._borderInfo() !== undefined);
 
-  private _loadProgress = signal<LoadingInfo>({total: 1, loaded: 1});
+  private _loadProgress = signal<LoadingInfo | undefined>(undefined);
 
   loadProgress = computed(() => this._loadProgress());
 
@@ -41,14 +41,22 @@ export class BordersService {
     });
     this.downloadSub = this.http.request<FeatureCollection>(request).subscribe((event) => {
       if (event.type === HttpEventType.DownloadProgress) {
-        let total = event.total || event.loaded  ;
-        this._loadProgress.set({total: total, loaded: event.loaded});
+        let total = event.total;
+        if (total) {
+          this._loadProgress.set({ total: total, loaded: event.loaded });
+        }
         this.loggerSvc.info('Download progress', event.loaded, total);
       }
       if (event.type === HttpEventType.Response) {
         if (event.body) {
           this._borderInfo.set(event.body);
-          this._loadProgress.update((lp) => ({total: lp.total, loaded: lp.total}));
+          this._loadProgress.update((lp) => {
+            if (lp) {
+              return { total: lp.total, loaded: lp.total };
+            } else {
+              return lp;
+            }
+          });
         } else {
           this.loggerSvc.error('No data received');
         }

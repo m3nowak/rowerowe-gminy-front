@@ -1,8 +1,12 @@
 <div class="h-flex-content h-flex-container">
-  <div class="h-flex-content" [class.ui-hidden]="dataAvailable()" >
-    <span>Ładowanie danych, {{this.loadProgressPercent()}}%</span>
+  <div class="h-flex-content" [class.ui-hidden]="dataAvailable()" [class.ui-loading-info]="!dataAvailable()">
+    <mat-progress-spinner
+        class="example-margin"
+        [mode]="this.loadProgressPercent() ? 'determinate' : 'indeterminate'"
+        [value]="this.loadProgressPercent()">
+    </mat-progress-spinner>
   </div>
-  <app-map-libre class="h-flex-content" [class.ui-hidden]="!this.admSvc.isAvailable()" [(regionId)]="selectedRegionId"/>
+  <app-map-libre class="h-flex-content" [class.ui-hidden]="!dataAvailable()" [(regionId)]="selectedRegionId"/>
 
   @if (showPopup()) {
   <div class="map-popup h-flex-container">
