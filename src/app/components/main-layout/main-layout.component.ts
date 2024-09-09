@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { environment } from '../../../environments/environment';
-import { ExtAuthService } from '../../services/ext-auth.service';
+import { StravaAuthService } from '../../services/strava-auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -42,7 +42,7 @@ export class MainLayoutComponent implements OnInit {
   // shapeTypeControl = new FormControl('0');
   routerSvc = inject(Router);
   activatedRoute = inject(ActivatedRoute);
-  extAuthSvc = inject(ExtAuthService);
+  extAuthSvc = inject(StravaAuthService);
 
   fixFcSub: Subscription | undefined;
 

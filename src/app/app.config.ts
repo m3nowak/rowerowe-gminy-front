@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { environment } from '../environments/environment';
+import { ApiModule } from './api/api.module';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(),
     importProvidersFrom(LoggerModule.forRoot({ level: environment.loggerLevel })),
+    importProvidersFrom(ApiModule.forRoot({ rootUrl: environment.apiBaseUrl })),
   ],
 };

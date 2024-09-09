@@ -8,4 +8,5 @@ export const environment = {
     loggerLevel: NgxLoggerLevel.DEBUG,
     clientId: "133568",
     localBaseUrl: 'http://localhost:4200/',
+    apiBaseUrl: 'http://localhost:8000',
 };

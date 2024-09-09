@@ -2,14 +2,16 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Params } from '@angular/router';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../api/services';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ExtAuthService {
+export class StravaAuthService {
   private loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'ExtAuth' },
   });
+  authSvc = inject(AuthService);
 
   currentToken = signal<string | undefined>(localStorage.getItem('stravaToken') ?? undefined);
 
@@ -36,6 +38,13 @@ export class ExtAuthService {
     //example response:
     //http://localhost:4200/exchange_token?state=&code=<TOKEN>&scope=read
     this.loggerSvc.info('Token received:', params);
-    this.currentToken.set(params['code']);
+    let code = params['code'];
+    if (code) {
+      this.authSvc.authenticateAuthenticateHandler({ body: { code } }).subscribe((res) => {
+        this.loggerSvc.info('Token exchanged:', res);
+      });
+    }
+
+    //this.currentToken.set(params['code']);
   }
 }

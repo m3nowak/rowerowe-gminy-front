@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ExtAuthService } from './ext-auth.service';
+import { StravaAuthService } from './strava-auth.service';
 
 describe('ExtAuthService', () => {
-  let service: ExtAuthService;
+  let service: StravaAuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ExtAuthService);
+    service = TestBed.inject(StravaAuthService);
   });
 
   it('should be created', () => {
