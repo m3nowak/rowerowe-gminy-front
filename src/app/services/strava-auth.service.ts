@@ -39,8 +39,9 @@ export class StravaAuthService {
     //http://localhost:4200/exchange_token?state=&code=<TOKEN>&scope=read
     this.loggerSvc.info('Token received:', params);
     let code = params['code'];
+    let scopes = params['scope'].split(",");
     if (code) {
-      this.authSvc.authenticateAuthenticateHandler({ body: { code } }).subscribe((res) => {
+      this.authSvc.authenticateAuthenticateHandler({ body: { code, scopes } }).subscribe((res) => {
         this.loggerSvc.info('Token exchanged:', res);
       });
     }
