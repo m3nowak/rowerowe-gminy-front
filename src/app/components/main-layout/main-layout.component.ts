@@ -42,7 +42,7 @@ export class MainLayoutComponent implements OnInit {
   // shapeTypeControl = new FormControl('0');
   routerSvc = inject(Router);
   activatedRoute = inject(ActivatedRoute);
-  extAuthSvc = inject(StravaAuthService);
+  stravaAuthSvc = inject(StravaAuthService);
 
   fixFcSub: Subscription | undefined;
 

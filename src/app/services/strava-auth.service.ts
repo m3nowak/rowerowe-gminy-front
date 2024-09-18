@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { Params } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../api/services';
@@ -12,6 +12,7 @@ export class StravaAuthService {
     partialConfig: { context: 'ExtAuth' },
   });
   authSvc = inject(AuthService);
+  router = inject(Router);
 
   currentToken = signal<string | undefined>(localStorage.getItem('stravaToken') ?? undefined);
 
@@ -19,6 +20,8 @@ export class StravaAuthService {
     let token = this.currentToken();
     if (token) {
       localStorage.setItem('stravaToken', token);
+    } else {
+      localStorage.removeItem('stravaToken');
     }
   });
 
@@ -34,15 +37,21 @@ export class StravaAuthService {
     window.location.href = stravaUrl.href;
   }
 
+  logOut() {
+    this.currentToken.set(undefined);
+    this.router.navigate(['']);
+  }
+
   feedToken(params: Params) {
     //example response:
     //http://localhost:4200/exchange_token?state=&code=<TOKEN>&scope=read
     this.loggerSvc.info('Token received:', params);
     let code = params['code'];
-    let scopes = params['scope'].split(",");
+    let scopes = params['scope'].split(',');
     if (code) {
       this.authSvc.authenticateAuthenticateHandler({ body: { code, scopes } }).subscribe((res) => {
         this.loggerSvc.info('Token exchanged:', res);
+        this.currentToken.set(res.token);
       });
     }
 
