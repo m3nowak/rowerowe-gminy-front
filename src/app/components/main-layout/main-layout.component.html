@@ -4,7 +4,7 @@
     <mat-icon>menu</mat-icon>
   </button>
   <!-- <span>Rowerowe Gminy</span> -->
-  <img src="https://static.rowerowegminy.pl/assets/logo-h.svg" alt="Rowerowe Gminy" class="logo-img">
+  <img src="https://static.rowerowegminy.pl/assets/logo-h.svg" alt="Rowerowe Gminy" class="o-logo-img">
   <!-- <span class="mini-spacer"></span>
   <a mat-raised-button routerLink="/leaflet" [routerLinkActive]="['is-active']">Leaflet</a>
   <a mat-raised-button routerLink="/libre" [routerLinkActive]="['is-active']">MapLibre</a> -->
@@ -14,9 +14,16 @@
     <!-- @if(extAuthSvc.isLoggedIn()) {
     <span>Zalogowano</span>
     } -->
-    <button mat-icon-button (click)="extAuthSvc.logIn()">
-      <mat-icon>login</mat-icon>
-    </button>
+    @if(stravaAuthSvc.isLoggedIn()) {
+      <button mat-icon-button (click)="stravaAuthSvc.logOut()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    }
+    @else {
+      <button mat-icon-button (click)="stravaAuthSvc.logIn()">
+        <mat-icon>login</mat-icon>
+      </button>
+    }
   </mat-toolbar>
   <mat-drawer-container class="drawer-container" hasBackdrop="false">
     <mat-drawer class="drawer-container drawer" mode="push" [opened]="drawerOpen">
