@@ -10,6 +10,5 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './login-purgatory.component.scss',
 })
 export class LoginPurgatoryComponent {
-  // @HostBinding('class') class = 'h-flex-content h-flex-container';
   extAuthSvc = inject(StravaAuthService);
 }
