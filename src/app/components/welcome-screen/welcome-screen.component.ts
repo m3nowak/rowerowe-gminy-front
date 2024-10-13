@@ -12,7 +12,6 @@ import { CustomNGXLoggerService } from 'ngx-logger';
   styleUrl: './welcome-screen.component.scss',
 })
 export class WelcomeScreenComponent {
-  @HostBinding('class') class = 'h-full';
 
   logger = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'WelcomeScreen' },
