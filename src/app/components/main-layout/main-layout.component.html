@@ -1,50 +1,33 @@
-<div class="main-container">
-<mat-toolbar class="main-toolbar">
-  <button mat-icon-button (click)="toggleDrawer()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <!-- <span>Rowerowe Gminy</span> -->
-  <img src="https://static.rowerowegminy.pl/assets/logo-h.svg" alt="Rowerowe Gminy" class="o-logo-img">
-  <!-- <span class="mini-spacer"></span>
-  <a mat-raised-button routerLink="/leaflet" [routerLinkActive]="['is-active']">Leaflet</a>
-  <a mat-raised-button routerLink="/libre" [routerLinkActive]="['is-active']">MapLibre</a> -->
-    <span class="mini-spacer"> </span>
-
-    <span class="spacer"></span>
-    <!-- @if(extAuthSvc.isLoggedIn()) {
-    <span>Zalogowano</span>
-    } -->
-    @if(stravaAuthSvc.isLoggedIn()) {
+<div class="flex h-dvh flex-col">
+  <mat-toolbar class="flex">
+    <button mat-icon-button (click)="toggleDrawer()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="flex h-full justify-center p-2" [class.bg-red-500]="false">
+      <img src="https://static.rowerowegminy.pl/assets/logo-h.svg" alt="Rowerowe Gminy" class="max-h-full max-w-40 object-contain sm:max-w-64" />
+    </div>
+    <span class="grow"></span>
+    @if (stravaAuthSvc.isLoggedIn()) {
       <button mat-icon-button (click)="stravaAuthSvc.logOut()">
         <mat-icon>logout</mat-icon>
       </button>
-    }
-    @else {
+    } @else {
       <button mat-icon-button (click)="stravaAuthSvc.logIn()">
         <mat-icon>login</mat-icon>
       </button>
     }
   </mat-toolbar>
-  <mat-drawer-container class="drawer-container" hasBackdrop="false">
-    <mat-drawer class="drawer-container drawer" mode="push" [opened]="drawerOpen">
-      <div class="h-flex-container">
-        <!-- <mat-form-field>
-          <mat-label>Dane</mat-label>
-          <mat-select [formControl]="shapeTypeControl" class="h-flex-content">
-            <mat-option value="0">Państwo</mat-option>
-            <mat-option value="1">Województwa</mat-option>
-            <mat-option value="2">Powiaty</mat-option>
-            <mat-option value="3">Gminy</mat-option>
-            <mat-option value="4">Demo</mat-option>
-          </mat-select>
-        </mat-form-field> -->
+  <mat-drawer-container class="flex w-full grow" hasBackdrop="false">
+    <mat-drawer class="flex grow p-2" mode="over" [opened]="drawerOpen">
+      <!-- <mat-drawer class="drawer-container drawer" mode="push" [opened]="drawerOpen"> -->
+      <div class="flex flex-col">
         <app-map-display-control />
       </div>
     </mat-drawer>
-    <mat-drawer-content class="drawer-content h-flex-container">
-      <!-- <span style="background-color: red;" class="drawer-contnet-inner">a</span> -->
-      <ng-content></ng-content>
+    <mat-drawer-content class="grow">
+      <div class="h-full *:h-full">
+        <ng-content></ng-content>
+      </div>
     </mat-drawer-content>
   </mat-drawer-container>
-  
 </div>

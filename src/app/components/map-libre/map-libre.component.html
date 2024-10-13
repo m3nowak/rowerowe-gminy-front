@@ -1,5 +1,5 @@
 <mgl-map
-  class="map-container h-flex-content h-flex-container"
+  class="h-full"
   [style]="(mapDisplaySettings$ | async)!"
   [zoom]="[6]"
   [center]="[19.42366667, 52.11433333]"
@@ -8,71 +8,46 @@
   [attributionControl]="false"
 >
   <mgl-control mglAttribution position="top-left" [compact]="true" [customAttribution]="'MapLibre | geoportal.gov.pl'"></mgl-control>
-  @if (geoFeatureDataSvc.borderInfoExt(); as bi){
-  <!-- <ng-container *ngIf="fcStatic as features"> -->
-  <mgl-geojson-source id="borders" [data]="bi" promoteId="TERYT"> </mgl-geojson-source>
+  @if (geoFeatureDataSvc.borderInfoExt(); as bi) {
+    <!-- <ng-container *ngIf="fcStatic as features"> -->
+    <mgl-geojson-source id="borders" [data]="bi" promoteId="TERYT"> </mgl-geojson-source>
 
-  <mgl-layer
-    id="borders-unlocked"
-    type="fill"
-    source="borders"
-
-    [paint]="{
+    <mgl-layer
+      id="borders-unlocked"
+      type="fill"
+      source="borders"
+      [paint]="{
         'fill-antialias': true,
-        'fill-color': [
-          'match',
-          ['get', 'unlockedArea'],
-          'WOJ',
-          '#581D89',
-          'POW',
-          '#004080',
-          'GMI',
-          '#1B9300',
-          '#8e4352'
-        ],
-        'fill-opacity': [
-          'match',
-          ['get', 'unlockedArea'],
-          'NONE',
-          0.2,
-          0.6
-        ],
-    }"
-  />
-  <mgl-layer
-    id="borders-clickable"
-    type="fill"
-    source="borders"
-    (layerClick)="onLayerClick($event)"
-    [paint]="{
+        'fill-color': ['match', ['get', 'unlockedArea'], 'WOJ', '#581D89', 'POW', '#004080', 'GMI', '#1B9300', '#8e4352'],
+        'fill-opacity': ['match', ['get', 'unlockedArea'], 'NONE', 0.2, 0.6],
+      }"
+    />
+    <mgl-layer
+      id="borders-clickable"
+      type="fill"
+      source="borders"
+      (layerClick)="onLayerClick($event)"
+      [paint]="{
         'fill-opacity': 0,
       }"
-  />
-  <mgl-layer
-    id="borders-selected"
-    type="fill"
-    source="borders"
-    [filter]="bordersSelectedFilter()"
-    [paint]="{
+    />
+    <mgl-layer
+      id="borders-selected"
+      type="fill"
+      source="borders"
+      [filter]="bordersSelectedFilter()"
+      [paint]="{
         'fill-opacity': 0.5,
       }"
-  />
-  <mgl-layer
-    id="borders-lines"
-    type="line"
-    source="borders"
-    [paint]="{
+    />
+    <mgl-layer
+      id="borders-lines"
+      type="line"
+      source="borders"
+      [paint]="{
         'line-color': '#400',
-        'line-width': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          8,
-          0,
-          16,
-          3
-        ],
-    }"
-  />
+        'line-width': ['interpolate', ['linear'], ['zoom'], 8, 0, 16, 3],
+      }"
+    />
   }
 </mgl-map>

@@ -26,7 +26,6 @@ interface FeatureClickData {
   styleUrl: './map-libre.component.scss',
 })
 export class MapLibreComponent implements OnInit, OnDestroy {
-  @HostBinding('class') class = 'h-flex-content h-flex-container';
 
   regionId = model<string | undefined>(undefined);
 

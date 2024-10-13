@@ -1,28 +1,28 @@
-<mat-card class="h-flex-content container" appearance="outlined">
+<mat-card class="flex h-full flex-col" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group>
       <mat-card-title>{{ regionInfo()?.name }}</mat-card-title>
 
       <mat-card-subtitle>
-        @if(subtypeInfoExt(); as subtypeInfo) {
-        {{ subtypeInfo }}
-        } @else{
-        {{ typeInfoExt() }}
+        @if (subtypeInfoExt(); as subtypeInfo) {
+          {{ subtypeInfo }}
+        } @else {
+          {{ typeInfoExt() }}
         }
       </mat-card-subtitle>
-      <img mat-card-sm-image [class.card-img]="coaLink()" [class.card-img-hidden]="!coaLink()" [src]="coaLink()" />
+      <img class="h-auto max-h-20 w-auto max-w-20" [class.hidden]="!coaLink()" [src]="coaLink()" />
     </mat-card-title-group>
   </mat-card-header>
-  <mat-card-content class="content">
-    @if(regionInfo(); as regionInfo) {
-    <p>Region ID: {{ regionInfo.TERYT }}</p>
-    <p>Powierzchnia: {{ regionInfo.area }} km<sup>2</sup></p>
-    <p>Liczba ludności: {{ regionInfo.population }}</p>
+  <mat-card-content class="grow">
+    @if (regionInfo(); as regionInfo) {
+      <p>Region ID: {{ regionInfo.TERYT }}</p>
+      <p>Powierzchnia: {{ regionInfo.area }} km<sup>2</sup></p>
+      <p>Liczba ludności: {{ regionInfo.population }}</p>
     }
   </mat-card-content>
   <mat-card-actions align="end">
-    @if(regionId()) {
-    <button mat-button (click)="switchToParent()">Wyżej</button>
+    @if (regionId()) {
+      <button mat-button (click)="switchToParent()">Wyżej</button>
     }
     <button mat-button (click)="closeBtnPressed()">Zamknij</button>
   </mat-card-actions>
