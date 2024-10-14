@@ -24,13 +24,13 @@ export class MapDisplayService {
 
   updateSettings(style: MapDisplaySettings) {
     //find layer with osm id
-    let current = this._currentSettings.value;
+    const current = this._currentSettings.value;
 
     if (!current) {
       return;
     }
-    let osmLayerIndex = 0;
-    let paint = {
+    const osmLayerIndex = 0;
+    const paint = {
       'raster-hue-rotate': style.hueRotation,
       'raster-opacity': style.opacity / 100,
       'raster-brightness-min': style.brightnessMin / 100,

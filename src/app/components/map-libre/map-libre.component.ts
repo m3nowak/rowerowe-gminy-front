@@ -41,9 +41,9 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(filter((s) => s !== undefined));
 
   bordersSelectedFilter = computed<any>(() => {
-    let regionId = this.regionId();
+    const regionId = this.regionId();
     if (regionId) {
-      let filter = [
+      const filter = [
         'let',
         'country',
         '0',
@@ -89,9 +89,9 @@ export class MapLibreComponent implements OnInit, OnDestroy {
       features?: MapGeoJSONFeature[];
     },
   ) {
-    let feature = event.features![0];
+    const feature = event.features![0];
     console.log('Layer click feature id:', feature.id, feature);
-    let teryt = feature.id as string;
+    const teryt = feature.id as string;
     this.regionId.set(teryt);
   }
 

@@ -17,9 +17,9 @@ export class GeoFeatureDataService {
   unlockedFeatures = new Set(['02', '3013', '3004', '3011', '3005032', '0812013', '0662011', '3022', '1606', '3029012']);
 
   borderInfoExt = computed<FeatureCollection<Geometry, GeoJsonProperties> | undefined>(() => {
-    let allBorders = this.bordersSvc.borderInfo();
+    const allBorders = this.bordersSvc.borderInfo();
     if (allBorders) {
-      let features_ext = allBorders.features.map((f) => {
+      const features_ext = allBorders.features.map((f) => {
         let unlockedArea = 'NONE';
         if (this.unlockedFeatures.has(f.properties!['VOI_ID'])) {
           unlockedArea = 'WOJ';
@@ -46,7 +46,7 @@ export class GeoFeatureDataService {
   });
 
   logEffect = effect(() => {
-    let bie = this.borderInfoExt();
+    const bie = this.borderInfoExt();
     if (bie) {
       this.loggerSvc.info('Extended border info updated, feature count =', bie.features.length);
     } else {

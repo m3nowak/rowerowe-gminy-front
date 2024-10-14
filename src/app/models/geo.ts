@@ -1,6 +1,6 @@
 export interface Geometry {
   type: string;
-  coordinates: Array<any>;
+  coordinates: any[];
 }
 
 export interface Feature {
@@ -12,6 +12,6 @@ export interface Feature {
 export interface FeatureCollection {
   type: string;
   name: string;
-  features: Array<Feature>;
+  features: Feature[];
   crs: any;
 }

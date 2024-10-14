@@ -19,7 +19,7 @@ export class MapPopupComponent {
   regionId = model<string | undefined>(undefined);
 
   regionInfo = computed(() => {
-    let regionId = this.regionId();
+    const regionId = this.regionId();
     if (regionId) {
       return this.admSvc.getAdmInfo(regionId);
     }
@@ -27,7 +27,7 @@ export class MapPopupComponent {
   });
 
   coaLink = computed(() => {
-    let regionInfo = this.regionInfo();
+    const regionInfo = this.regionInfo();
     if (regionInfo) {
       if (regionInfo.coa_link) {
         return environment.coaBaseUrl + regionInfo.coa_link;
@@ -72,7 +72,7 @@ export class MapPopupComponent {
 
   escapeMnppEffect = effect(
     () => {
-      let regionInfo = this.regionInfo();
+      const regionInfo = this.regionInfo();
       if (regionInfo && regionInfo.only_child) {
         this.switchToParent();
       }
@@ -89,9 +89,9 @@ export class MapPopupComponent {
   }
 
   switchToParent() {
-    let regionId = this.regionId();
+    const regionId = this.regionId();
     if (regionId) {
-      let length = regionId.length;
+      const length = regionId.length;
       switch (length) {
         case 2:
           this.regionId.set('0');

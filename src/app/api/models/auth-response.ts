@@ -1,5 +1,4 @@
-/* tslint:disable */
-/* eslint-disable */
+ 
 import { MinimalUser } from '../models/minimal-user';
 export interface AuthResponse {
   someExampleData?: null | string;

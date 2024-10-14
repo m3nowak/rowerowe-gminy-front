@@ -17,7 +17,7 @@ export class StravaAuthService {
   currentToken = signal<string | undefined>(localStorage.getItem('stravaToken') ?? undefined);
 
   localStorageEffect = effect(() => {
-    let token = this.currentToken();
+    const token = this.currentToken();
     if (token) {
       localStorage.setItem('stravaToken', token);
     } else {
@@ -28,7 +28,7 @@ export class StravaAuthService {
   isLoggedIn = computed(() => this.currentToken() !== undefined);
 
   logIn() {
-    let stravaUrl = new URL('http://www.strava.com/oauth/authorize');
+    const stravaUrl = new URL('http://www.strava.com/oauth/authorize');
     stravaUrl.searchParams.set('client_id', environment.clientId);
     stravaUrl.searchParams.set('response_type', 'code');
     stravaUrl.searchParams.set('redirect_uri', environment.localBaseUrl + 'authorized');
@@ -46,8 +46,8 @@ export class StravaAuthService {
     //example response:
     //http://localhost:4200/exchange_token?state=&code=<TOKEN>&scope=read
     this.loggerSvc.info('Token received:', params);
-    let code = params['code'];
-    let scopes = params['scope'].split(',');
+    const code = params['code'];
+    const scopes = params['scope'].split(',');
     if (code) {
       this.authSvc.authenticateAuthenticateHandler({ body: { code, scopes } }).subscribe((res) => {
         this.loggerSvc.info('Token exchanged:', res);

@@ -38,7 +38,7 @@ export class AdmService implements OnDestroy {
 
   getAdmInfo(regionId: string): AdmInfo | undefined {
     const admInfo = this.admInfo();
-    let regionIdshort = regionId.substring(0, 6);
+    const regionIdshort = regionId.substring(0, 6);
     if (admInfo) {
       return admInfo.get(regionIdshort);
     }
@@ -50,10 +50,10 @@ export class AdmService implements OnDestroy {
       reportProgress: true,
       responseType: 'blob',
     });
-    let request$ = this.http.request<Blob>(request).pipe(shareReplay(1));
+    const request$ = this.http.request<Blob>(request).pipe(shareReplay(1));
     this.progressSub = request$.pipe(filter((event) => event.type === HttpEventType.DownloadProgress)).subscribe((event) => {
-      let eventCast = event as HttpProgressEvent;
-      let total = eventCast.total;
+      const eventCast = event as HttpProgressEvent;
+      const total = eventCast.total;
       if (total) {
         this._loadProgress.set({ total: total, loaded: eventCast.loaded });
       }

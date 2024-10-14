@@ -21,8 +21,8 @@ export class MapUiComponent implements OnInit {
   selectedRegionId = signal<string | undefined>(undefined);
 
   loadProgressPercent = computed(() => {
-    let lp1 = this.admSvc.loadProgress();
-    let lp2 = this.bordersSvc.loadProgress();
+    const lp1 = this.admSvc.loadProgress();
+    const lp2 = this.bordersSvc.loadProgress();
     if (lp1 && lp2) {
       return Math.round(((lp1.loaded + lp2.loaded) / (lp1.total + lp2.total)) * 100);
     } else {

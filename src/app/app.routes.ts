@@ -14,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'authorized',
     redirectTo: ({ queryParams }) => {
-      let extAuthSvc = inject(StravaAuthService);
+      const extAuthSvc = inject(StravaAuthService);
       extAuthSvc.feedToken(queryParams);
       return 'home';
     },

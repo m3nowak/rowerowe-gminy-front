@@ -14,17 +14,17 @@ import { MapDisplayService } from '../../services/map-display.service';
   styleUrl: './map-display-control.component.scss',
 })
 export class MapDisplayControlComponent {
-  hueRotation: number = 0;
-  opacity: number = 100;
-  brightnessMin: number = 0;
-  brightnessMax: number = 100;
-  saturation: number = -100;
-  contrast: number = 0;
+  hueRotation = 0;
+  opacity = 100;
+  brightnessMin = 0;
+  brightnessMax = 100;
+  saturation = -100;
+  contrast = 0;
 
   mapDisplaySvc = inject(MapDisplayService);
 
   onValueChange() {
-    let settings: MapDisplaySettings = {
+    const settings: MapDisplaySettings = {
       hueRotation: this.hueRotation,
       opacity: this.opacity,
       brightnessMin: this.brightnessMin,

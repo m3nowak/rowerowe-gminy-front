@@ -18,5 +18,5 @@ import { MainLayoutComponent } from './components/main-layout/main-layout.compon
 export class AppComponent {
   title = 'Rowerowe Gminy';
   events: string[] = [];
-  opened: boolean = false;
+  opened = false;
 }

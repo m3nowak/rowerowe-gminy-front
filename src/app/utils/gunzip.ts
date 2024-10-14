@@ -27,8 +27,8 @@ function readableStreamToObservable(stream: ReadableStream<string>): Observable<
 
 export function gunzip<T>(input: Blob): Observable<T | undefined> {
   const ds = new DecompressionStream('gzip');
-  let result = input.stream().pipeThrough(ds).pipeThrough(new TextDecoderStream()); //.getReader();
-  let result$ = readableStreamToObservable(result);
+  const result = input.stream().pipeThrough(ds).pipeThrough(new TextDecoderStream()); //.getReader();
+  const result$ = readableStreamToObservable(result);
   return result$.pipe(
     reduce((acc, v) => acc + v, ''),
     map((v) => {
