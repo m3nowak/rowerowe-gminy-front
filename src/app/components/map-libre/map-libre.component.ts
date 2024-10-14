@@ -33,19 +33,17 @@ export class MapLibreComponent implements OnDestroy {
 
   mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(filter((s) => s !== undefined));
 
-  bordersSelectedFilter = computed<unknown>(() => {
+  // Yeah, i give up on typing this, this expression is bugged
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  bordersSelectedFilter = computed<any>(() => {
     const regionId = this.regionId();
+    if (regionId === '0') {
+      return true
+    }
     if (regionId) {
-      const filter = [
-        'let',
-        'country',
-        '0',
-        ['any', ['==', ['get', 'TERYT'], regionId], ['==', ['get', 'COU_ID'], regionId], ['==', ['get', 'VOI_ID'], regionId], ['==', ['var', 'country'], regionId]],
-        // somehow ['==', '0', regionId] does not work
-      ];
-
-      this.loggerSvc.info('Borders selected filter', filter);
-      return filter;
+      const filter2 = ['any', ['==', ['get', 'TERYT'], regionId], ['==', ['get', 'COU_ID'], regionId], ['==', ['get', 'VOI_ID'], regionId]];
+      this.loggerSvc.info('Borders selected filter', filter2);
+      return filter2;
     } else {
       return false;
     }
