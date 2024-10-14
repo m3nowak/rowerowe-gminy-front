@@ -1,9 +1,9 @@
 import { computed, inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { HttpClient, HttpEventType, HttpProgressEvent, HttpRequest } from '@angular/common/http';
-import { filter, map, Observable, of, shareReplay, Subscription, switchMap } from 'rxjs';
+import { filter, of, shareReplay, Subscription, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-import { GeoJsonTypes, FeatureCollection } from 'geojson';
+import { FeatureCollection } from 'geojson';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { LoadingInfo } from '../models/loading_info';
 import { gunzip } from '../utils/gunzip';

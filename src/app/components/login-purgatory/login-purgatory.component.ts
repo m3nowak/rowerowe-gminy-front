@@ -1,4 +1,4 @@
-import { Component, HostBinding, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { StravaAuthService } from '../../services/strava-auth.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 

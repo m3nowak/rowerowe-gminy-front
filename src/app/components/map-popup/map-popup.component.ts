@@ -1,4 +1,4 @@
-import { Component, computed, effect, EventEmitter, inject, input, model, Output } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, model, Output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AdmService } from '../../services/adm.service';
@@ -12,7 +12,7 @@ import { environment } from '../../../environments/environment';
   styleUrl: './map-popup.component.scss',
 })
 export class MapPopupComponent {
-  @Output() close = new EventEmitter();
+  @Output() exit = new EventEmitter();
 
   admSvc = inject(AdmService);
 
@@ -85,7 +85,7 @@ export class MapPopupComponent {
   });
 
   closeBtnPressed() {
-    this.close.emit();
+    this.exit.emit();
   }
 
   switchToParent() {

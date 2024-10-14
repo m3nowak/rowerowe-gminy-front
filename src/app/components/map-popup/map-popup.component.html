@@ -10,7 +10,7 @@
           {{ typeInfoExt() }}
         }
       </mat-card-subtitle>
-      <img class="h-auto max-h-20 w-auto max-w-20" [class.hidden]="!coaLink()" [src]="coaLink()" />
+      <img class="h-auto max-h-20 w-auto max-w-20" [class.hidden]="!coaLink()" [src]="coaLink()" [alt]="'Herb ' + regionInfo()?.name "/>
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content class="grow">

@@ -1,4 +1,4 @@
-import { Component, computed, effect, HostBinding, inject, model, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { MapLibreComponent } from '../map-libre/map-libre.component';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { AdmService } from '../../services/adm.service';
@@ -13,7 +13,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './map-ui.component.scss',
 })
 export class MapUiComponent implements OnInit {
-  @HostBinding('class') class = 'h-flex-content h-flex-container';
 
   admSvc = inject(AdmService);
   bordersSvc = inject(BordersService);

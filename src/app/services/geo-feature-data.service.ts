@@ -1,9 +1,7 @@
 import { computed, effect, inject, Injectable } from '@angular/core';
 import { BordersService } from './borders.service';
-import { map, Observable, tap } from 'rxjs';
-import { NGXLogger, CustomNGXLoggerService } from 'ngx-logger';
+import { CustomNGXLoggerService } from 'ngx-logger';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
-import { NamedFeatureCollection } from '../models/geo-ext';
 
 @Injectable({
   providedIn: 'root',

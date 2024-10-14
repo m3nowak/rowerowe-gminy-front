@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { MapUiComponent } from './components/map-ui/map-ui.component';
 import { StravaAuthService } from './services/strava-auth.service';
 import { inject } from '@angular/core';
 import { WelcomeScreenComponent } from './components/welcome-screen/welcome-screen.component';

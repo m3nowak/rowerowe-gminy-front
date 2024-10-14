@@ -1,4 +1,4 @@
-interface StravaInfo {
+export interface StravaInfo {
   profilePic?: string;
   profilePicMedium?: string;
   username?: string;

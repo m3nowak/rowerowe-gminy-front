@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, effect, Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { StyleSpecification } from 'maplibre-gl';
 import { MapDisplaySettings } from '../models/map-display-settings';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -17,7 +16,8 @@ export class MapDisplayService {
     this.http.get<StyleSpecification>('/assets/map-style.json').subscribe((style) => {
       this._currentSettings.next(style);
     });
-    this.currentSettings$.subscribe((style) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    this.currentSettings$.subscribe((_) => {
       console.log('MapDisplayService: current settings updated (info from observable)');
     });
   }

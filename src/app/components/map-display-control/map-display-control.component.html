@@ -5,26 +5,26 @@
         <mat-panel-title> Zaawansowane ustawienia </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="flex flex-col">
-        <label>Opacity</label>
+        <label for="opacity-slider">Opacity</label>
         <mat-slider min="0" max="100">
-          <input matSliderThumb [(ngModel)]="opacity" (valueChange)="onValueChange()" />
+          <input matSliderThumb [(ngModel)]="opacity" (valueChange)="onValueChange()" id="opacity-slider" />
         </mat-slider>
-        <label>Hue Rotation</label>
+        <label for="hue-rotation-slider">Hue Rotation</label>
         <mat-slider min="0" max="360">
-          <input matSliderThumb [(ngModel)]="hueRotation" (valueChange)="onValueChange()" />
+          <input matSliderThumb [(ngModel)]="hueRotation" (valueChange)="onValueChange()" id="hue-rotation-slider" />
         </mat-slider>
-        <label>Brightness</label>
+        <label for="brightness-slider-start">Brightness</label>
         <mat-slider min="0" max="100">
-          <input matSliderStartThumb [(ngModel)]="brightnessMin" (valueChange)="onValueChange()" />
-          <input matSliderEndThumb [(ngModel)]="brightnessMax" (valueChange)="onValueChange()" />
+          <input matSliderStartThumb [(ngModel)]="brightnessMin" (valueChange)="onValueChange()" id="brightness-slider-start" />
+          <input matSliderEndThumb [(ngModel)]="brightnessMax" (valueChange)="onValueChange()" id="brightness-slider-end" />
         </mat-slider>
-        <label>Saturation</label>
+        <label for="saturation-slider">Saturation</label>
         <mat-slider min="-100" max="100">
-          <input matSliderThumb [(ngModel)]="saturation" (valueChange)="onValueChange()" />
+          <input matSliderThumb [(ngModel)]="saturation" (valueChange)="onValueChange()" id="saturation-slider" />
         </mat-slider>
-        <label>Contrast</label>
+        <label for="contrast-slider">Contrast</label>
         <mat-slider min="-100" max="100">
-          <input matSliderThumb [(ngModel)]="contrast" (valueChange)="onValueChange()" />
+          <input matSliderThumb [(ngModel)]="contrast" (valueChange)="onValueChange()" id="contrast-slider" />
         </mat-slider>
       </div>
     </mat-expansion-panel>

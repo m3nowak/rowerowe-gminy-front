@@ -1,6 +1,6 @@
 import { HttpClient, HttpEventType, HttpProgressEvent, HttpRequest } from '@angular/common/http';
-import { computed, inject, Injectable, OnDestroy, Signal, signal } from '@angular/core';
-import { filter, Observable, of, shareReplay, Subscription, switchMap, tap } from 'rxjs';
+import { computed, inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { filter, of, shareReplay, Subscription, switchMap, tap } from 'rxjs';
 import { AdmInfo } from '../models/adm-info';
 import { environment } from '../../environments/environment';
 import { CustomNGXLoggerService } from 'ngx-logger';

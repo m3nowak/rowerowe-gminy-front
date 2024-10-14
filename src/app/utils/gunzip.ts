@@ -1,4 +1,4 @@
-import { map, Observable, reduce, tap } from 'rxjs';
+import { map, Observable, reduce } from 'rxjs';
 
 function readableStreamToObservable(stream: ReadableStream<string>): Observable<string> {
   return new Observable<string>((observer) => {

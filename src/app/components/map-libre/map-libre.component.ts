@@ -1,9 +1,8 @@
-import { Component, computed, effect, EventEmitter, HostBinding, inject, model, OnDestroy, OnInit, Output, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, model, OnDestroy} from '@angular/core';
 import { AttributionControlDirective, MapComponent as BaseMapComponent, ControlComponent, GeoJSONSourceComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
-import { Map as LibreMap, LngLat, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import { Map as LibreMap, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
-import { BehaviorSubject, filter, Subscription, map, switchMap, tap } from 'rxjs';
-import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
+import {  filter, Subscription } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MapDisplayService } from '../../services/map-display.service';
@@ -11,12 +10,6 @@ import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { CustomNGXLoggerService } from 'ngx-logger';
 
-interface FeatureClickData {
-  id: string;
-  teryt: string;
-  name: string;
-  lngLat: LngLat;
-}
 
 @Component({
   selector: 'app-map-libre',
@@ -25,7 +18,7 @@ interface FeatureClickData {
   templateUrl: './map-libre.component.html',
   styleUrl: './map-libre.component.scss',
 })
-export class MapLibreComponent implements OnInit, OnDestroy {
+export class MapLibreComponent implements OnDestroy {
   regionId = model<string | undefined>(undefined);
 
   mapCp: LibreMap | undefined;
@@ -40,7 +33,7 @@ export class MapLibreComponent implements OnInit, OnDestroy {
 
   mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(filter((s) => s !== undefined));
 
-  bordersSelectedFilter = computed<any>(() => {
+  bordersSelectedFilter = computed<unknown>(() => {
     const regionId = this.regionId();
     if (regionId) {
       const filter = [
@@ -69,8 +62,6 @@ export class MapLibreComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     if (this.routeSub) {
