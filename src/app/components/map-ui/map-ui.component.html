@@ -1,16 +1,13 @@
-<div class="h-flex-content h-flex-container">
-  <div class="h-flex-content" [class.ui-hidden]="dataAvailable()" [class.ui-loading-info]="!dataAvailable()">
-    <mat-progress-spinner
-        class="example-margin"
-        [mode]="this.loadProgressPercent() ? 'determinate' : 'indeterminate'"
-        [value]="this.loadProgressPercent()">
-    </mat-progress-spinner>
+<div class="h-full">
+  <div class="grid h-full grid-cols-1 place-content-center place-items-center justify-items-center gap-4" [class.hidden]="dataAvailable()">
+    <mat-progress-spinner [mode]="this.loadProgressPercent() ? 'determinate' : 'indeterminate'" [value]="this.loadProgressPercent()"> </mat-progress-spinner>
+    <span>Ładowanie...</span>
   </div>
-  <app-map-libre class="h-flex-content" [class.ui-hidden]="!dataAvailable()" [(regionId)]="selectedRegionId"/>
+  <app-map-libre class="h-full" [class.hidden]="!dataAvailable()" [(regionId)]="selectedRegionId" />
 
   @if (showPopup()) {
-  <div class="map-popup h-flex-container">
-    <app-map-popup class="h-flex-content h-flex-container" (close)="unassignRegionId()" [(regionId)]="selectedRegionId" />
-  </div>
+    <div class="fixed bottom-0 right-0 p-2 portrait:w-full portrait:sm:w-1/2 landscape:w-2/5 landscape:lg:w-1/3 max-h-full">
+        <app-map-popup class="block h-full" (close)="unassignRegionId()" [(regionId)]="selectedRegionId" />
+    </div>
   }
 </div>

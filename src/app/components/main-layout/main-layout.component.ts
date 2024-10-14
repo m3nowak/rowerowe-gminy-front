@@ -50,9 +50,5 @@ export class MainLayoutComponent implements OnInit {
     this.drawerOpen = !this.drawerOpen;
   }
 
-
-
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 }

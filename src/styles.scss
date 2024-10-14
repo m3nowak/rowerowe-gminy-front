@@ -7,20 +7,3 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.h-flex-content {
-    flex: 1 1 auto;
-}
-
-.h-flex-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.v-flex-content {
-    flex: 1 1 auto;
-}
-
-.v-flex-container {
-    display: flex;
-    flex-direction: row;
-}
