@@ -42,15 +42,11 @@ export class BordersService implements OnDestroy {
   private _startDownload() {
     const request = new HttpRequest<Blob>('GET', environment.borderInfoUrl, {
       reportProgress: true,
-      responseType: 'blob'
+      responseType: 'blob',
     });
-    let request$ = this.http.request<Blob>(request).pipe(
-      shareReplay(1)
-    );
+    let request$ = this.http.request<Blob>(request).pipe(shareReplay(1));
 
-    this.progressSub = request$.pipe(
-      filter((event) => event.type === HttpEventType.DownloadProgress)
-    ).subscribe((event) => {
+    this.progressSub = request$.pipe(filter((event) => event.type === HttpEventType.DownloadProgress)).subscribe((event) => {
       let eventCast = event as HttpProgressEvent;
       let total = eventCast.total;
       if (total) {
@@ -59,10 +55,12 @@ export class BordersService implements OnDestroy {
       this.loggerSvc.info('Download progress', eventCast.loaded, total);
     });
 
-    this.downloadSub = request$.pipe(
-      filter((event) => event.type === HttpEventType.Response),
-      switchMap((event) => event.body ? gunzip<FeatureCollection>(event.body) : of(undefined)),
-    ).subscribe((fc) => {
+    this.downloadSub = request$
+      .pipe(
+        filter((event) => event.type === HttpEventType.Response),
+        switchMap((event) => (event.body ? gunzip<FeatureCollection>(event.body) : of(undefined))),
+      )
+      .subscribe((fc) => {
         if (fc) {
           this._borderInfo.set(fc);
           this._loadProgress.update((lp) => {
@@ -75,8 +73,7 @@ export class BordersService implements OnDestroy {
         } else {
           this.loggerSvc.error('No data received');
         }
-      }
-    );
+      });
   }
 
   ngOnDestroy(): void {

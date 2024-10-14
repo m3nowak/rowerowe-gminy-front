@@ -9,7 +9,7 @@ import { LoginPurgatoryComponent } from './components/login-purgatory/login-purg
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginPurgatoryComponent
+    component: LoginPurgatoryComponent,
   },
   {
     path: 'authorized',
@@ -19,8 +19,6 @@ export const routes: Routes = [
       return 'home';
     },
   },
-  { path: 'home',
-    loadComponent: () => import('./components/map-ui/map-ui.component').then(m => m.MapUiComponent),
-    canActivate: [RemoveQueryParamsGuard] },
+  { path: 'home', loadComponent: () => import('./components/map-ui/map-ui.component').then((m) => m.MapUiComponent), canActivate: [RemoveQueryParamsGuard] },
   { path: '', component: WelcomeScreenComponent },
 ];

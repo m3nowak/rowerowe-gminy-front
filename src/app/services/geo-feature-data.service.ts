@@ -32,16 +32,15 @@ export class GeoFeatureDataService {
           ...f,
           properties: {
             ...f.properties,
-            unlockedArea: unlockedArea
-          }
-        }
-      })
+            unlockedArea: unlockedArea,
+          },
+        };
+      });
       return {
         ...allBorders,
-        features: features_ext
-      }
-    }
-    else {
+        features: features_ext,
+      };
+    } else {
       return undefined;
     }
   });
@@ -50,10 +49,8 @@ export class GeoFeatureDataService {
     let bie = this.borderInfoExt();
     if (bie) {
       this.loggerSvc.info('Extended border info updated, feature count =', bie.features.length);
-    }
-    else {
+    } else {
       this.loggerSvc.info('Extended border info not available');
     }
-  })
-
+  });
 }

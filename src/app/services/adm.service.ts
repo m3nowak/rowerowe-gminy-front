@@ -48,14 +48,10 @@ export class AdmService implements OnDestroy {
   private _startDownload() {
     const request = new HttpRequest<Blob>('GET', environment.admInfoUrl, {
       reportProgress: true,
-      responseType: 'blob'
+      responseType: 'blob',
     });
-    let request$ = this.http.request<Blob>(request).pipe(
-      shareReplay(1)
-    );
-    this.progressSub = request$.pipe(
-      filter((event) => event.type === HttpEventType.DownloadProgress)
-    ).subscribe((event) => {
+    let request$ = this.http.request<Blob>(request).pipe(shareReplay(1));
+    this.progressSub = request$.pipe(filter((event) => event.type === HttpEventType.DownloadProgress)).subscribe((event) => {
       let eventCast = event as HttpProgressEvent;
       let total = eventCast.total;
       if (total) {
@@ -64,13 +60,15 @@ export class AdmService implements OnDestroy {
       this.loggerSvc.info('Download progress', eventCast.loaded, total);
     });
 
-    this.downloadSub = request$.pipe(
-      filter((event) => event.type === HttpEventType.Response),
-      switchMap((event) => event.body ? gunzip<AdmInfo[]>(event.body) : of(undefined)),
-      tap((ail) => {
-        this.loggerSvc.info('Data received', ail);
-      })
-    ).subscribe((admInfoList) => {
+    this.downloadSub = request$
+      .pipe(
+        filter((event) => event.type === HttpEventType.Response),
+        switchMap((event) => (event.body ? gunzip<AdmInfo[]>(event.body) : of(undefined))),
+        tap((ail) => {
+          this.loggerSvc.info('Data received', ail);
+        }),
+      )
+      .subscribe((admInfoList) => {
         if (admInfoList) {
           this.admInfo.set(this.buildAdmInfoMap(admInfoList));
           this.youForgotPoland();
@@ -84,8 +82,7 @@ export class AdmService implements OnDestroy {
         } else {
           this.loggerSvc.error('No data received');
         }
-      }
-    );
+      });
   }
   private buildAdmInfoMap(admInfo: AdmInfo[]): Map<string, AdmInfo> {
     return new Map(
@@ -97,7 +94,7 @@ export class AdmService implements OnDestroy {
           teryt = teryt.substring(0, 6);
         }
         return [teryt, { ...ai, subtypeDigit: typeDigit }];
-      })
+      }),
     );
   }
 

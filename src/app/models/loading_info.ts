@@ -1,4 +1,4 @@
 export interface LoadingInfo {
-    total: number;
-    loaded: number;
+  total: number;
+  loaded: number;
 }

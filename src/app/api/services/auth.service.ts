@@ -47,9 +47,6 @@ export class AuthService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   authenticateAuthenticateHandler(params: AuthenticateAuthenticateHandler$Params, context?: HttpContext): Observable<AuthResponse> {
-    return this.authenticateAuthenticateHandler$Response(params, context).pipe(
-      map((r: StrictHttpResponse<AuthResponse>): AuthResponse => r.body)
-    );
+    return this.authenticateAuthenticateHandler$Response(params, context).pipe(map((r: StrictHttpResponse<AuthResponse>): AuthResponse => r.body));
   }
-
 }

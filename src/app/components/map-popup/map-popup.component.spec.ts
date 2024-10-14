@@ -8,9 +8,8 @@ describe('MapPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MapPopupComponent]
-    })
-    .compileComponents();
+      imports: [MapPopupComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MapPopupComponent);
     component = fixture.componentInstance;

@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
   standalone: true,
   imports: [MatCardModule, MatButton],
   templateUrl: './map-popup.component.html',
-  styleUrl: './map-popup.component.scss'
+  styleUrl: './map-popup.component.scss',
 })
 export class MapPopupComponent {
   @Output() close = new EventEmitter();
@@ -24,7 +24,7 @@ export class MapPopupComponent {
       return this.admSvc.getAdmInfo(regionId);
     }
     return undefined;
-  })
+  });
 
   coaLink = computed(() => {
     let regionInfo = this.regionInfo();
@@ -34,7 +34,7 @@ export class MapPopupComponent {
       }
     }
     return undefined;
-  })
+  });
 
   typeInfoExt = computed(() => {
     switch (this.regionInfo()?.type) {
@@ -48,10 +48,11 @@ export class MapPopupComponent {
         return 'województwo';
       default:
         return '';
-  }})
+    }
+  });
 
   subtypeInfoExt = computed(() => {
-    if(this.regionInfo()?.subtypeDigit){
+    if (this.regionInfo()?.subtypeDigit) {
       switch (this.regionInfo()?.subtypeDigit) {
         case 1:
           return 'gmina miejska';
@@ -61,26 +62,27 @@ export class MapPopupComponent {
           return 'gmina miejsko-wiejska';
         default:
           return undefined;
-    }
-    }
-    else if(this.regionInfo()?.type === 'POW' && this.regionInfo()?.has_one_child){
+      }
+    } else if (this.regionInfo()?.type === 'POW' && this.regionInfo()?.has_one_child) {
       return 'miasto powiat';
-    }
-    else {
+    } else {
       return undefined;
     }
-   })
+  });
 
-  escapeMnppEffect = effect(() => {
-    let regionInfo = this.regionInfo();
-    if (regionInfo && regionInfo.only_child) {
-      this.switchToParent();
-    }
-  }, { allowSignalWrites: true });
+  escapeMnppEffect = effect(
+    () => {
+      let regionInfo = this.regionInfo();
+      if (regionInfo && regionInfo.only_child) {
+        this.switchToParent();
+      }
+    },
+    { allowSignalWrites: true },
+  );
 
   ef1 = effect(() => {
     console.log('COA', this.coaLink());
-  })
+  });
 
   closeBtnPressed() {
     this.close.emit();
@@ -105,5 +107,4 @@ export class MapPopupComponent {
       }
     }
   }
-
 }

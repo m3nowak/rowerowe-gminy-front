@@ -3,6 +3,4 @@ import { CanActivateFn } from '@angular/router';
 
 import { RemoveQueryParamsGuard } from './remove-query-params.guard';
 
-describe('removeQueryParamsGuard', () => {
-
-});
+describe('removeQueryParamsGuard', () => {});

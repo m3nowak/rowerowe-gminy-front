@@ -12,19 +12,22 @@ export interface AuthenticateAuthenticate$Params {
   code: string;
 }
 
-export function authenticateAuthenticate(http: HttpClient, rootUrl: string, params: AuthenticateAuthenticate$Params, context?: HttpContext): Observable<StrictHttpResponse<StravaAuthResponse>> {
+export function authenticateAuthenticate(
+  http: HttpClient,
+  rootUrl: string,
+  params: AuthenticateAuthenticate$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StravaAuthResponse>> {
   const rb = new RequestBuilder(rootUrl, authenticateAuthenticate.PATH, 'get');
   if (params) {
     rb.query('code', params.code, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StravaAuthResponse>;
-    })
+    }),
   );
 }
 

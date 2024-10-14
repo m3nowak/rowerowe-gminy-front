@@ -6,12 +6,12 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MapDisplayService {
   private _currentSettings: BehaviorSubject<StyleSpecification | undefined> = new BehaviorSubject<StyleSpecification | undefined>(undefined);
   // private _currentSettings: WritableSignal<StyleSpecification | undefined> = signal(undefined)
-  currentSettings$: Observable<StyleSpecification|undefined> = this._currentSettings.asObservable();
+  currentSettings$: Observable<StyleSpecification | undefined> = this._currentSettings.asObservable();
 
   constructor(private http: HttpClient) {
     this.http.get<StyleSpecification>('/assets/map-style.json').subscribe((style) => {
@@ -19,12 +19,12 @@ export class MapDisplayService {
     });
     this.currentSettings$.subscribe((style) => {
       console.log('MapDisplayService: current settings updated (info from observable)');
-    })
+    });
   }
 
-  updateSettings(style:MapDisplaySettings) {
+  updateSettings(style: MapDisplaySettings) {
     //find layer with osm id
-    let current =this._currentSettings.value;
+    let current = this._currentSettings.value;
 
     if (!current) {
       return;

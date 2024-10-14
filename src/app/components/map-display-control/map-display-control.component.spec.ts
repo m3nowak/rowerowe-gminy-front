@@ -8,9 +8,8 @@ describe('MapDisplayControlComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MapDisplayControlComponent]
-    })
-    .compileComponents();
+      imports: [MapDisplayControlComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MapDisplayControlComponent);
     component = fixture.componentInstance;

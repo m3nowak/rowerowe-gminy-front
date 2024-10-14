@@ -10,22 +10,25 @@ import { AuthRequest } from '../../models/auth-request';
 import { AuthResponse } from '../../models/auth-response';
 
 export interface AuthenticateAuthenticateHandler$Params {
-      body: AuthRequest
+  body: AuthRequest;
 }
 
-export function authenticateAuthenticateHandler(http: HttpClient, rootUrl: string, params: AuthenticateAuthenticateHandler$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthResponse>> {
+export function authenticateAuthenticateHandler(
+  http: HttpClient,
+  rootUrl: string,
+  params: AuthenticateAuthenticateHandler$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AuthResponse>> {
   const rb = new RequestBuilder(rootUrl, authenticateAuthenticateHandler.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AuthResponse>;
-    })
+    }),
   );
 }
 

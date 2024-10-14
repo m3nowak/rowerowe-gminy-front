@@ -26,7 +26,6 @@ interface FeatureClickData {
   styleUrl: './map-libre.component.scss',
 })
 export class MapLibreComponent implements OnInit, OnDestroy {
-
   regionId = model<string | undefined>(undefined);
 
   mapCp: LibreMap | undefined;
@@ -88,7 +87,7 @@ export class MapLibreComponent implements OnInit, OnDestroy {
   onLayerClick(
     event: MapMouseEvent & {
       features?: MapGeoJSONFeature[];
-    }
+    },
   ) {
     let feature = event.features![0];
     console.log('Layer click feature id:', feature.id, feature);

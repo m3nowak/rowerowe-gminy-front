@@ -37,7 +37,7 @@ export class MapUiComponent implements OnInit {
     () => {
       console.log('selectedRegionId', this.selectedRegionId());
     },
-    { allowSignalWrites: true }
+    { allowSignalWrites: true },
   );
 
   unassignRegionId() {

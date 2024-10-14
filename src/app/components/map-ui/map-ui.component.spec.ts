@@ -8,9 +8,8 @@ describe('MapUiComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MapUiComponent]
-    })
-    .compileComponents();
+      imports: [MapUiComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MapUiComponent);
     component = fixture.componentInstance;
