@@ -13,7 +13,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './map-ui.component.scss',
 })
 export class MapUiComponent implements OnInit {
-
   admSvc = inject(AdmService);
   bordersSvc = inject(BordersService);
 

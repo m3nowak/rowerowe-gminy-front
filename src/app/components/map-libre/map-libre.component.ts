@@ -1,15 +1,14 @@
-import { Component, computed, inject, model, OnDestroy} from '@angular/core';
+import { Component, computed, inject, model, OnDestroy } from '@angular/core';
 import { AttributionControlDirective, MapComponent as BaseMapComponent, ControlComponent, GeoJSONSourceComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
 import { Map as LibreMap, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
-import {  filter, Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MapDisplayService } from '../../services/map-display.service';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { CustomNGXLoggerService } from 'ngx-logger';
-
 
 @Component({
   selector: 'app-map-libre',
@@ -38,7 +37,7 @@ export class MapLibreComponent implements OnDestroy {
   bordersSelectedFilter = computed<any>(() => {
     const regionId = this.regionId();
     if (regionId === '0') {
-      return true
+      return true;
     }
     if (regionId) {
       const filter2 = ['any', ['==', ['get', 'TERYT'], regionId], ['==', ['get', 'COU_ID'], regionId], ['==', ['get', 'VOI_ID'], regionId]];

@@ -1,4 +1,3 @@
- 
 import { HttpResponse } from '@angular/common/http';
 
 /**
