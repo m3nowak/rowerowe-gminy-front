@@ -1,3 +1,5 @@
+/* tslint:disable */
+/* eslint-disable */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration } from './api-configuration';
@@ -9,8 +11,9 @@ import { ApiConfiguration } from './api-configuration';
 export class BaseService {
   constructor(
     protected config: ApiConfiguration,
-    protected http: HttpClient,
-  ) {}
+    protected http: HttpClient
+  ) {
+  }
 
   private _rootUrl?: string;
 
