@@ -83,7 +83,7 @@ export class StravaAuthService {
     this.loggerSvc.info('Token expires at:', this.loginExpiresAt());
     this.loggerSvc.info('Token expired:', this.isExpired());
     this.loggerSvc.info('Token scopes:', this.scopes());
-    this.loggerSvc.info("UTC now:", DateTime.utc());
+    this.loggerSvc.info('UTC now:', DateTime.utc());
   }
 
   feedToken(params: Params) {
