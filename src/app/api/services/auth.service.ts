@@ -1,3 +1,5 @@
+/* tslint:disable */
+/* eslint-disable */
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -7,9 +9,9 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { authenticateAuthenticateHandler } from '../fn/auth/authenticate-authenticate-handler';
-import { AuthenticateAuthenticateHandler$Params } from '../fn/auth/authenticate-authenticate-handler';
-import { AuthResponse } from '../models/auth-response';
+import { authenticateLoginAuthenticateHandler } from '../fn/auth/authenticate-login-authenticate-handler';
+import { AuthenticateLoginAuthenticateHandler$Params } from '../fn/auth/authenticate-login-authenticate-handler';
+import { OAuth2Login } from '../models/o-auth-2-login';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService {
@@ -17,8 +19,8 @@ export class AuthService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `authenticateAuthenticateHandler()` */
-  static readonly AuthenticateAuthenticateHandlerPath = '/authenticate';
+  /** Path part for operation `authenticateLoginAuthenticateHandler()` */
+  static readonly AuthenticateLoginAuthenticateHandlerPath = '/authenticate/login';
 
   /**
    * AuthenticateHandler.
@@ -26,12 +28,12 @@ export class AuthService extends BaseService {
    * Authenticate with Strava with provided code
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `authenticateAuthenticateHandler()` instead.
+   * To access only the response body, use `authenticateLoginAuthenticateHandler()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticateAuthenticateHandler$Response(params: AuthenticateAuthenticateHandler$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthResponse>> {
-    return authenticateAuthenticateHandler(this.http, this.rootUrl, params, context);
+  authenticateLoginAuthenticateHandler$Response(params: AuthenticateLoginAuthenticateHandler$Params, context?: HttpContext): Observable<StrictHttpResponse<OAuth2Login>> {
+    return authenticateLoginAuthenticateHandler(this.http, this.rootUrl, params, context);
   }
 
   /**
@@ -40,11 +42,14 @@ export class AuthService extends BaseService {
    * Authenticate with Strava with provided code
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `authenticateAuthenticateHandler$Response()` instead.
+   * To access the full response (for headers, for example), `authenticateLoginAuthenticateHandler$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticateAuthenticateHandler(params: AuthenticateAuthenticateHandler$Params, context?: HttpContext): Observable<AuthResponse> {
-    return this.authenticateAuthenticateHandler$Response(params, context).pipe(map((r: StrictHttpResponse<AuthResponse>): AuthResponse => r.body));
+  authenticateLoginAuthenticateHandler(params: AuthenticateLoginAuthenticateHandler$Params, context?: HttpContext): Observable<OAuth2Login> {
+    return this.authenticateLoginAuthenticateHandler$Response(params, context).pipe(
+      map((r: StrictHttpResponse<OAuth2Login>): OAuth2Login => r.body)
+    );
   }
+
 }

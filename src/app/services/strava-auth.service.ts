@@ -3,6 +3,8 @@ import { Params, Router } from '@angular/router';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../api/services';
+import * as jose from 'jose';
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,35 @@ export class StravaAuthService {
     }
   });
 
+  loginExpiresAt = computed(() => {
+    const token = this.currentToken();
+    if (!token) return undefined;
+    const decoded = jose.decodeJwt(token);
+    if (decoded && decoded.exp) {
+      const expiration = DateTime.fromSeconds(decoded.exp);
+      return expiration;
+    }
+    return undefined;
+  });
+
   isLoggedIn = computed(() => this.currentToken() !== undefined);
+
+  scopes = computed<string[]>(() => {
+    const token = this.currentToken();
+    if (!token) return [];
+    const decoded = jose.decodeJwt(token) as { extras?: { scopes?: string[] } };
+    if (decoded && decoded.extras && decoded.extras.scopes) {
+      return decoded.extras.scopes;
+    }
+    return [];
+  });
+
+  isExpired() {
+    const expiration = this.loginExpiresAt();
+    if (!expiration) return true;
+    const now = DateTime.utc();
+    return expiration < now;
+  }
 
   logIn() {
     const stravaUrl = new URL('http://www.strava.com/oauth/authorize');
@@ -42,6 +72,20 @@ export class StravaAuthService {
     this.router.navigate(['']);
   }
 
+  dumpTokenInfo() {
+    const token = this.currentToken();
+    if (!token) {
+      this.loggerSvc.info('No token found');
+      return;
+    }
+    const decoded = jose.decodeJwt(token);
+    this.loggerSvc.info('Token decoded:', decoded);
+    this.loggerSvc.info('Token expires at:', this.loginExpiresAt());
+    this.loggerSvc.info('Token expired:', this.isExpired());
+    this.loggerSvc.info('Token scopes:', this.scopes());
+    this.loggerSvc.info('UTC now:', DateTime.utc());
+  }
+
   feedToken(params: Params) {
     //example response:
     //http://localhost:4200/exchange_token?state=&code=<TOKEN>&scope=read
@@ -49,12 +93,10 @@ export class StravaAuthService {
     const code = params['code'];
     const scopes = params['scope'].split(',');
     if (code) {
-      this.authSvc.authenticateAuthenticateHandler({ body: { code, scopes } }).subscribe((res) => {
+      this.authSvc.authenticateLoginAuthenticateHandler({ body: { code, scopes } }).subscribe((res) => {
         this.loggerSvc.info('Token exchanged:', res);
-        this.currentToken.set(res.token);
+        this.currentToken.set(res.access_token);
       });
     }
-
-    //this.currentToken.set(params['code']);
   }
 }
