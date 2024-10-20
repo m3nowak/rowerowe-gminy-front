@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { StravaAuthService } from '../../services/strava-auth.service';
+import { AuthService } from '../../services/auth.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -10,5 +10,5 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './login-purgatory.component.scss',
 })
 export class LoginPurgatoryComponent {
-  extAuthSvc = inject(StravaAuthService);
+  extAuthSvc = inject(AuthService);
 }

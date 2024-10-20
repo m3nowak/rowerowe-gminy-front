@@ -13,7 +13,7 @@ import { MapDisplayControlComponent } from '../map-display-control/map-display-c
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { StravaAuthService } from '../../services/strava-auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -41,7 +41,7 @@ export class MainLayoutComponent {
   // shapeTypeControl = new FormControl('0');
   routerSvc = inject(Router);
   activatedRoute = inject(ActivatedRoute);
-  stravaAuthSvc = inject(StravaAuthService);
+  stravaAuthSvc = inject(AuthService);
 
   fixFcSub: Subscription | undefined;
 

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { StravaAuthService } from '../../services/strava-auth.service';
+import { AuthService } from '../../services/auth.service';
 import { CustomNGXLoggerService } from 'ngx-logger';
 
 @Component({
@@ -16,7 +16,7 @@ export class WelcomeScreenComponent {
     partialConfig: { context: 'WelcomeScreen' },
   });
 
-  stravaAuthSvc = inject(StravaAuthService);
+  stravaAuthSvc = inject(AuthService);
 
   loginClick() {
     this.logger.info('Login clicked');

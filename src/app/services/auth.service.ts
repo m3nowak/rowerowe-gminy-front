@@ -2,28 +2,30 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Params, Router } from '@angular/router';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { environment } from '../../environments/environment';
-import { AuthService } from '../api/services';
+import { AuthService as ApiAuthService } from '../api/services';
 import * as jose from 'jose';
 import { DateTime } from 'luxon';
+
+const TOKEN_KEY = 'authToken';
 
 @Injectable({
   providedIn: 'root',
 })
-export class StravaAuthService {
+export class AuthService {
   private loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'ExtAuth' },
   });
-  authSvc = inject(AuthService);
+  authSvc = inject(ApiAuthService);
   router = inject(Router);
 
-  currentToken = signal<string | undefined>(localStorage.getItem('stravaToken') ?? undefined);
+  currentToken = signal<string | undefined>(localStorage.getItem(TOKEN_KEY) ?? undefined);
 
   localStorageEffect = effect(() => {
     const token = this.currentToken();
     if (token) {
-      localStorage.setItem('stravaToken', token);
+      localStorage.setItem(TOKEN_KEY, token);
     } else {
-      localStorage.removeItem('stravaToken');
+      localStorage.removeItem(TOKEN_KEY);
     }
   });
 
