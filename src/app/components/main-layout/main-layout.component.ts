@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from '../../services/auth.service';
+import { ButtonComponent } from '../../common-components/button/button.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -32,6 +33,7 @@ import { AuthService } from '../../services/auth.service';
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
+    ButtonComponent,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
