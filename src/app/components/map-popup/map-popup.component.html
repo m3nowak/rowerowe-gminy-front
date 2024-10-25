@@ -1,29 +1,40 @@
-<mat-card class="flex h-full flex-col" appearance="outlined">
-  <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>{{ regionInfo()?.name }}</mat-card-title>
-
-      <mat-card-subtitle>
+<div class="w-full rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800">
+  <div class="flex justify-between gap-2">
+    <div>
+      <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ regionInfo()?.name }}</h2>
+      <h3 class="mb-2 text-lg font-semibold text-gray-700">
         @if (subtypeInfoExt(); as subtypeInfo) {
           {{ subtypeInfo }}
         } @else {
           {{ typeInfoExt() }}
         }
-      </mat-card-subtitle>
-      <img class="h-auto max-h-20 w-auto max-w-20" [class.hidden]="!coaLink()" [src]="coaLink()" [alt]="'Herb ' + regionInfo()?.name" />
-    </mat-card-title-group>
-  </mat-card-header>
-  <mat-card-content class="grow">
-    @if (regionInfo(); as regionInfo) {
-      <p>Region ID: {{ regionInfo.TERYT }}</p>
-      <p>Powierzchnia: {{ regionInfo.area }} km<sup>2</sup></p>
-      <p>Liczba ludności: {{ regionInfo.population }}</p>
-    }
-  </mat-card-content>
-  <mat-card-actions align="end">
-    @if (regionId()) {
-      <button mat-button (click)="switchToParent()">Wyżej</button>
-    }
-    <button mat-button (click)="closeBtnPressed()">Zamknij</button>
-  </mat-card-actions>
-</mat-card>
+      </h3>
+    </div>
+    <img class="h-auto max-h-20 w-auto max-w-20" [class.hidden]="!coaLink()" [src]="coaLink()" [alt]="'Herb ' + regionInfo()?.name" />
+  </div>
+
+  @if (regionInfo(); as regionInfo) {
+    <div class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+      <ul>
+        <li>Powierzchnia: {{ regionInfo.area }} km<sup>2</sup></li>
+        <li>Liczba ludności: {{ regionInfo.population }}</li>
+      </ul>
+    </div>
+  }
+  <div class="flex gap-2">
+    <button
+      type="button"
+      (click)="switchToParent()"
+      class="h-8 min-w-20 rounded-lg bg-primary-600 px-3 py-2 text-center text-sm font-medium leading-none text-white hover:bg-primary-800 md:min-w-32"
+    >
+      Wyżej
+    </button>
+    <button
+      type="button"
+      (click)="closeBtnPressed()"
+      class="h-8 min-w-20 rounded-lg bg-secondary-600 px-3 py-2 text-center text-sm font-medium leading-none text-white hover:bg-secondary-800 md:min-w-32"
+    >
+      Zamknij
+    </button>
+  </div>
+</div>
