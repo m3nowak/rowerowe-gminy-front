@@ -1,36 +1,17 @@
 <div class="flex h-dvh flex-col">
-  <mat-toolbar class="flex">
-    <button mat-icon-button (click)="toggleDrawer()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <div class="flex h-full justify-center p-2" [class.bg-red-500]="false">
-      <img src="https://static.rowerowegminy.pl/assets/logo-h.svg" alt="Rowerowe Gminy" class="max-h-full max-w-40 object-contain sm:max-w-64" />
+  <nav class="border-gray-200 bg-primary-50 dark:bg-primary-950">
+    <div class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-2">
+      <img src="assets/logos/logo-h.svg" class="h-6 md:h-10" alt="Rowerowe Gminy Logo" />
+      @if (stravaAuthSvc.isLoggedIn()) {
+        <button type="button" (click)="stravaAuthSvc.logOut()" class="h-6">
+          <ng-icon name="tablerLogout" class="h-full" />
+        </button>
+      } @else {
+        <app-strava-btn (clicked)="stravaAuthSvc.logIn()" class="h-10" />
+      }
     </div>
-    <span class="grow"></span>
-    <app-cmn-button></app-cmn-button>
-    <button mat-icon-button (click)="stravaAuthSvc.dumpTokenInfo()">
-      <mat-icon>key_vertical</mat-icon>
-    </button>
-    @if (stravaAuthSvc.isLoggedIn()) {
-      <button mat-icon-button (click)="stravaAuthSvc.logOut()">
-        <mat-icon>logout</mat-icon>
-      </button>
-    } @else {
-      <button mat-icon-button (click)="stravaAuthSvc.logIn()">
-        <mat-icon>login</mat-icon>
-      </button>
-    }
-  </mat-toolbar>
-  <mat-drawer-container class="flex w-full grow" hasBackdrop="false">
-    <mat-drawer class="flex grow p-2" mode="over" [opened]="drawerOpen">
-      <div class="flex flex-col">
-        <app-map-display-control />
-      </div>
-    </mat-drawer>
-    <mat-drawer-content class="grow">
-      <div class="h-full *:h-full">
-        <ng-content></ng-content>
-      </div>
-    </mat-drawer-content>
-  </mat-drawer-container>
+  </nav>
+  <div class="h-full overflow-auto *:h-full">
+    <ng-content></ng-content>
+  </div>
 </div>

@@ -26,6 +26,8 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@maplibre/ngx-maplibre-gl": "^18.1.1",
+    "@ng-icons/core": "^29.5.1",
+    "@ng-icons/tabler-icons": "^29.5.1",
     "@types/geojson": "^7946.0.14",
     "flowbite": "^2.5.2",
     "geojson": "^0.5.0",

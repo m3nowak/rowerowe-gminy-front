@@ -1,6 +1,6 @@
 <div class="h-full">
   <div class="grid h-full grid-cols-1 place-content-center place-items-center justify-items-center gap-4" [class.hidden]="dataAvailable()">
-    <mat-progress-spinner [mode]="this.loadProgressPercent() ? 'determinate' : 'indeterminate'" [value]="this.loadProgressPercent()"> </mat-progress-spinner>
+    <app-progress [progress]="this.loadProgressPercent()" class="w-9/12"></app-progress>
     <span>Ładowanie...</span>
   </div>
   <app-map-libre class="h-full" [class.hidden]="!dataAvailable()" [(regionId)]="selectedRegionId" />

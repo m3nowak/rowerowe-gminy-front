@@ -1,30 +1,14 @@
 <div class="rg-background flex h-full items-center justify-center bg-cover bg-fixed bg-center">
-  <mat-card appearance="outlined" class="z-10 m-4 max-w-3xl">
-    <mat-card-header>
-      <mat-card-title><img src="https://static.rowerowegminy.pl/assets/logo-h.svg" alt="Rowerowe Gminy" class="w-72" /></mat-card-title>
-      <mat-card-subtitle>🚧🏗️⚒️ W BUDOWIE 🚧🏗️⚒️</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
+  <div class="px-8">
+    <div class="flex max-w-xl flex-col items-center rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800 md:max-w-3xl">
+      <img src="assets/logos/logo-h.svg" class="h-10 md:h-16" alt="Rowerowe Gminy Logo" />
+      <h5 class="mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white">🚧🏗️⚒️ W BUDOWIE 🚧🏗️⚒️</h5>
+      <p class="mb-3 font-normal text-gray-500 dark:text-gray-400">
         Rowerowe Gminy to aplikacja pozwalająca zobaczyć, które gminy w Polsce odwiedziłeś na rowerze. Twój postęp będzie śledzony automatycznie, dzięki integracji z serwisem
-        Strava.
+        Strava. Poniższy przycisk na razie nic nie zrobi. (No, chyba, że to ty pracujesz aktualnie nad tą aplikacją)
       </p>
-      <p>Poniższy przycisk na razie nic nie robi. (No, chyba, że to ty pracujesz aktualnie nad tą aplikacją)</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <!-- <button mat-stroke</mat-card-actions>d-button class="bg-center" style="background-image: url('/assets/strava/login.svg');"></button> -->
-      <!-- <button mat-raised-button class="login-button" (click)="stravaAuthSvc.logIn()" >
-      <img src="assets/strava/login.svg" alt="Login with strava" />
-      </button> -->
-      <img
-        src="assets/strava/login.svg"
-        alt="Login with strava"
-        class="border-spacing-4 rounded-xl border"
-        (click)="stravaAuthSvc.logIn()"
-        (keydown)="stravaAuthSvc.logIn()"
-        tabindex="-1"
-      />
-    </mat-card-actions>
-  </mat-card>
+      <app-strava-btn (clicked)="stravaAuthSvc.logIn()" />
+    </div>
+  </div>
   <img class="fixed bottom-0 right-0 max-w-48 rounded-tl-3xl bg-white bg-opacity-50 md:max-w-64 xl:max-w-72" src="/assets/strava/powered-by.svg" alt="" />
 </div>

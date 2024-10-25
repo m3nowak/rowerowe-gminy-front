@@ -8,6 +8,7 @@ module.exports = {
       primary: tcolors.rose,
       secondary: tcolors.blue,
       accent: tcolors.yellow,
+      strava: "#FC4C02",
     },
     extend: {
       backgroundImage: {

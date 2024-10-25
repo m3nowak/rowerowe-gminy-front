@@ -1,40 +1,17 @@
 import { Component, inject } from '@angular/core';
 
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MapComponent } from '@maplibre/ngx-maplibre-gl';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { MapDisplayControlComponent } from '../map-display-control/map-display-control.component';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from '../../services/auth.service';
-import { ButtonComponent } from '../../common-components/button/button.component';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { tablerLogin, tablerLogout } from '@ng-icons/tabler-icons';
+import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSidenavModule,
-    MapComponent,
-    RouterLink,
-    RouterLinkActive,
-    MatButtonToggleModule,
-    ReactiveFormsModule,
-    MapDisplayControlComponent,
-    MatSelectModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ButtonComponent,
-  ],
+  imports: [RouterLink, RouterLinkActive, NgIconComponent, StravaBtnComponent],
+  providers: [provideIcons({ tablerLogout, tablerLogin })],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',
 })
