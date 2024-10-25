@@ -1,13 +1,20 @@
+const tcolors = require("tailwindcss/colors");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,ts}"],
+  content: ["./src/**/*.{html,ts}", "./node_modules/flowbite/**/*.js"],
+  darkMode: "class",
   theme: {
+    colors: {
+      primary: tcolors.rose,
+      secondary: tcolors.blue,
+      accent: tcolors.yellow,
+      strava: "#FC4C02",
+    },
     extend: {
-      'backgroundImage': {
-        'welcome-background': "url('/assets/background.webp')",
-      }
+      backgroundImage: {
+        "welcome-background": "url('/assets/background.webp')",
+      },
     },
   },
-  plugins: [],
-}
-
+  plugins: [require("flowbite/plugin")],
+};

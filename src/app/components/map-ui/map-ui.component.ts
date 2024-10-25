@@ -3,12 +3,12 @@ import { MapLibreComponent } from '../map-libre/map-libre.component';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { AdmService } from '../../services/adm.service';
 import { BordersService } from '../../services/borders.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProgressComponent } from '../../common-components/progress/progress.component';
 
 @Component({
   selector: 'app-map-ui',
   standalone: true,
-  imports: [MapLibreComponent, MapPopupComponent, MatProgressSpinnerModule],
+  imports: [MapLibreComponent, MapPopupComponent, ProgressComponent],
   templateUrl: './map-ui.component.html',
   styleUrl: './map-ui.component.scss',
 })

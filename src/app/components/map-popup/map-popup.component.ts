@@ -1,13 +1,11 @@
 import { Component, computed, effect, EventEmitter, inject, model, Output } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { AdmService } from '../../services/adm.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-map-popup',
   standalone: true,
-  imports: [MatCardModule, MatButton],
+  imports: [],
   templateUrl: './map-popup.component.html',
   styleUrl: './map-popup.component.scss',
 })

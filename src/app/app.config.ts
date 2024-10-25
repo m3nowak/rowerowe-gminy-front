@@ -7,6 +7,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { LoggerModule } from 'ngx-logger';
 import { environment } from '../environments/environment';
 import { ApiModule } from './api/api.module';
+import { provideNgIconsConfig } from '@ng-icons/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(LoggerModule.forRoot({ level: environment.loggerLevel })),
     importProvidersFrom(ApiModule.forRoot({ rootUrl: environment.apiBaseUrl })),
+    provideNgIconsConfig({ size: '100%' }),
   ],
 };

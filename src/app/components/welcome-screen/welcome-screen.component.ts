@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { AuthService } from '../../services/auth.service';
 import { CustomNGXLoggerService } from 'ngx-logger';
+import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
 
 @Component({
   selector: 'app-welcome-screen',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule],
+  imports: [StravaBtnComponent],
   templateUrl: './welcome-screen.component.html',
   styleUrl: './welcome-screen.component.scss',
 })
