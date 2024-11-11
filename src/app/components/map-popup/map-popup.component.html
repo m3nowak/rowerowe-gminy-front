@@ -21,20 +21,9 @@
       </ul>
     </div>
   }
-  <div class="flex gap-2">
-    <button
-      type="button"
-      (click)="switchToParent()"
-      class="h-8 min-w-20 rounded-lg bg-primary-600 px-3 py-2 text-center text-sm font-medium leading-none text-white hover:bg-primary-800 md:min-w-32"
-    >
-      Wyżej
-    </button>
-    <button
-      type="button"
-      (click)="closeBtnPressed()"
-      class="h-8 min-w-20 rounded-lg bg-secondary-600 px-3 py-2 text-center text-sm font-medium leading-none text-white hover:bg-secondary-800 md:min-w-32"
-    >
-      Zamknij
-    </button>
+
+  <div class="flex flex-row items-start gap-2">
+    <app-btn (click)="switchToParent()">Wyżej</app-btn>
+    <app-btn (click)="closeBtnPressed()" [main]="true">Zamknij</app-btn>
   </div>
 </div>

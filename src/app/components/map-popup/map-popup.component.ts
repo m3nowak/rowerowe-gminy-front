@@ -1,11 +1,12 @@
 import { Component, computed, effect, EventEmitter, inject, model, Output } from '@angular/core';
 import { AdmService } from '../../services/adm.service';
 import { environment } from '../../../environments/environment';
+import { BtnComponent } from '../../common-components/btn/btn.component';
 
 @Component({
   selector: 'app-map-popup',
   standalone: true,
-  imports: [],
+  imports: [BtnComponent],
   templateUrl: './map-popup.component.html',
   styleUrl: './map-popup.component.scss',
 })

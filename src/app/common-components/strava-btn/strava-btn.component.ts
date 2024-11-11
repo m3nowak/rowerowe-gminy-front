@@ -1,19 +1,12 @@
-import { Component } from '@angular/core';
-import { EventEmitter, Output } from '@angular/core';
-import { provideIcons, NgIconComponent } from '@ng-icons/core';
-import { tablerLogin, tablerLogout } from '@ng-icons/tabler-icons';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'app-strava-btn',
   standalone: true,
-  imports: [NgIconComponent],
+  imports: [],
   templateUrl: './strava-btn.component.html',
-  providers: [provideIcons({ tablerLogout, tablerLogin })],
+  providers: [],
 })
 export class StravaBtnComponent {
-  @Output() clicked = new EventEmitter<void>();
-
-  onButtonClick() {
-    this.clicked.emit();
-  }
+  @HostBinding('class') class = 'h-12';
 }
