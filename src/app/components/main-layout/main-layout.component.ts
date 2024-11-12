@@ -6,12 +6,12 @@ import { AuthService } from '../../services/auth.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerLogin, tablerLogout, tablerMenu2 } from '@ng-icons/tabler-icons';
 import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
-import { BtnComponent } from '../../common-components/btn/btn.component';
+import { BtnDirective } from '../../common-components/btn.directive';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [NgIconComponent, StravaBtnComponent, BtnComponent],
+  imports: [NgIconComponent, StravaBtnComponent, BtnDirective],
   providers: [provideIcons({ tablerLogout, tablerLogin, tablerMenu2 })],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.scss',

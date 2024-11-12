@@ -9,7 +9,10 @@
       </p>
       <div class="flex flex-row flex-wrap items-center gap-2">
         <app-strava-btn (click)="stravaAuthSvc.logIn()" />
-        <app-btn (click)="demoClick()">Demo</app-btn>
+        <a routerLink="/home" appBtn>
+          <ng-icon name="tablerMap" class="h-full" />
+          Demo
+        </a>
       </div>
     </div>
   </div>

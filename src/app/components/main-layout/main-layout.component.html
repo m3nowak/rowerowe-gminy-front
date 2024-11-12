@@ -16,10 +16,10 @@
       <div class="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
         <div class="flex flex-col md:flex-row">
           @if (stravaAuthSvc.isLoggedIn()) {
-            <app-btn [main]="true" (click)="stravaAuthSvc.logOut()">
-              <ng-icon name="tablerLogout" class="h-full" />
+            <button appBtn main (click)="stravaAuthSvc.logOut()">
               Wyloguj
-            </app-btn>
+              <div class="h-6"><ng-icon name="tablerLogout" /></div>
+            </button>
           } @else {
             <app-strava-btn (click)="stravaAuthSvc.logIn()" />
           }
