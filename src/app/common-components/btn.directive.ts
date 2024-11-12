@@ -5,7 +5,7 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
   standalone: true,
 })
 export class BtnDirective implements OnInit {
-  private readonly baseClasses = ['h-12', 'inline-flex', 'items-center', 'rounded-lg', 'px-5', 'py-2.5', 'gap-2', 'text-sm', 'font-medium'];
+  private readonly baseClasses = ['h-12', 'inline-flex', 'items-center', 'rounded-lg', 'px-5', 'py-2.5', 'gap-2', 'text-sm', 'font-medium', 'justify-center'];
 
   private readonly mainClasses = ['bg-primary-700', 'text-white', 'hover:bg-primary-800', 'focus:ring-primary-300', 'dark:bg-primary-600', 'dark:hover:bg-primary-700'];
 
