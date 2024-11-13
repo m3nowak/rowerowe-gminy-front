@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, input } from '@angular/core';
 
 @Component({
   selector: 'app-strava-btn',
@@ -8,5 +8,9 @@ import { Component, HostBinding } from '@angular/core';
   providers: [],
 })
 export class StravaBtnComponent {
-  @HostBinding('class') class = 'h-12';
+  @HostBinding('class') class = 'flex h-12';
+  grow = input(false);
+  @HostBinding('class.grow') get growClass() {
+    return this.grow;
+  }
 }

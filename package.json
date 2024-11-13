@@ -11,7 +11,9 @@
     "format-check": "prettier --check \"src/**/*.ts\" \"src/**/*.html\" \"src/**/*.scss\"",
     "format-fix": "prettier --write \"src/**/*.ts\" \"src/**/*.html\" \"src/**/*.scss\"",
     "lint-check": "ng lint",
-    "lint-fix": "ng lint --fix"
+    "lint-fix": "ng lint --fix",
+    "storybook": "ng run rowerowe-gminy:storybook",
+    "build-storybook": "ng run rowerowe-gminy:build-storybook"
   },
   "private": true,
   "dependencies": {
@@ -42,12 +44,22 @@
     "@angular-devkit/build-angular": "^18.2.1",
     "@angular/cli": "^18.2.1",
     "@angular/compiler-cli": "^18.2.0",
+    "@chromatic-com/storybook": "^3.2.2",
+    "@compodoc/compodoc": "^1.1.26",
+    "@storybook/addon-docs": "^8.4.3",
+    "@storybook/addon-essentials": "^8.4.3",
+    "@storybook/addon-interactions": "^8.4.3",
+    "@storybook/addon-onboarding": "^8.4.3",
+    "@storybook/angular": "^8.4.3",
+    "@storybook/blocks": "^8.4.3",
+    "@storybook/test": "^8.4.3",
     "@types/jasmine": "~5.1.0",
     "@types/luxon": "^3.4.2",
     "angular-eslint": "18.3.1",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-storybook": "^0.11.0",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -57,8 +69,14 @@
     "ng-openapi-gen": "^0.51.0",
     "postcss": "^8.4.47",
     "prettier-plugin-tailwindcss": "^0.6.6",
+    "storybook": "^8.4.3",
     "tailwindcss": "^3.4.12",
     "typescript": "~5.5.2",
     "typescript-eslint": "8.2.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
