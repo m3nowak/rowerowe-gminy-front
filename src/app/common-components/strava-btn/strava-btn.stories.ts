@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { StravaBtnComponent } from './strava-btn.component';
 
 const meta: Meta<StravaBtnComponent> = {
+  title: 'Common/StravaBtn',
+  tags: ['autodocs'],
   component: StravaBtnComponent,
 };
 

@@ -3934,7 +3934,7 @@
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div class=\"flex h-dvh flex-col\">\n  <nav class=\"border-b-2 border-gray-200\">\n    <div class=\"mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-2 p-2\">\n      <img src=\"assets/logos/logo-h.svg\" class=\"h-8 md:h-10\" alt=\"Rowerowe Gminy Logo\" />\n      <div class=\"grow\"></div>\n      <button\n        data-collapse-toggle=\"navbar-solid-bg\"\n        type=\"button\"\n        class=\"flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden\"\n        aria-controls=\"navbar-solid-bg\"\n        aria-expanded=\"false\"\n      >\n        <span class=\"sr-only\">Open main menu</span>\n        <ng-icon name=\"tablerMenu2\" class=\"h-full\" />\n      </button>\n      <div class=\"hidden w-full md:block md:w-auto\" id=\"navbar-solid-bg\">\n        <div class=\"flex flex-col md:flex-row\">\n          @if (stravaAuthSvc.isLoggedIn()) {\n            <button appBtn main (click)=\"stravaAuthSvc.logOut()\">\n              Wyloguj\n              <div class=\"h-6\"><ng-icon name=\"tablerLogout\" /></div>\n            </button>\n          } @else {\n            <app-strava-btn (click)=\"stravaAuthSvc.logIn()\" />\n          }\n        </div>\n      </div>\n    </div>\n  </nav>\n  <div class=\"h-full overflow-auto *:h-full\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
+            "templateData": "<div class=\"flex h-dvh flex-col\">\n  <nav class=\"border-b-2 border-gray-200\">\n    <div class=\"mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-2 p-2\">\n      <img src=\"assets/logos/logo-h.svg\" class=\"h-8 md:h-10\" alt=\"Rowerowe Gminy Logo\" />\n      <div class=\"grow\"></div>\n      <button\n        data-collapse-toggle=\"navbar-solid-bg\"\n        type=\"button\"\n        class=\"flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden\"\n        aria-controls=\"navbar-solid-bg\"\n        aria-expanded=\"false\"\n      >\n        <span class=\"sr-only\">Open main menu</span>\n        <ng-icon name=\"tablerMenu2\" class=\"h-full\" />\n      </button>\n      <div class=\"hidden w-full md:block md:w-auto\" id=\"navbar-solid-bg\">\n        <div class=\"flex flex-col md:flex-row\">\n          @if (stravaAuthSvc.isLoggedIn()) {\n            <button appBtn main (click)=\"stravaAuthSvc.logOut()\">\n              Wyloguj\n              <div class=\"h-6\"><ng-icon name=\"tablerLogout\" /></div>\n            </button>\n          } @else {\n            <app-strava-btn (click)=\"stravaAuthSvc.logIn()\" [grow]=\"true\" />\n          }\n        </div>\n      </div>\n    </div>\n  </nav>\n  <div class=\"h-full overflow-auto *:h-full\">\n    <ng-content></ng-content>\n  </div>\n</div>\n"
         },
         {
             "name": "MapLibreComponent",
@@ -4695,7 +4695,7 @@
         },
         {
             "name": "StravaBtnComponent",
-            "id": "component-StravaBtnComponent-33121b8d14c984152750af07c92328c5a122b7fa18f24d045e52f15c37ea62dcf5942ea948e7d7bbe631da3bbfe8363eafa06e628c516d003ab4d37695e1fd7c",
+            "id": "component-StravaBtnComponent-7e4c171c50f28a3a1f2647b8e4b665325cf5f651d28d9cfa14a5e518ea515105ac6b3d2dc90cbe6ede80546532fbf885fbd9205cd6db061eb3b74786b37b27ee",
             "file": "src/app/common-components/strava-btn/strava-btn.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4710,12 +4710,25 @@
             ],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [],
+            "inputsClass": [
+                {
+                    "name": "grow",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "required": false
+                }
+            ],
             "outputsClass": [],
             "propertiesClass": [
                 {
                     "name": "class",
-                    "defaultValue": "'h-12'",
+                    "defaultValue": "'flex h-12'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -4732,6 +4745,18 @@
                     "modifierKind": [
                         170
                     ]
+                },
+                {
+                    "name": "grow",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "required": false
                 }
             ],
             "methodsClass": [],
@@ -4740,11 +4765,19 @@
             "hostBindings": [
                 {
                     "name": "class",
-                    "defaultValue": "'h-12'",
+                    "defaultValue": "'flex h-12'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "line": 11,
                     "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "class.grow",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 13,
+                    "type": "any",
                     "decorators": []
                 }
             ],
@@ -4754,12 +4787,23 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, HostBinding } from '@angular/core';\n\n@Component({\n  selector: 'app-strava-btn',\n  standalone: true,\n  imports: [],\n  templateUrl: './strava-btn.component.html',\n  providers: [],\n})\nexport class StravaBtnComponent {\n  @HostBinding('class') class = 'h-12';\n}\n",
+            "sourceCode": "import { Component, HostBinding, input } from '@angular/core';\n\n@Component({\n  selector: 'app-strava-btn',\n  standalone: true,\n  imports: [],\n  templateUrl: './strava-btn.component.html',\n  providers: [],\n})\nexport class StravaBtnComponent {\n  @HostBinding('class') class = 'flex h-12';\n  grow = input(false);\n  @HostBinding('class.grow') get growClass() {\n    return this.grow;\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<button type=\"button\" class=\"flex h-full w-full items-center justify-center rounded-md bg-strava text-white transition-opacity duration-500 hover:opacity-50\">\n  <img src=\"assets/strava/login-orange.svg\" alt=\"Connect with strava\" tabindex=\"-1\" class=\"h-full\" />\n</button>\n"
+            "accessors": {
+                "growClass": {
+                    "name": "growClass",
+                    "getSignature": {
+                        "name": "growClass",
+                        "type": "",
+                        "returnType": "",
+                        "line": 13
+                    }
+                }
+            },
+            "templateData": "<button type=\"button\" class=\"flex h-full grow items-center justify-center rounded-md bg-strava text-white transition-opacity duration-500 hover:opacity-50\" [class.grow]=\"grow()\">\n  <img src=\"assets/strava/login-orange.svg\" alt=\"Connect with strava\" tabindex=\"-1\" class=\"h-full\" />\n</button>\n"
         },
         {
             "name": "WelcomeScreenComponent",
@@ -4861,7 +4905,7 @@
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<div class=\"rg-background flex h-full items-center justify-center bg-cover bg-fixed bg-center\">\n  <div class=\"px-8\">\n    <div class=\"flex max-w-xl flex-col items-center rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800 md:max-w-3xl\">\n      <img src=\"assets/logos/logo-h.svg\" class=\"h-10 md:h-16\" alt=\"Rowerowe Gminy Logo\" />\n      <h5 class=\"mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white\">🚧🏗️⚒️ W BUDOWIE 🚧🏗️⚒️</h5>\n      <p class=\"mb-3 font-normal text-gray-500 dark:text-gray-400\">\n        Rowerowe Gminy to aplikacja pozwalająca zobaczyć, które gminy w Polsce odwiedziłeś na rowerze. Twój postęp będzie śledzony automatycznie, dzięki integracji z serwisem\n        Strava. Poniższy przycisk logowania na razie nic nie zrobi. (No, chyba, że to ty pracujesz aktualnie nad tą aplikacją)\n      </p>\n      <div class=\"flex flex-row flex-wrap items-center gap-2\">\n        <app-strava-btn (click)=\"stravaAuthSvc.logIn()\" class=\"grow\" />\n        <a routerLink=\"/home\" appBtn class=\"grow\">\n          <div class=\"h-7 w-7\"><ng-icon name=\"tablerMap\" /></div>\n          <span>Demo</span>\n        </a>\n      </div>\n    </div>\n  </div>\n  <img class=\"fixed bottom-0 right-0 max-w-48 rounded-tl-3xl bg-white bg-opacity-50 md:max-w-64 xl:max-w-72\" src=\"/assets/strava/powered-by.svg\" alt=\"\" />\n</div>\n"
+            "templateData": "<div class=\"rg-background flex h-full items-center justify-center bg-cover bg-fixed bg-center\">\n  <div class=\"px-8\">\n    <div class=\"flex max-w-xl flex-col items-center rounded-lg border border-gray-200 bg-white p-6 shadow dark:border-gray-700 dark:bg-gray-800 md:max-w-3xl\">\n      <img src=\"assets/logos/logo-h.svg\" class=\"h-10 md:h-16\" alt=\"Rowerowe Gminy Logo\" />\n      <h5 class=\"mb-2 text-lg font-semibold tracking-tight text-gray-900 dark:text-white\">🚧🏗️⚒️ W BUDOWIE 🚧🏗️⚒️</h5>\n      <p class=\"mb-3 font-normal text-gray-500 dark:text-gray-400\">\n        Rowerowe Gminy to aplikacja pozwalająca zobaczyć, które gminy w Polsce odwiedziłeś na rowerze. Twój postęp będzie śledzony automatycznie, dzięki integracji z serwisem\n        Strava. Poniższy przycisk logowania na razie nic nie zrobi. (No, chyba, że to ty pracujesz aktualnie nad tą aplikacją)\n      </p>\n      <div class=\"flex flex-row flex-wrap items-center gap-2\">\n        <app-strava-btn (click)=\"stravaAuthSvc.logIn()\" [grow]=\"true\" />\n        <a routerLink=\"/home\" appBtn class=\"grow\">\n          <div class=\"h-7 w-7\"><ng-icon name=\"tablerMap\" /></div>\n          <span>Demo</span>\n        </a>\n      </div>\n    </div>\n  </div>\n  <img class=\"fixed bottom-0 right-0 max-w-48 rounded-tl-3xl bg-white bg-opacity-50 md:max-w-64 xl:max-w-72\" src=\"/assets/strava/powered-by.svg\" alt=\"\" />\n</div>\n"
         }
     ],
     "modules": [
@@ -5963,7 +6007,7 @@
                 "linktype": "component",
                 "name": "StravaBtnComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/6",
                 "status": "low"
             },
             {

@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { BtnDirective } from './btn.directive';
 
 const meta: Meta<BtnDirective> = {
+  title: 'Common/Btn',
+  tags: ['autodocs'],
   component: BtnDirective,
 };
 
@@ -23,7 +25,7 @@ export const Main: Story = {
     props: {
       main: true,
     },
-    template: '<button appBtn main="">Main button</button>',
+    template: '<button appBtn main>Main button</button>',
   }),
 };
 
