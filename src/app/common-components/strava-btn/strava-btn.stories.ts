@@ -15,11 +15,4 @@ export const Primary: Story = {
   args: {
     grow: false,
   },
-  parameters: {
-    styles: `
-      <style>
-        app-strava-btn { width: 300px; }
-      </style>
-    `,
-  },
 };
