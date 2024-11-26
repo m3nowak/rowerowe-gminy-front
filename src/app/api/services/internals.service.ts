@@ -11,6 +11,9 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { hcHcHandler } from '../fn/internals/hc-hc-handler';
 import { HcHcHandler$Params } from '../fn/internals/hc-hc-handler';
+import { RateLimitSet } from '../models/rate-limit-set';
+import { rateLimitsRateLimitsHandler } from '../fn/internals/rate-limits-rate-limits-handler';
+import { RateLimitsRateLimitsHandler$Params } from '../fn/internals/rate-limits-rate-limits-handler';
 
 @Injectable({ providedIn: 'root' })
 export class InternalsService extends BaseService {
@@ -48,6 +51,39 @@ export class InternalsService extends BaseService {
   hcHcHandler(params?: HcHcHandler$Params, context?: HttpContext): Observable<string> {
     return this.hcHcHandler$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `rateLimitsRateLimitsHandler()` */
+  static readonly RateLimitsRateLimitsHandlerPath = '/rate-limits';
+
+  /**
+   * RateLimitsHandler.
+   *
+   *
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `rateLimitsRateLimitsHandler()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  rateLimitsRateLimitsHandler$Response(params?: RateLimitsRateLimitsHandler$Params, context?: HttpContext): Observable<StrictHttpResponse<(null | RateLimitSet)>> {
+    return rateLimitsRateLimitsHandler(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * RateLimitsHandler.
+   *
+   *
+   *
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `rateLimitsRateLimitsHandler$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  rateLimitsRateLimitsHandler(params?: RateLimitsRateLimitsHandler$Params, context?: HttpContext): Observable<(null | RateLimitSet)> {
+    return this.rateLimitsRateLimitsHandler$Response(params, context).pipe(
+      map((r: StrictHttpResponse<(null | RateLimitSet)>): (null | RateLimitSet) => r.body)
     );
   }
 
