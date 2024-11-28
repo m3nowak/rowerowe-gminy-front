@@ -8,6 +8,7 @@ import { LoggerModule } from 'ngx-logger';
 import { environment } from '../environments/environment';
 import { ApiModule } from './api/api.module';
 import { provideNgIconsConfig } from '@ng-icons/core';
+import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +19,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(LoggerModule.forRoot({ level: environment.loggerLevel })),
     importProvidersFrom(ApiModule.forRoot({ rootUrl: environment.apiBaseUrl })),
     provideNgIconsConfig({ size: '100%' }),
+    provideTanStackQuery(new QueryClient()),
   ],
 };
