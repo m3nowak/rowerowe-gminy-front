@@ -36,11 +36,11 @@ export class MapLibreComponent implements OnDestroy {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bordersSelectedFilter = computed<any>(() => {
     const regionId = this.regionId();
-    if (regionId === '0') {
+    if (regionId === '') {
       return true;
     }
     if (regionId) {
-      const filter2 = ['any', ['==', ['get', 'TERYT'], regionId], ['==', ['get', 'COU_ID'], regionId], ['==', ['get', 'VOI_ID'], regionId]];
+      const filter2 = ['any', ['==', ['index-of', regionId, ['get', 'ID']], 0]];
       this.loggerSvc.info('Borders selected filter', filter2);
       return filter2;
     } else {

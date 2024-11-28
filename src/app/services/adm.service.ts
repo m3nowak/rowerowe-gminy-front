@@ -101,8 +101,8 @@ export class AdmService implements OnDestroy {
   private youForgotPoland() {
     this.admInfo.update((admInfo) => {
       if (admInfo) {
-        admInfo.set('0', {
-          TERYT: '0',
+        admInfo.set('', {
+          TERYT: '',
           name: 'Polska',
           area: 312696,
           population: 37636508,

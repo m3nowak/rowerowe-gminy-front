@@ -20,7 +20,7 @@ export class MapPopupComponent {
   regionInfo = computed(() => {
     const regionId = this.regionId();
     if (regionId) {
-      return this.admSvc.getAdmInfo(regionId);
+      return this.admSvc.getAdmInfo(regionId.replace('PL', ''));
     }
     return undefined;
   });
@@ -92,14 +92,14 @@ export class MapPopupComponent {
     if (regionId) {
       const length = regionId.length;
       switch (length) {
-        case 2:
-          this.regionId.set('0');
-          break;
         case 4:
-          this.regionId.set(regionId.substring(0, 2));
+          this.regionId.set('PL');
           break;
-        case 7:
+        case 6:
           this.regionId.set(regionId.substring(0, 4));
+          break;
+        case 9:
+          this.regionId.set(regionId.substring(0, 6));
           break;
         default:
           break;

@@ -10,7 +10,7 @@
   <mgl-control mglAttribution position="top-left" [compact]="true" [customAttribution]="'MapLibre | geoportal.gov.pl'"></mgl-control>
   @if (geoFeatureDataSvc.borderInfoExt(); as bi) {
     <!-- <ng-container *ngIf="fcStatic as features"> -->
-    <mgl-geojson-source id="borders" [data]="bi" promoteId="TERYT"> </mgl-geojson-source>
+    <mgl-geojson-source id="borders" [data]="bi" promoteId="ID"> </mgl-geojson-source>
 
     <mgl-layer
       id="borders-unlocked"
@@ -18,8 +18,8 @@
       source="borders"
       [paint]="{
         'fill-antialias': true,
-        'fill-color': ['match', ['get', 'unlockedArea'], 'WOJ', '#4c0519', 'POW', '#9f1239', 'GMI', '#e11d48', '#000000'],
-        'fill-opacity': ['match', ['get', 'unlockedArea'], 'NONE', 0.1, 0.7],
+        'fill-color': ['match', ['get', 'unlockedArea'], 'Y', '#e11d48', '#000000'],
+        'fill-opacity': ['match', ['get', 'unlockedArea'], 'Y', 0.7, 0.1],
       }"
     />
     <mgl-layer

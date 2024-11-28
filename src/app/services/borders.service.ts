@@ -7,6 +7,8 @@ import { FeatureCollection } from 'geojson';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { LoadingInfo } from '../models/loading_info';
 import { gunzip } from '../utils/gunzip';
+import { feature } from 'topojson-client';
+import { Topology } from 'topojson-specification';
 
 @Injectable({
   providedIn: 'root',
@@ -58,9 +60,12 @@ export class BordersService implements OnDestroy {
     this.downloadSub = request$
       .pipe(
         filter((event) => event.type === HttpEventType.Response),
-        switchMap((event) => (event.body ? gunzip<FeatureCollection>(event.body) : of(undefined))),
+        switchMap((event) => (event.body ? gunzip<Topology>(event.body) : of(undefined))),
       )
-      .subscribe((fc) => {
+      .subscribe((tpl) => {
+        this.loggerSvc.info('Download completed');
+        this.loggerSvc.info(tpl);
+        const fc = tpl ? (feature(tpl, tpl.objects['data']) as FeatureCollection) : undefined;
         if (fc) {
           this._borderInfo.set(fc);
           this._loadProgress.update((lp) => {

@@ -98,23 +98,17 @@ export class GeoFeatureDataService {
   ]);
 
   borderInfoExt = computed<FeatureCollection<Geometry, GeoJsonProperties> | undefined>(() => {
-    const featuresSimplified = new Set(Array.from(this.unlockedFeatures).map((id) => id.replace('PL', '')));
+    const featuresSimplified = this.unlockedFeatures; //new Set(Array.from(this.unlockedFeatures).map((id) => id.replace('PL', '')));
     const allBorders = this.bordersSvc.borderInfo();
     if (allBorders) {
       const features_ext = allBorders.features.map((f) => {
-        let unlockedArea = 'NONE';
-        if (featuresSimplified.has(f.properties!['VOI_ID'])) {
-          unlockedArea = 'WOJ';
-        } else if (featuresSimplified.has(f.properties!['COU_ID'])) {
-          unlockedArea = 'POW';
-        } else if (featuresSimplified.has(f.properties!['TERYT'])) {
-          unlockedArea = 'GMI';
-        }
+        const unlockedArea = featuresSimplified.has(f.properties!['ID']) ? 'Y' : 'N';
+
         return {
           ...f,
           properties: {
             ...f.properties,
-            unlockedArea: unlockedArea,
+            unlockedArea,
           },
         };
       });
