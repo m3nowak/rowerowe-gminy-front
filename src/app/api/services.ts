@@ -1,3 +1,2 @@
+export { HealthService } from './services/health.service';
 export { AuthService } from './services/auth.service';
-export { InternalsService } from './services/internals.service';
-export { UserService } from './services/user.service';

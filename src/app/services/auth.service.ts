@@ -95,7 +95,7 @@ export class AuthService {
     const code = params['code'];
     const scopes = params['scope'].split(',');
     if (code) {
-      this.authSvc.authenticateLoginAuthenticateHandler({ body: { code, scopes } }).subscribe((res) => {
+      this.authSvc.loginLoginPost({ body: { code, scopes } }).subscribe((res) => {
         this.loggerSvc.info('Token exchanged:', res);
         this.currentToken.set(res.access_token);
       });

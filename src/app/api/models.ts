@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export { AuthRequest } from './models/auth-request';
-export { OAuth2Login } from './models/o-auth-2-login';
-export { RateLimit } from './models/rate-limit';
-export { RateLimitSet } from './models/rate-limit-set';
+export { HttpValidationError } from './models/http-validation-error';
+export { LoginRequest } from './models/login-request';
+export { LoginResponse } from './models/login-response';
+export { StravaScopes } from './models/strava-scopes';
+export { ValidationError } from './models/validation-error';

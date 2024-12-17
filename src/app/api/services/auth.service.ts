@@ -9,9 +9,9 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { authenticateLoginAuthenticateHandler } from '../fn/auth/authenticate-login-authenticate-handler';
-import { AuthenticateLoginAuthenticateHandler$Params } from '../fn/auth/authenticate-login-authenticate-handler';
-import { OAuth2Login } from '../models/o-auth-2-login';
+import { loginLoginPost } from '../fn/auth/login-login-post';
+import { LoginLoginPost$Params } from '../fn/auth/login-login-post';
+import { LoginResponse } from '../models/login-response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends BaseService {
@@ -19,36 +19,36 @@ export class AuthService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `authenticateLoginAuthenticateHandler()` */
-  static readonly AuthenticateLoginAuthenticateHandlerPath = '/authenticate/login';
+  /** Path part for operation `loginLoginPost()` */
+  static readonly LoginLoginPostPath = '/login';
 
   /**
-   * AuthenticateHandler.
+   * Login.
    *
-   * Authenticate with Strava with provided code
+   *
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `authenticateLoginAuthenticateHandler()` instead.
+   * To access only the response body, use `loginLoginPost()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticateLoginAuthenticateHandler$Response(params: AuthenticateLoginAuthenticateHandler$Params, context?: HttpContext): Observable<StrictHttpResponse<OAuth2Login>> {
-    return authenticateLoginAuthenticateHandler(this.http, this.rootUrl, params, context);
+  loginLoginPost$Response(params: LoginLoginPost$Params, context?: HttpContext): Observable<StrictHttpResponse<LoginResponse>> {
+    return loginLoginPost(this.http, this.rootUrl, params, context);
   }
 
   /**
-   * AuthenticateHandler.
+   * Login.
    *
-   * Authenticate with Strava with provided code
+   *
    *
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `authenticateLoginAuthenticateHandler$Response()` instead.
+   * To access the full response (for headers, for example), `loginLoginPost$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticateLoginAuthenticateHandler(params: AuthenticateLoginAuthenticateHandler$Params, context?: HttpContext): Observable<OAuth2Login> {
-    return this.authenticateLoginAuthenticateHandler$Response(params, context).pipe(
-      map((r: StrictHttpResponse<OAuth2Login>): OAuth2Login => r.body)
+  loginLoginPost(params: LoginLoginPost$Params, context?: HttpContext): Observable<LoginResponse> {
+    return this.loginLoginPost$Response(params, context).pipe(
+      map((r: StrictHttpResponse<LoginResponse>): LoginResponse => r.body)
     );
   }
 

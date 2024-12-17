@@ -4,9 +4,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { HealthService } from './services/health.service';
 import { AuthService } from './services/auth.service';
-import { InternalsService } from './services/internals.service';
-import { UserService } from './services/user.service';
 
 /**
  * Module that provides all services and configuration.
@@ -16,9 +15,8 @@ import { UserService } from './services/user.service';
   exports: [],
   declarations: [],
   providers: [
+    HealthService,
     AuthService,
-    InternalsService,
-    UserService,
     ApiConfiguration
   ],
 })

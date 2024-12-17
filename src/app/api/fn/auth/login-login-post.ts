@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { AuthRequest } from '../../models/auth-request';
-import { OAuth2Login } from '../../models/o-auth-2-login';
+import { LoginRequest } from '../../models/login-request';
+import { LoginResponse } from '../../models/login-response';
 
-export interface AuthenticateLoginAuthenticateHandler$Params {
-      body: AuthRequest
+export interface LoginLoginPost$Params {
+      body: LoginRequest
 }
 
-export function authenticateLoginAuthenticateHandler(http: HttpClient, rootUrl: string, params: AuthenticateLoginAuthenticateHandler$Params, context?: HttpContext): Observable<StrictHttpResponse<OAuth2Login>> {
-  const rb = new RequestBuilder(rootUrl, authenticateLoginAuthenticateHandler.PATH, 'post');
+export function loginLoginPost(http: HttpClient, rootUrl: string, params: LoginLoginPost$Params, context?: HttpContext): Observable<StrictHttpResponse<LoginResponse>> {
+  const rb = new RequestBuilder(rootUrl, loginLoginPost.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -24,9 +24,9 @@ export function authenticateLoginAuthenticateHandler(http: HttpClient, rootUrl: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<OAuth2Login>;
+      return r as StrictHttpResponse<LoginResponse>;
     })
   );
 }
 
-authenticateLoginAuthenticateHandler.PATH = '/authenticate/login';
+loginLoginPost.PATH = '/login';
