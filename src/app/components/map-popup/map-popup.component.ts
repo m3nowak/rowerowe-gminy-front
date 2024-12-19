@@ -2,11 +2,15 @@ import { Component, computed, effect, EventEmitter, inject, model, Output } from
 import { AdmService } from '../../services/adm.service';
 import { environment } from '../../../environments/environment';
 import { BtnDirective } from '../../common-components/btn.directive';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { RegionsService } from '../../services/regions.service';
+import { lastValueFrom } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-map-popup',
   standalone: true,
-  imports: [BtnDirective],
+  imports: [BtnDirective, DatePipe],
   templateUrl: './map-popup.component.html',
   styleUrl: './map-popup.component.scss',
 })
@@ -14,6 +18,7 @@ export class MapPopupComponent {
   @Output() exit = new EventEmitter();
 
   admSvc = inject(AdmService);
+  regionsSvc = inject(RegionsService);
 
   regionId = model<string | undefined>(undefined);
 
@@ -24,6 +29,12 @@ export class MapPopupComponent {
     }
     return undefined;
   });
+
+  visitInfo = injectQuery(() => ({
+    queryKey: ['visitInfo', this.regionId()],
+    queryFn: () => lastValueFrom(this.regionsSvc.unlockedRegionDetail(this.regionId()!)),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  }));
 
   coaLink = computed(() => {
     const regionInfo = this.regionInfo();
