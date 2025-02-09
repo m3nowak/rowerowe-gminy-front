@@ -44,3 +44,5 @@ Thumbs.db
 openapi.json
 openapi.yaml
 *storybook.log
+
+/public/static/*
