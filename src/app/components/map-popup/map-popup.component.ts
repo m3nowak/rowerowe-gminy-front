@@ -6,6 +6,7 @@ import { injectQuery } from '@tanstack/angular-query-experimental';
 import { RegionsService } from '../../services/regions.service';
 import { lastValueFrom } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-map-popup',
@@ -19,6 +20,7 @@ export class MapPopupComponent {
 
   admSvc = inject(AdmService);
   regionsSvc = inject(RegionsService);
+  authSvc = inject(AuthService);
 
   regionId = model<string | undefined>(undefined);
 
@@ -34,6 +36,7 @@ export class MapPopupComponent {
     queryKey: ['visitInfo', this.regionId()],
     queryFn: () => lastValueFrom(this.regionsSvc.unlockedRegionDetail(this.regionId()!)),
     staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: this.authSvc.isLoggedIn() && !!this.regionId(),
   }));
 
   coaLink = computed(() => {

@@ -26,9 +26,19 @@ function readableStreamToObservable(stream: ReadableStream<string>): Observable<
 }
 
 export function gunzip<T>(input: Blob): Observable<T | undefined> {
-  const ds = new DecompressionStream('gzip');
-  const result = input.stream().pipeThrough(ds).pipeThrough(new TextDecoderStream()); //.getReader();
-  const result$ = readableStreamToObservable(result);
+  console.log('Input blob size:', input.size);
+  console.log('Input blob type:', input.type);
+  let result$;
+  if (input.type === 'application/json') {
+    // const reader = new FileReader();
+    // reader.readAsText(input);
+    const result = input.stream().pipeThrough(new TextDecoderStream());
+    result$ = readableStreamToObservable(result);
+  } else {
+    const ds = new DecompressionStream('gzip');
+    const result = input.stream().pipeThrough(ds).pipeThrough(new TextDecoderStream()); //.getReader();
+    result$ = readableStreamToObservable(result);
+  }
   return result$.pipe(
     reduce((acc, v) => acc + v, ''),
     map((v) => {

@@ -10,23 +10,25 @@
         }
       </h3>
     </div>
-    <img class="h-auto max-h-20 w-auto max-w-20" [class.hidden]="!coaLink()" [src]="coaLink()" [alt]="'Herb ' + regionInfo()?.name" />
+    <img class="h-auto max-h-20 min-h-20 w-auto min-w-20 max-w-20 object-contain" [class.hidden]="!coaLink()" [src]="coaLink()" [alt]="'Herb ' + regionInfo()?.name" />
   </div>
 
   @if (regionInfo(); as regionInfo) {
     <div class="mb-3 font-normal text-gray-700 dark:text-gray-400">
       <ul>
-        @if (visitInfo.isSuccess()) {
-          <li>Liczba aktywności: {{ visitInfo.data().visitedCount }}</li>
-          @if (visitInfo.data().lastVisited) {
-            <li>Ostatnia aktywność: {{ visitInfo.data().lastVisited | date: "YYYY-MM-dd" }}</li>
+        @if (authSvc.isLoggedIn()) {
+          @if (visitInfo.isSuccess()) {
+            <li>Liczba aktywności: {{ visitInfo.data().visitedCount }}</li>
+            @if (visitInfo.data().lastVisited) {
+              <li>Ostatnia aktywność: {{ visitInfo.data().lastVisited | date: "YYYY-MM-dd" }}</li>
+            }
           }
-        }
-        @if (visitInfo.isLoading()) {
-          <li>Liczba aktywności: ...</li>
-        }
-        @if (visitInfo.isError()) {
-          <li>Liczba aktywności: Błąd</li>
+          @if (visitInfo.isLoading()) {
+            <li>Liczba aktywności: ...</li>
+          }
+          @if (visitInfo.isError()) {
+            <li>Liczba aktywności: Błąd</li>
+          }
         }
 
         <li>Powierzchnia: {{ regionInfo.area }} km<sup>2</sup></li>
