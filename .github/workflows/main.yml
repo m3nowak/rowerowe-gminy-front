@@ -33,6 +33,7 @@ jobs:
           path: public/static/
           repository: m3nowak/rowerowe_gminy
           run-id: ${{ steps.static-data-run-id.outputs.result }}
+          github-token: ${{ secrets.ACTIONS_READ }}
       # TOPOLOGY
       - uses: actions/github-script@v7
         id: geo-ddb-run-id
