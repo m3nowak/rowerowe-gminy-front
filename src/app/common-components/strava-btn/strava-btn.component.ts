@@ -1,11 +1,10 @@
 import { Component, HostBinding, input } from '@angular/core';
 
 @Component({
-  selector: 'app-strava-btn',
-  standalone: true,
-  imports: [],
-  templateUrl: './strava-btn.component.html',
-  providers: [],
+    selector: 'app-strava-btn',
+    imports: [],
+    templateUrl: './strava-btn.component.html',
+    providers: []
 })
 export class StravaBtnComponent {
   @HostBinding('class') class = 'flex h-12';
