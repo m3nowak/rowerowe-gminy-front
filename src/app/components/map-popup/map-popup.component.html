@@ -10,7 +10,12 @@
         }
       </h3>
     </div>
-    <img class="h-auto max-h-20 min-h-20 w-auto min-w-20 max-w-20 object-contain" [class.hidden]="!coaLink()" [src]="coaLink()" [alt]="'Herb ' + regionInfo()?.name" />
+    <img
+      class="h-auto max-h-20 min-h-20 w-auto min-w-20 max-w-20 object-contain"
+      [class.opacity-50]="!coaLink()"
+      [src]="coaLink() ?? '/assets/placeholders/coa-unknown-raw.svg'"
+      [alt]="'Herb ' + regionInfo()?.name"
+    />
   </div>
 
   @if (regionInfo(); as regionInfo) {
