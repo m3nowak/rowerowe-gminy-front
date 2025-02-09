@@ -54,6 +54,7 @@ jobs:
           path: public/static/
           repository: m3nowak/rowerowe_gminy
           run-id: ${{ steps.geo-ddb-run-id.outputs.result }}
+          github-token: ${{ secrets.ACTIONS_READ }}
 
       - run: npm run build
       - uses: actions/upload-artifact@v4
