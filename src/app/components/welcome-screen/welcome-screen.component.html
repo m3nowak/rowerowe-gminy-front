@@ -8,7 +8,7 @@
         Strava. Poniższy przycisk logowania na razie nic nie zrobi. (No, chyba, że to ty pracujesz aktualnie nad tą aplikacją)
       </p>
       <div class="flex flex-row flex-wrap items-center gap-2">
-        <app-strava-btn (click)="stravaAuthSvc.logIn()" [grow]="true" />
+        <app-strava-btn [grow]="true" />
         <a routerLink="/home" appBtn class="grow">
           <div class="h-7 w-7"><ng-icon name="tablerMap" /></div>
           <span>Demo</span>

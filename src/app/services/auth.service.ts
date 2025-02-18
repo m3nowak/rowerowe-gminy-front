@@ -5,6 +5,8 @@ import { environment } from '../../environments/environment';
 import { AuthService as ApiAuthService } from '../api/services';
 import * as jose from 'jose';
 import { DateTime } from 'luxon';
+import { StravaScopes } from '../api/models';
+import { map, Observable } from 'rxjs';
 
 const TOKEN_KEY = 'authToken';
 
@@ -40,7 +42,7 @@ export class AuthService {
     return undefined;
   });
 
-  isLoggedIn = computed(() => this.currentToken() !== undefined);
+  isLoggedIn = computed(() => this.currentToken() !== undefined && !this.isExpired());
 
   scopes = computed<string[]>(() => {
     const token = this.currentToken();
@@ -86,6 +88,17 @@ export class AuthService {
     this.loggerSvc.info('Token expired:', this.isExpired());
     this.loggerSvc.info('Token scopes:', this.scopes());
     this.loggerSvc.info('UTC now:', DateTime.utc());
+  }
+
+  feedTokenResposive(code: string, scope: string): Observable<void> {
+    const stravaScopes = scope.split(',').map((scope) => scope as StravaScopes);
+
+    return this.authSvc.loginLoginPost({ body: { code, scopes: stravaScopes } }).pipe(
+      map((res) => {
+        this.loggerSvc.info('Token exchanged:', res);
+        this.currentToken.set(res.access_token);
+      }),
+    );
   }
 
   feedToken(params: Params) {

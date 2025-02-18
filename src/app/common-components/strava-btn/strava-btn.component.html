@@ -1,3 +1,8 @@
-<button type="button" class="flex h-full grow items-center justify-center rounded-md bg-strava text-white transition-opacity duration-500 hover:opacity-50" [class.grow]="grow()">
+<button
+  type="button"
+  class="flex h-full grow items-center justify-center rounded-md bg-strava text-white transition-opacity duration-500 hover:opacity-50"
+  [class.grow]="grow()"
+  (click)="stravaAuthSvc.logIn()"
+>
   <img src="assets/strava/login-orange.svg" alt="Connect with strava" tabindex="-1" class="h-full" />
 </button>

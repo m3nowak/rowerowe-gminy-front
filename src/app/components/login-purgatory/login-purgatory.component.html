@@ -1,4 +1,13 @@
 <div class="grid h-full grid-cols-1 place-content-center place-items-center gap-4">
-  <app-progress class="w-9/12" />
-  <p>Logowanie...</p>
+  @if (loginPending()) {
+    <app-progress class="w-9/12" />
+    <p>Logowanie...</p>
+  } @else {
+    @if (willRedirect()) {
+      <p>Przekierowanie...</p>
+    } @else {
+      <p>Wystąpił błąd podczas logowania. Spróbuj ponownie.</p>
+      <app-strava-btn />
+    }
+  }
 </div>

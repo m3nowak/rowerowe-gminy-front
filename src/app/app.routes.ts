@@ -7,17 +7,17 @@ import { LoginPurgatoryComponent } from './components/login-purgatory/login-purg
 
 export const routes: Routes = [
   {
-    path: 'login',
+    path: 'authorized',
     component: LoginPurgatoryComponent,
   },
-  {
-    path: 'authorized',
-    redirectTo: ({ queryParams }) => {
-      const extAuthSvc = inject(AuthService);
-      extAuthSvc.feedToken(queryParams);
-      return 'home';
-    },
-  },
+  // {
+  //   path: 'authorized',
+  //   redirectTo: ({ queryParams }) => {
+  //     const extAuthSvc = inject(AuthService);
+  //     extAuthSvc.feedToken(queryParams);
+  //     return 'home';
+  //   },
+  // },
   { path: 'home', loadComponent: () => import('./components/map-ui/map-ui.component').then((m) => m.MapUiComponent), canActivate: [RemoveQueryParamsGuard] },
   { path: '', component: WelcomeScreenComponent },
 ];

@@ -1,4 +1,5 @@
-import { Component, HostBinding, input } from '@angular/core';
+import { Component, HostBinding, inject, input } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-strava-btn',
@@ -8,6 +9,7 @@ import { Component, HostBinding, input } from '@angular/core';
   providers: [],
 })
 export class StravaBtnComponent {
+  stravaAuthSvc = inject(AuthService);
   @HostBinding('class') class = 'flex h-12';
   grow = input(false);
   @HostBinding('class.grow') get growClass() {
