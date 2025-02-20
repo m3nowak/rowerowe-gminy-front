@@ -6,6 +6,6 @@ export const environment = {
   coaBaseUrl: '/static/coa/',
   loggerLevel: NgxLoggerLevel.WARN,
   clientId: '133568',
-  localBaseUrl: 'http://rowerowegminy.pl/',
-  apiBaseUrl: 'http://api.rowerowegminy.pl',
+  localBaseUrl: 'https://rowerowegminy.pl/',
+  apiBaseUrl: 'https://api.rowerowegminy.pl',
 };
