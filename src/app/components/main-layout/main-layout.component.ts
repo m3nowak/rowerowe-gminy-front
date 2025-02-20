@@ -7,7 +7,6 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerLogin, tablerLogout, tablerMenu2 } from '@ng-icons/tabler-icons';
 import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
 import { BtnDirective } from '../../common-components/btn.directive';
-
 @Component({
   selector: 'app-main-layout',
   standalone: true,

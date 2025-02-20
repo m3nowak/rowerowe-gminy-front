@@ -7,6 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { HealthService } from './services/health.service';
 import { AuthService } from './services/auth.service';
 import { RegionsService } from './services/regions.service';
+import { ActivitiesService } from './services/activities.service';
 
 /**
  * Module that provides all services and configuration.
@@ -19,6 +20,7 @@ import { RegionsService } from './services/regions.service';
     HealthService,
     AuthService,
     RegionsService,
+    ActivitiesService,
     ApiConfiguration
   ],
 })

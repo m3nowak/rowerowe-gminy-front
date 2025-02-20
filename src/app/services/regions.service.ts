@@ -28,6 +28,7 @@ export class RegionsService {
           lastVisited: region.lastVisited,
           firstVisited: region.firstVisited,
           visitedCount: region.visitedCount,
+          lastActivityId: region.lastActivityId,
         };
       }),
     );

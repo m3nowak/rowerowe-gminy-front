@@ -25,7 +25,11 @@
           @if (visitInfo.isSuccess()) {
             <li>Liczba aktywności: {{ visitInfo.data().visitedCount }}</li>
             @if (visitInfo.data().lastVisited) {
-              <li>Ostatnia aktywność: {{ visitInfo.data().lastVisited | date: "YYYY-MM-dd" }}</li>
+              <li class="font-bold text-strava">
+                <a href="https://www.strava.com/activities/{{ visitInfo.data().lastActivityId }}" target="_blank" rel="noopener noreferrer">
+                  Ostatnia aktywność: {{ visitInfo.data().lastVisited | date: "YYYY-MM-dd" }}
+                </a>
+              </li>
             }
           }
           @if (visitInfo.isLoading()) {
@@ -37,7 +41,7 @@
         }
 
         <li>Powierzchnia: {{ regionInfo.area }} km<sup>2</sup></li>
-        <li>Liczba ludności: {{ regionInfo.population }}</li>
+        <li>Populacja: {{ regionInfo.population }}</li>
       </ul>
     </div>
   }
