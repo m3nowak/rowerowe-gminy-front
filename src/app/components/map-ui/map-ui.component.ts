@@ -4,11 +4,12 @@ import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { AdmService } from '../../services/adm.service';
 import { BordersService } from '../../services/borders.service';
 import { ProgressComponent } from '../../common-components/progress/progress.component';
+import { FirstLoginModalComponent } from '../first-login-modal/first-login-modal.component';
 
 @Component({
   selector: 'app-map-ui',
   standalone: true,
-  imports: [MapLibreComponent, MapPopupComponent, ProgressComponent],
+  imports: [MapLibreComponent, MapPopupComponent, ProgressComponent, FirstLoginModalComponent],
   templateUrl: './map-ui.component.html',
   styleUrl: './map-ui.component.scss',
 })
