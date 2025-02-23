@@ -5,6 +5,9 @@ import { AdmService } from '../../services/adm.service';
 import { BordersService } from '../../services/borders.service';
 import { ProgressComponent } from '../../common-components/progress/progress.component';
 import { FirstLoginModalComponent } from '../first-login-modal/first-login-modal.component';
+import { ActivatedRoute } from '@angular/router';
+import { CustomNGXLoggerService } from 'ngx-logger';
+import { UserStateService } from '../../services/user-state.service';
 
 @Component({
   selector: 'app-map-ui',
@@ -14,6 +17,11 @@ import { FirstLoginModalComponent } from '../first-login-modal/first-login-modal
 export class MapUiComponent implements OnInit {
   admSvc = inject(AdmService);
   bordersSvc = inject(BordersService);
+  route = inject(ActivatedRoute);
+  userStateSvc = inject(UserStateService);
+  loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
+    partialConfig: { context: 'LoginPurgatory' },
+  });
 
   selectedRegionId = signal<string | undefined>(undefined);
 

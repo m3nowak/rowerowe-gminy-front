@@ -8,6 +8,7 @@ import { HealthService } from './services/health.service';
 import { AuthService } from './services/auth.service';
 import { RegionsService } from './services/regions.service';
 import { ActivitiesService } from './services/activities.service';
+import { AthletesService } from './services/athletes.service';
 
 /**
  * Module that provides all services and configuration.
@@ -21,6 +22,7 @@ import { ActivitiesService } from './services/activities.service';
     AuthService,
     RegionsService,
     ActivitiesService,
+    AthletesService,
     ApiConfiguration
   ],
 })

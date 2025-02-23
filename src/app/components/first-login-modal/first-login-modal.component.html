@@ -9,7 +9,7 @@
     <div class="relative rounded-lg bg-white shadow-sm dark:bg-gray-700">
       <!-- Modal header -->
       <div class="flex items-start justify-between rounded-t border-b p-5 dark:border-gray-600">
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white lg:text-2xl">Pierwsze logowanie</h3>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white lg:text-2xl">Import aktywności</h3>
       </div>
       <!-- Modal body -->
       <div class="space-y-6 p-6">
@@ -25,15 +25,19 @@
               type="text"
               name="start-date"
               id="start-date"
+              [formControl]="startDate"
               class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
               placeholder="Data utworzenia konta"
-              required
             />
+            @for (error of startDateErrors(); track $index) {
+              <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ error }}</p>
+            }
+            <!-- <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> Username already taken!</p> -->
           </div>
         </form>
       </div>
       <div class="flex items-center space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600 rtl:space-x-reverse">
-        <button appBtn (click)="modal.hide()" main>Importuj</button>
+        <button appBtn (click)="onSubmit()" main>Importuj</button>
         <button appBtn (click)="modal.hide()">Może później</button>
       </div>
     </div>

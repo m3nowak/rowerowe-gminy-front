@@ -90,13 +90,14 @@ export class AuthService {
     this.loggerSvc.info('UTC now:', DateTime.utc());
   }
 
-  feedTokenResposive(code: string, scope: string): Observable<void> {
+  feedTokenResposive(code: string, scope: string): Observable<boolean> {
     const stravaScopes = scope.split(',').map((scope) => scope as StravaScopes);
 
     return this.authSvc.loginLoginPost({ body: { code, scopes: stravaScopes } }).pipe(
       map((res) => {
         this.loggerSvc.info('Token exchanged:', res);
         this.currentToken.set(res.access_token);
+        return res.isFirstLogin;
       }),
     );
   }
