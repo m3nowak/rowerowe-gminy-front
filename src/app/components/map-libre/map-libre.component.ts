@@ -3,18 +3,17 @@ import { AttributionControlDirective, MapComponent as BaseMapComponent, ControlC
 import { Map as LibreMap, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
 import { filter, Subscription } from 'rxjs';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MapDisplayService } from '../../services/map-display.service';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
-import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { CustomNGXLoggerService } from 'ngx-logger';
 
 @Component({
-    selector: 'app-map-libre',
-    imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, NgIf, AsyncPipe, MapPopupComponent, ControlComponent, AttributionControlDirective],
-    templateUrl: './map-libre.component.html',
-    styleUrl: './map-libre.component.scss'
+  selector: 'app-map-libre',
+  imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, AsyncPipe, ControlComponent, AttributionControlDirective],
+  templateUrl: './map-libre.component.html',
+  styleUrl: './map-libre.component.scss',
 })
 export class MapLibreComponent implements OnDestroy {
   regionId = model<string | undefined>(undefined);
