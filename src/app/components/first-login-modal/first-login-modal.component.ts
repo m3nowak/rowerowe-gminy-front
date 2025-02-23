@@ -3,10 +3,9 @@ import { Modal, ModalOptions } from 'flowbite';
 import { BtnDirective } from '../../common-components/btn.directive';
 
 @Component({
-  selector: 'app-first-login-modal',
-  standalone: true,
-  imports: [BtnDirective],
-  templateUrl: './first-login-modal.component.html',
+    selector: 'app-first-login-modal',
+    imports: [BtnDirective],
+    templateUrl: './first-login-modal.component.html'
 })
 export class FirstLoginModalComponent implements OnInit {
   modal!: Modal;

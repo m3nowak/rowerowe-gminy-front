@@ -9,11 +9,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomNGXLoggerService } from 'ngx-logger';
 
 @Component({
-  selector: 'app-login-purgatory',
-  standalone: true,
-  imports: [ProgressComponent, StravaBtnComponent],
-  templateUrl: './login-purgatory.component.html',
-  styleUrl: './login-purgatory.component.scss',
+    selector: 'app-login-purgatory',
+    imports: [ProgressComponent, StravaBtnComponent],
+    templateUrl: './login-purgatory.component.html',
+    styleUrl: './login-purgatory.component.scss'
 })
 export class LoginPurgatoryComponent implements OnInit {
   extAuthSvc = inject(AuthService);

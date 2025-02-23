@@ -11,11 +11,10 @@ import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { CustomNGXLoggerService } from 'ngx-logger';
 
 @Component({
-  selector: 'app-map-libre',
-  standalone: true,
-  imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, NgIf, AsyncPipe, MapPopupComponent, ControlComponent, AttributionControlDirective],
-  templateUrl: './map-libre.component.html',
-  styleUrl: './map-libre.component.scss',
+    selector: 'app-map-libre',
+    imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, NgIf, AsyncPipe, MapPopupComponent, ControlComponent, AttributionControlDirective],
+    templateUrl: './map-libre.component.html',
+    styleUrl: './map-libre.component.scss'
 })
 export class MapLibreComponent implements OnDestroy {
   regionId = model<string | undefined>(undefined);

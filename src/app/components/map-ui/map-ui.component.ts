@@ -7,11 +7,10 @@ import { ProgressComponent } from '../../common-components/progress/progress.com
 import { FirstLoginModalComponent } from '../first-login-modal/first-login-modal.component';
 
 @Component({
-  selector: 'app-map-ui',
-  standalone: true,
-  imports: [MapLibreComponent, MapPopupComponent, ProgressComponent, FirstLoginModalComponent],
-  templateUrl: './map-ui.component.html',
-  styleUrl: './map-ui.component.scss',
+    selector: 'app-map-ui',
+    imports: [MapLibreComponent, MapPopupComponent, ProgressComponent, FirstLoginModalComponent],
+    templateUrl: './map-ui.component.html',
+    styleUrl: './map-ui.component.scss'
 })
 export class MapUiComponent implements OnInit {
   admSvc = inject(AdmService);
