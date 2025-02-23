@@ -8,10 +8,8 @@ import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [RouterOutlet, FormsModule, MainLayoutComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   title = 'Rowerowe Gminy';

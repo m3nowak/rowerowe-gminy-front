@@ -3,7 +3,6 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-strava-btn',
-  standalone: true,
   imports: [],
   templateUrl: './strava-btn.component.html',
   providers: [],

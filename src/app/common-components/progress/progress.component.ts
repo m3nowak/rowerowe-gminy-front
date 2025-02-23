@@ -2,7 +2,6 @@ import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-progress',
-  standalone: true,
   imports: [],
   templateUrl: './progress.component.html',
 })

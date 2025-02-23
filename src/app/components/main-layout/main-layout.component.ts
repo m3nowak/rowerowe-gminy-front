@@ -9,11 +9,9 @@ import { StravaBtnComponent } from '../../common-components/strava-btn/strava-bt
 import { BtnDirective } from '../../common-components/btn.directive';
 @Component({
   selector: 'app-main-layout',
-  standalone: true,
   imports: [NgIconComponent, StravaBtnComponent, BtnDirective],
   providers: [provideIcons({ tablerLogout, tablerLogin, tablerMenu2 })],
   templateUrl: './main-layout.component.html',
-  styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent {
   drawerOpen = false;

@@ -1,12 +1,4 @@
-<mgl-map
-  class="h-full"
-  [style]="(mapDisplaySettings$ | async)!"
-  [zoom]="[6]"
-  [center]="[19.42366667, 52.11433333]"
-  (mapLoad)="onMapLoad($event)"
-  [preserveDrawingBuffer]="true"
-  [attributionControl]="false"
->
+<mgl-map class="h-full" [style]="(mapDisplaySettings$ | async)!" [zoom]="[6]" [center]="[19.42366667, 52.11433333]" (mapLoad)="onMapLoad($event)" [attributionControl]="false">
   <mgl-control mglAttribution position="top-left" [compact]="true" [customAttribution]="'MapLibre | geoportal.gov.pl'"></mgl-control>
   @if (geoFeatureDataSvc.borderInfoExt(); as bi) {
     <!-- <ng-container *ngIf="fcStatic as features"> -->

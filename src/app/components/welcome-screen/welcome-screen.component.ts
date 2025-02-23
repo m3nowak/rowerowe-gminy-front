@@ -9,11 +9,10 @@ import { tablerMap } from '@ng-icons/tabler-icons';
 
 @Component({
   selector: 'app-welcome-screen',
-  standalone: true,
   imports: [StravaBtnComponent, BtnDirective, RouterLink, NgIcon],
   providers: [provideIcons({ tablerMap })],
   templateUrl: './welcome-screen.component.html',
-  styleUrl: './welcome-screen.component.scss',
+  styleUrls: ['./welcome-screen.component.css'],
 })
 export class WelcomeScreenComponent {
   logger = inject(CustomNGXLoggerService).getNewInstance({
