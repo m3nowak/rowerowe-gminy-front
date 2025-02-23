@@ -9,10 +9,9 @@ import { DatePipe } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-    selector: 'app-map-popup',
-    imports: [BtnDirective, DatePipe],
-    templateUrl: './map-popup.component.html',
-    styleUrl: './map-popup.component.scss'
+  selector: 'app-map-popup',
+  imports: [BtnDirective, DatePipe],
+  templateUrl: './map-popup.component.html',
 })
 export class MapPopupComponent {
   @Output() exit = new EventEmitter();
