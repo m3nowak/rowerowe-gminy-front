@@ -10,7 +10,5 @@
       <app-map-popup class="block h-full" (exit)="unassignRegionId()" [(regionId)]="selectedRegionId" />
     </div>
   }
-  @if (userStateSvc.isFirstLogin()) {
-    <app-first-login-modal [isOpen]="true"></app-first-login-modal>
-  }
+  <app-first-login-modal [isOpen]="userStateSvc.isFirstLogin()"></app-first-login-modal>
 </div>

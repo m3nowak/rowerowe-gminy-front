@@ -23,10 +23,16 @@ export class BtnDirective implements OnInit {
     'dark:hover:text-white',
   ];
 
+  private readonly disabledClasses = ['opacity-50', 'cursor-not-allowed'];
+
   constructor(private el: ElementRef<HTMLButtonElement | HTMLAnchorElement>) {}
 
   get main(): boolean {
     return this.el.nativeElement.hasAttribute('main');
+  }
+
+  get disabled(): boolean {
+    return this.el.nativeElement.hasAttribute('disabled');
   }
 
   ngOnInit() {
@@ -38,5 +44,9 @@ export class BtnDirective implements OnInit {
 
     const variantClasses = this.main ? this.mainClasses : this.defaultClasses;
     variantClasses.forEach((cls) => element.classList.add(cls));
+
+    if (this.disabled) {
+      this.disabledClasses.forEach((cls) => element.classList.add(cls));
+    }
   }
 }

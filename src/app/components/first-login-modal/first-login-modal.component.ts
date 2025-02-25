@@ -2,18 +2,24 @@ import { Component, computed, inject, model, OnInit } from '@angular/core';
 import { Modal, ModalOptions } from 'flowbite';
 import { BtnDirective } from '../../common-components/btn.directive';
 import { AbstractControl, FormControl, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, lastValueFrom, map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DateTime } from 'luxon';
+import { tablerRotateClockwise } from '@ng-icons/tabler-icons';
 import { UserStateService } from '../../services/user-state.service';
+import { injectMutation } from '@tanstack/angular-query-experimental';
+import { ActivityService } from '../../services/activity.service';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
 
 @Component({
   selector: 'app-first-login-modal',
-  imports: [BtnDirective, ReactiveFormsModule],
+  imports: [BtnDirective, ReactiveFormsModule, NgIconComponent],
+  providers: [provideIcons({ tablerRotateClockwise })],
   templateUrl: './first-login-modal.component.html',
 })
 export class FirstLoginModalComponent implements OnInit {
   userStateSvc = inject(UserStateService);
+  activitySvc = inject(ActivityService);
 
   modal!: Modal;
 
@@ -28,6 +34,19 @@ export class FirstLoginModalComponent implements OnInit {
   startDateErrors = toSignal(
     combineLatest([this.startDate.statusChanges, this.startDate.valueChanges]).pipe(map(() => (this.startDate.errors ? Object.values(this.startDate.errors) : []))),
   );
+
+  triggerBacklogMutation = injectMutation(() => ({
+    mutationFn: () => {
+      const date = DateTime.fromISO(this.startDate.value!);
+      if (!date.isValid) {
+        throw new Error('Invalid date');
+      }
+      return lastValueFrom(this.activitySvc.triggerBacklog(date));
+    },
+    onSuccess: () => {
+      this.userStateSvc.unmarkFirstLogin();
+    },
+  }));
 
   ngOnInit(): void {
     const $targetEl = document.getElementById('first-login-modal');
@@ -59,8 +78,7 @@ export class FirstLoginModalComponent implements OnInit {
       return;
     }
     console.log(this.startDate.value);
-    this.userStateSvc.unmarkFirstLogin();
-    //this.modal.hide();
+    this.triggerBacklogMutation.mutate();
   }
 
   onClose() {
