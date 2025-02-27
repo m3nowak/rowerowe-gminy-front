@@ -1,13 +1,19 @@
-import { Component, model, OnInit } from '@angular/core';
+import { Component, inject, model, OnInit } from '@angular/core';
 import { Modal, ModalOptions } from 'flowbite';
-import { BtnDirective } from '../../common-components/btn.directive';
+
+import { UserStateService } from '../../services/user-state.service';
+import { ActivityService } from '../../services/activity.service';
+import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
 
 @Component({
   selector: 'app-first-login-modal',
-  imports: [BtnDirective],
+  imports: [ImportDialogComponent],
   templateUrl: './first-login-modal.component.html',
 })
 export class FirstLoginModalComponent implements OnInit {
+  userStateSvc = inject(UserStateService);
+  activitySvc = inject(ActivityService);
+
   modal!: Modal;
 
   isOpen = model<boolean>(false);
@@ -35,5 +41,10 @@ export class FirstLoginModalComponent implements OnInit {
     } else {
       this.modal.hide();
     }
+  }
+
+  onClose() {
+    this.userStateSvc.unmarkFirstLogin();
+    this.modal.hide();
   }
 }

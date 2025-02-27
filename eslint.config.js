@@ -7,7 +7,12 @@ const eslintConfigPrettier = require("eslint-config-prettier");
 module.exports = tseslint.config(
   {
     files: ["**/*.ts"],
-    extends: [eslint.configs.recommended, ...tseslint.configs.recommended, ...tseslint.configs.stylistic, ...angular.configs.tsRecommended],
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+      ...tseslint.configs.stylistic,
+      ...angular.configs.tsRecommended,
+    ],
     ignores: ["src/app/api/**/*", "src/stories/**/*"],
     processor: angular.processInlineTemplates,
     rules: {
@@ -31,7 +36,11 @@ module.exports = tseslint.config(
   },
   {
     files: ["**/*.html"],
-    extends: [...angular.configs.templateRecommended, ...angular.configs.templateAccessibility, eslintConfigPrettier],
+    extends: [
+      ...angular.configs.templateRecommended,
+      ...angular.configs.templateAccessibility,
+      eslintConfigPrettier,
+    ],
     rules: {},
   },
 );

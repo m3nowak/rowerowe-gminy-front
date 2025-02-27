@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export type { AthleteDetail } from './models/athlete-detail';
 export type { BacklogRequest } from './models/backlog-request';
 export type { HttpValidationError } from './models/http-validation-error';
 export type { LoginRequest } from './models/login-request';

@@ -7,6 +7,8 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomNGXLoggerService } from 'ngx-logger';
+import { AthleteService } from '../../services/athlete.service';
+import { UserStateService } from '../../services/user-state.service';
 
 @Component({
   selector: 'app-login-purgatory',
@@ -15,8 +17,10 @@ import { CustomNGXLoggerService } from 'ngx-logger';
 })
 export class LoginPurgatoryComponent implements OnInit {
   extAuthSvc = inject(AuthService);
+  athleteSvc = inject(AthleteService);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  userStateSvc = inject(UserStateService);
   loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'LoginPurgatory' },
   });
@@ -24,8 +28,16 @@ export class LoginPurgatoryComponent implements OnInit {
   willRedirect = signal(false);
 
   loginMutation = injectMutation(() => ({
-    mutationFn: (params: { code: string; scope: string }) => lastValueFrom(this.extAuthSvc.feedTokenResposive(params.code, params.scope)),
-    onSuccess: () => {
+    mutationFn: (params: { code: string; scope: string }) =>
+      lastValueFrom(this.extAuthSvc.feedTokenResposive(params.code, params.scope)),
+    onSuccess: (isFirstLogin) => {
+      this.loggerSvc.info('Not first login, redirecting to home');
+      if (isFirstLogin) {
+        this.userStateSvc.markFirstLogin();
+      } else {
+        this.userStateSvc.unmarkFirstLogin();
+      }
+
       this.router.navigate(['home']);
     },
   }));
@@ -33,7 +45,11 @@ export class LoginPurgatoryComponent implements OnInit {
   queryParams = toSignal(this.route.queryParamMap);
 
   loginPending = computed(() => {
-    return this.queryParams()?.get('code') && this.queryParams()?.get('scope') && !this.loginMutation.isError();
+    return (
+      this.queryParams()?.get('code') &&
+      this.queryParams()?.get('scope') &&
+      !this.loginMutation.isError()
+    );
   });
 
   lmEffect = effect(() => {
@@ -48,6 +64,8 @@ export class LoginPurgatoryComponent implements OnInit {
     } else {
       this.willRedirect.set(this.extAuthSvc.isLoggedIn() && !this.extAuthSvc.isExpired());
       if (this.willRedirect()) {
+        this.loggerSvc.info('Already logged in, redirecting to home');
+        this.userStateSvc.unmarkFirstLogin();
         this.router.navigate(['home']);
       }
     }

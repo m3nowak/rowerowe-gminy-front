@@ -18,19 +18,25 @@ export class RegionsService {
     );
   }
 
-  currentUnlockedRegions = toSignal(toObservable(this.authSvc.currentToken).pipe(switchMap((token) => iif(() => !!token, this.unlockedRegions(), of(new Set<string>())))));
+  currentUnlockedRegions = toSignal(
+    toObservable(this.authSvc.currentToken).pipe(
+      switchMap((token) => iif(() => !!token, this.unlockedRegions(), of(new Set<string>()))),
+    ),
+  );
 
   unlockedRegionDetail(regionId: string) {
-    return this.apiRegionsSvc.unlockedDetailRegionsUnlockedRegionIdGet({ region_id: regionId }).pipe(
-      map((region) => {
-        return {
-          id: region.regionId,
-          lastVisited: region.lastVisited,
-          firstVisited: region.firstVisited,
-          visitedCount: region.visitedCount,
-          lastActivityId: region.lastActivityId,
-        };
-      }),
-    );
+    return this.apiRegionsSvc
+      .unlockedDetailRegionsUnlockedRegionIdGet({ region_id: regionId })
+      .pipe(
+        map((region) => {
+          return {
+            id: region.regionId,
+            lastVisited: region.lastVisited,
+            firstVisited: region.firstVisited,
+            visitedCount: region.visitedCount,
+            lastActivityId: region.lastActivityId,
+          };
+        }),
+      );
   }
 }
