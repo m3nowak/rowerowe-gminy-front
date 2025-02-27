@@ -18,50 +18,8 @@
           zwizualizować odwiedzone przez Ciebie gminy. Po zakończeniu importu zobaczysz mapę z oznaczonymi miejscami, w których już byłeś, oraz dowiesz się, które gminy czekają
           jeszcze na odkrycie! Wszystkie nowe aktywności będą automatycznie importowane na bieżąco.
         </p>
-        <form class="space-y-4" action="#">
-          <div>
-            <label for="start-date" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Importuj dane od:</label>
-            <input
-              type="text"
-              name="start-date"
-              id="start-date"
-              [formControl]="startDate"
-              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
-              placeholder="Data utworzenia konta"
-            />
-            @for (error of startDateErrors(); track $index) {
-              <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ error }}</p>
-            }
-            <!-- <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">Oops!</span> Username already taken!</p> -->
-          </div>
-        </form>
-      </div>
-      <div class="space-x-2 rounded-b border-t border-gray-200 p-6 dark:border-gray-600 rtl:space-x-reverse">
-        @if (triggerBacklogMutation.isError()) {
-          <div class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400" role="alert">
-            <span class="font-medium">Błąd!</span> Uruchomienie eksportu się nie powiodło.
-          </div>
-        }
-        @if (triggerBacklogMutation.isSuccess()) {
-          <div class="mb-4 rounded-lg bg-green-50 p-4 text-sm text-green-800 dark:bg-gray-800 dark:text-green-400" role="alert">
-            <span class="font-medium">Sukces!</span> Eksport danych pomyślnie uruchomiony. Wkrótce zobaczysz swoje aktywności na mapie.
-          </div>
-        }
-        <div class="flex items-center space-x-2">
-          @if (triggerBacklogMutation.isPending()) {
-            <button appBtn disabled main class="flex items-center space-x-1">
-              <div class="h-6"><ng-icon name="tablerRotateClockwise" class="animate-spin" /></div>
-              <span>Importuj</span>
-            </button>
-          } @else if (triggerBacklogMutation.isSuccess()) {
-            <button appBtn main (click)="onClose()">Zamknij</button>
-          } @else {
-            <button appBtn main (click)="onSubmit()">Importuj</button>
-          }
-          @if (!triggerBacklogMutation.isSuccess()) {
-            <button appBtn (click)="onClose()">Może później</button>
-          }
-        </div>
+        <hr class="py-2" />
+        <app-import-dialog [includeCloseOption]="true" (close)="onClose()" />
       </div>
     </div>
   </div>

@@ -11,6 +11,16 @@ export class AthleteService {
   apiAthleteSvc = inject(ApiAthleteService);
 
   getCurrentAthlete(): Observable<Athlete> {
-    return this.apiAthleteSvc.getLoggedInUserAthletesMeGet().pipe(map((response) => ({ id: response.id, createdAt: DateTime.fromISO(response.createdAt) })));
+    return this.apiAthleteSvc.getLoggedInUserAthletesMeGet().pipe(
+      map((response) => ({
+        id: response.id,
+        createdAt: DateTime.fromISO(response.createdAt),
+        lastBacklogSync: response.lastBacklogSync
+          ? DateTime.fromISO(response.lastBacklogSync)
+          : undefined,
+        backlogSyncEligible: response.backlogSyncEligible,
+        stravaAccountCreatedAt: DateTime.fromISO(response.stravaAccountCreatedAt),
+      })),
+    );
   }
 }

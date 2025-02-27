@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { ProgressComponent } from '../../common-components/progress/progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
-import { injectMutation, injectQuery } from '@tanstack/angular-query-experimental';
+import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomNGXLoggerService } from 'ngx-logger';
@@ -28,34 +28,28 @@ export class LoginPurgatoryComponent implements OnInit {
   willRedirect = signal(false);
 
   loginMutation = injectMutation(() => ({
-    mutationFn: (params: { code: string; scope: string }) => lastValueFrom(this.extAuthSvc.feedTokenResposive(params.code, params.scope)),
+    mutationFn: (params: { code: string; scope: string }) =>
+      lastValueFrom(this.extAuthSvc.feedTokenResposive(params.code, params.scope)),
     onSuccess: (isFirstLogin) => {
-      if (!isFirstLogin) {
-        this.loggerSvc.info('Not first login, redirecting to home');
+      this.loggerSvc.info('Not first login, redirecting to home');
+      if (isFirstLogin) {
+        this.userStateSvc.markFirstLogin();
+      } else {
         this.userStateSvc.unmarkFirstLogin();
-        this.router.navigate(['home']);
       }
+
+      this.router.navigate(['home']);
     },
   }));
-
-  userInfo = injectQuery(() => ({
-    queryKey: ['athletes-me'],
-    queryFn: () => lastValueFrom(this.athleteSvc.getCurrentAthlete()),
-    enabled: this.loginMutation.isSuccess() && this.loginMutation.data,
-  }));
-
-  userInfoEffect = effect(() => {
-    if (this.userInfo.isSuccess()) {
-      this.loggerSvc.info('First login, redirecting to home');
-      this.userStateSvc.markFirstLogin(this.userInfo.data().createdAt);
-      this.router.navigate(['home']);
-    }
-  });
 
   queryParams = toSignal(this.route.queryParamMap);
 
   loginPending = computed(() => {
-    return this.queryParams()?.get('code') && this.queryParams()?.get('scope') && !this.loginMutation.isError();
+    return (
+      this.queryParams()?.get('code') &&
+      this.queryParams()?.get('scope') &&
+      !this.loginMutation.isError()
+    );
   });
 
   lmEffect = effect(() => {

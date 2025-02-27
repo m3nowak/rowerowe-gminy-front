@@ -1,0 +1,123 @@
+@if (eligibleForImport() === "loading") {
+  <div class="grid h-full grid-cols-1 place-content-center place-items-center gap-4 py-4">
+    <app-progress class="w-9/12" />
+    <p>Ładowanie...</p>
+  </div>
+  @if (includeCloseOption()) {
+    <div class="flex justify-end py-4">
+      <button appBtn main (click)="onClose()">Zamknij</button>
+    </div>
+  }
+}
+@if (eligibleForImport() === "error") {
+  <div
+    class="mb-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+    role="alert"
+  >
+    <span class="font-medium">Błąd pobierania danych.</span> Spróbuj ponownie później.
+  </div>
+
+  <div class="flex justify-end gap-2 py-4">
+    <button appBtn (click)="athleteInfo.refetch()">Ponów próbę</button>
+    @if (includeCloseOption()) {
+      <button appBtn main (click)="onClose()">Zamknij</button>
+    }
+  </div>
+}
+
+@if (eligibleForImport() === "ineligible") {
+  <div
+    class="mb-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+    role="alert"
+  >
+    <span class="font-medium">Opcja zablokowana.</span> Import możesz wykonać tylko raz na 14 dni.
+    Ostatnie uruchomienie: {{ lastImport()?.toLocal()?.toISODate() }}
+  </div>
+  @if (includeCloseOption()) {
+    <div class="flex justify-end py-4">
+      <button appBtn main (click)="onClose()">Zamknij</button>
+    </div>
+  }
+}
+@if (eligibleForImport() === "eligible") {
+  <div class="space-y-6">
+    <form class="space-y-4" action="#">
+      <div>
+        <label for="start-date" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          >Importuj dane od:</label
+        >
+        <input
+          type="text"
+          name="start-date"
+          id="start-date"
+          [formControl]="startDate"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-gray-800 focus:ring-gray-800 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+          placeholder="Data utworzenia konta"
+        />
+        @for (error of startDateErrors(); track $index) {
+          <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ error }}</p>
+        }
+      </div>
+    </form>
+  </div>
+  <div class="rounded-b border-t border-gray-200 py-6 dark:border-gray-600 rtl:space-x-reverse">
+    @if (triggerBacklogMutation.isIdle()) {
+      <div
+        class="mb-4 rounded-lg border border-blue-300 bg-blue-50 p-4 text-sm text-blue-800 dark:bg-gray-800 dark:text-blue-400"
+        role="alert"
+      >
+        Import możesz wykonać tylko raz na 14 dni.
+      </div>
+    }
+    @if (triggerBacklogMutation.isError()) {
+      <div
+        class="mb-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+        role="alert"
+      >
+        <span class="font-medium">Błąd!</span> Uruchomienie importu się nie powiodło.
+      </div>
+    }
+    @if (triggerBacklogMutation.isSuccess()) {
+      <div
+        class="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-800 dark:bg-gray-800 dark:text-green-400"
+        role="alert"
+      >
+        <span class="font-medium">Sukces!</span> Import danych został pomyślnie uruchomiony. Wkrótce
+        zobaczysz swoje aktywności na mapie.
+      </div>
+    }
+    <div class="flex items-center justify-end space-x-2">
+      @if (triggerBacklogMutation.isPending()) {
+        <button appBtn disabled main class="flex items-center space-x-1">
+          <div class="h-6"><ng-icon name="tablerRotateClockwise" class="animate-spin" /></div>
+          <span>Importuj</span>
+        </button>
+      }
+      @if (triggerBacklogMutation.isSuccess()) {
+        @if (includeCloseOption()) {
+          <button appBtn main (click)="onClose()">
+            <div class="h-6"><ng-icon name="tablerCheck" /></div>
+            Zamknij
+          </button>
+        } @else {
+          <button appBtn main disabled>
+            <div class="h-6"><ng-icon name="tablerCloudDown" /></div>
+            Importuj
+          </button>
+        }
+      }
+      @if (triggerBacklogMutation.isIdle() || triggerBacklogMutation.isError()) {
+        <button appBtn main (click)="onSubmit()">
+          <div class="h-6"><ng-icon name="tablerCloudDown" /></div>
+          Importuj
+        </button>
+      }
+      @if (!triggerBacklogMutation.isSuccess() && includeCloseOption()) {
+        <button appBtn (click)="onClose()">
+          <div class="h-6"><ng-icon name="tablerClock" /></div>
+          Może później
+        </button>
+      }
+    </div>
+  </div>
+}
