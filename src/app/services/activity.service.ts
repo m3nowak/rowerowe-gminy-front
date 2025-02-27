@@ -10,10 +10,14 @@ export class ActivityService {
   apiActivitiesSvc = inject(ApiActivitiesService);
 
   triggerBacklog(dateFrom: DateTime<true>): Observable<void> {
-    return this.apiActivitiesSvc.backlogActivitiesBacklogPost({ body: { periodFrom: dateFrom.toUTC().toISO(), periodTo: DateTime.now().toUTC().toISO() } }).pipe(
-      map(() => {
-        return;
-      }),
-    );
+    return this.apiActivitiesSvc
+      .backlogActivitiesBacklogPost({
+        body: { periodFrom: dateFrom.toUTC().toISO(), periodTo: DateTime.now().toUTC().toISO() },
+      })
+      .pipe(
+        map(() => {
+          return;
+        }),
+      );
   }
 }

@@ -51,14 +51,16 @@ export class AdmService implements OnDestroy {
       responseType: 'blob',
     });
     const request$ = this.http.request<Blob>(request).pipe(shareReplay(1));
-    this.progressSub = request$.pipe(filter((event) => event.type === HttpEventType.DownloadProgress)).subscribe((event) => {
-      const eventCast = event as HttpProgressEvent;
-      const total = eventCast.total;
-      if (total) {
-        this._loadProgress.set({ total: total, loaded: eventCast.loaded });
-      }
-      this.loggerSvc.info('Download progress', eventCast.loaded, total);
-    });
+    this.progressSub = request$
+      .pipe(filter((event) => event.type === HttpEventType.DownloadProgress))
+      .subscribe((event) => {
+        const eventCast = event as HttpProgressEvent;
+        const total = eventCast.total;
+        if (total) {
+          this._loadProgress.set({ total: total, loaded: eventCast.loaded });
+        }
+        this.loggerSvc.info('Download progress', eventCast.loaded, total);
+      });
 
     this.downloadSub = request$
       .pipe(

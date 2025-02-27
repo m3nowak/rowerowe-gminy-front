@@ -1,5 +1,11 @@
 import { Component, computed, inject, model, OnDestroy } from '@angular/core';
-import { AttributionControlDirective, MapComponent as BaseMapComponent, ControlComponent, GeoJSONSourceComponent, LayerComponent } from '@maplibre/ngx-maplibre-gl';
+import {
+  AttributionControlDirective,
+  MapComponent as BaseMapComponent,
+  ControlComponent,
+  GeoJSONSourceComponent,
+  LayerComponent,
+} from '@maplibre/ngx-maplibre-gl';
 import { Map as LibreMap, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
 import { filter, Subscription } from 'rxjs';
@@ -11,7 +17,14 @@ import { CustomNGXLoggerService } from 'ngx-logger';
 
 @Component({
   selector: 'app-map-libre',
-  imports: [BaseMapComponent, GeoJSONSourceComponent, LayerComponent, AsyncPipe, ControlComponent, AttributionControlDirective],
+  imports: [
+    BaseMapComponent,
+    GeoJSONSourceComponent,
+    LayerComponent,
+    AsyncPipe,
+    ControlComponent,
+    AttributionControlDirective,
+  ],
   templateUrl: './map-libre.component.html',
 })
 export class MapLibreComponent implements OnDestroy {

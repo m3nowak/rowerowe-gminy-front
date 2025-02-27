@@ -9,14 +9,18 @@
     <div class="relative rounded-lg bg-white shadow-sm dark:bg-gray-700">
       <!-- Modal header -->
       <div class="flex items-start justify-between rounded-t border-b p-5 dark:border-gray-600">
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-white lg:text-2xl">Import aktywności</h3>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white lg:text-2xl">
+          Import aktywności
+        </h3>
       </div>
       <!-- Modal body -->
       <div class="space-y-6 p-6">
         <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-          Witaj w aplikacji Rowerowe Gminy! Jest to twoje pierwsze logowanie, dlatego prosimy o zaimportowanie Twoich dotychczasowych aktywności ze Stravy, abyśmy mogli
-          zwizualizować odwiedzone przez Ciebie gminy. Po zakończeniu importu zobaczysz mapę z oznaczonymi miejscami, w których już byłeś, oraz dowiesz się, które gminy czekają
-          jeszcze na odkrycie! Wszystkie nowe aktywności będą automatycznie importowane na bieżąco.
+          Witaj w aplikacji Rowerowe Gminy! Jest to twoje pierwsze logowanie, dlatego prosimy o
+          zaimportowanie Twoich dotychczasowych aktywności ze Stravy, abyśmy mogli zwizualizować
+          odwiedzone przez Ciebie gminy. Po zakończeniu importu zobaczysz mapę z oznaczonymi
+          miejscami, w których już byłeś, oraz dowiesz się, które gminy czekają jeszcze na odkrycie!
+          Wszystkie nowe aktywności będą automatycznie importowane na bieżąco.
         </p>
         <hr class="py-2" />
         <app-import-dialog [includeCloseOption]="true" (close)="onClose()" />

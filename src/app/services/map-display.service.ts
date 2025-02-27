@@ -8,9 +8,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MapDisplayService {
-  private _currentSettings: BehaviorSubject<StyleSpecification | undefined> = new BehaviorSubject<StyleSpecification | undefined>(undefined);
+  private _currentSettings: BehaviorSubject<StyleSpecification | undefined> = new BehaviorSubject<
+    StyleSpecification | undefined
+  >(undefined);
   // private _currentSettings: WritableSignal<StyleSpecification | undefined> = signal(undefined)
-  currentSettings$: Observable<StyleSpecification | undefined> = this._currentSettings.asObservable();
+  currentSettings$: Observable<StyleSpecification | undefined> =
+    this._currentSettings.asObservable();
 
   constructor(private http: HttpClient) {
     this.http.get<StyleSpecification>('/assets/map-style.json').subscribe((style) => {
