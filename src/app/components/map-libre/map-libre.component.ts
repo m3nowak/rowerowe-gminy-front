@@ -1,4 +1,4 @@
-import { Component, computed, inject, model, OnDestroy } from '@angular/core';
+import { Component, computed, inject, model, OnDestroy, signal } from '@angular/core';
 import {
   AttributionControlDirective,
   MapComponent as BaseMapComponent,
@@ -6,7 +6,7 @@ import {
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { Map as LibreMap, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import { Map as LibreMap, LngLatBounds, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
 import { filter, Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -31,6 +31,11 @@ export class MapLibreComponent implements OnDestroy {
   regionId = model<string | undefined>(undefined);
 
   mapCp: LibreMap | undefined;
+
+  bounds = signal(
+    new LngLatBounds([9.127, 43.99], [29.16, 59.845]), // + 0.01 degree tolerance
+    // new LngLatBounds([14.127, 48.99], [24.16, 54.845]), // + 0.01 degree tolerance
+  );
 
   loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'MapLibreComponent' },

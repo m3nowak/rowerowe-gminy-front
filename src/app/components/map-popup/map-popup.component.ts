@@ -81,15 +81,12 @@ export class MapPopupComponent {
     }
   });
 
-  escapeMnppEffect = effect(
-    () => {
-      const regionInfo = this.regionInfo();
-      if (regionInfo && regionInfo.only_child) {
-        this.switchToParent();
-      }
-    },
-    { allowSignalWrites: true },
-  );
+  escapeMnppEffect = effect(() => {
+    const regionInfo = this.regionInfo();
+    if (regionInfo && regionInfo.only_child) {
+      this.switchToParent();
+    }
+  });
 
   ef1 = effect(() => {
     console.log('COA', this.coaLink());
