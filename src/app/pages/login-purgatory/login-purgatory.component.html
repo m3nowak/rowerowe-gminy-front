@@ -1,12 +1,46 @@
 <div class="grid h-full grid-cols-1 place-content-center place-items-center gap-4">
-  @if (loginPending()) {
-    <app-progress class="w-9/12" />
-    <p>Logowanie...</p>
-  } @else {
-    @if (willRedirect()) {
-      <p>Przekierowanie...</p>
-    } @else {
+  @switch (pageState()) {
+    @case ("loading") {
+      <app-progress class="w-9/12" />
+      <p>Logowanie...</p>
+    }
+    @case ("redirecting") {
+      <app-progress class="w-9/12" />
+      <p>Ładowanie...</p>
+    }
+    @case ("error") {
       <p>Wystąpił błąd podczas logowania. Spróbuj ponownie.</p>
+      @switch (errorInfo()) {
+        @case ("invalid_scope") {
+          <div
+            class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
+          >
+            <span class="font-medium">Błąd uprawnień</span> Aplikacja potrzebuje dostępu do Twoich
+            aktywności na Stravie. Podczas logowania zaznacz odpowiednie uprawnienia.
+          </div>
+        }
+        @case ("invalid_code") {
+          <div
+            class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
+          >
+            Nieudana próba logowania.
+          </div>
+        }
+        @case ("strava_error") {
+          <div
+            class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
+          >
+            <span class="font-medium">Błąd usługi Strava</span>
+          </div>
+        }
+        @default {
+          <p>{{ errorInfo() }}</p>
+        }
+      }
+      @if (errorInfo()) {}
       <app-strava-btn />
     }
   }

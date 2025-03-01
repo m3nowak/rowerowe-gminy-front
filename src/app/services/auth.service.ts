@@ -5,10 +5,27 @@ import { environment } from '../../environments/environment';
 import { AuthService as ApiAuthService } from '../api/services';
 import * as jose from 'jose';
 import { DateTime } from 'luxon';
-import { StravaScopes } from '../api/models';
-import { map, Observable } from 'rxjs';
+import { LoginResponseError, StravaScopes } from '../api/models';
+import { catchError, map, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const TOKEN_KEY = 'authToken';
+
+// export interface AuthRespose {
+//   success: boolean;
+//   isFirstLogin?: boolean;
+//   errorCode?: string;
+// }
+
+export interface AuthResposeOK {
+  success: true;
+  isFirstLogin: boolean;
+}
+
+export interface AuthResposeErr {
+  success: false;
+  errorCode: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -90,14 +107,26 @@ export class AuthService {
     this.loggerSvc.info('UTC now:', DateTime.utc());
   }
 
-  feedTokenResposive(code: string, scope: string): Observable<boolean> {
+  feedTokenResposive(code: string, scope: string): Observable<AuthResposeOK | AuthResposeErr> {
     const stravaScopes = scope.split(',').map((scope) => scope as StravaScopes);
 
     return this.authSvc.loginLoginPost({ body: { code, scopes: stravaScopes } }).pipe(
       map((res) => {
         this.loggerSvc.info('Token exchanged:', res);
         this.currentToken.set(res.access_token);
-        return res.isFirstLogin;
+        return {
+          success: true as const,
+          isFirstLogin: res.isFirstLogin,
+        };
+      }),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status !== 400) {
+          console.error('Error exchanging token:', err);
+          throw err;
+        }
+        const errInfo = err.error as LoginResponseError;
+        console.error('Error exchanging token:', err);
+        return [{ success: false as const, errorCode: errInfo.cause }];
       }),
     );
   }
