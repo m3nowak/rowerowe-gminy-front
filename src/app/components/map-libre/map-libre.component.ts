@@ -6,7 +6,14 @@ import {
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { Map as LibreMap, LngLatBounds, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import {
+  Map as LibreMap,
+  LngLatBounds,
+  LngLatLike,
+  MapGeoJSONFeature,
+  MapLibreEvent,
+  MapMouseEvent,
+} from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
 import { filter, Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -31,6 +38,8 @@ export class MapLibreComponent implements OnDestroy {
   regionId = model<string | undefined>(undefined);
 
   mapCp: LibreMap | undefined;
+
+  center = signal<LngLatLike>([19.42366667, 52.11433333]);
 
   bounds = signal(
     new LngLatBounds([9.127, 43.99], [29.16, 59.845]), // + 0.01 degree tolerance
@@ -73,6 +82,12 @@ export class MapLibreComponent implements OnDestroy {
         this.mapCp.setStyle(style);
       }
     });
+  }
+
+  onMoveEnd(evt: MapLibreEvent): void {
+    console.log('Map move end event', evt);
+    console.log('moved to', evt.target.getCenter());
+    // Handle map move end event here
   }
 
   ngOnDestroy(): void {
