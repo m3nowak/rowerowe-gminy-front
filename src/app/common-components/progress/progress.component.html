@@ -1,9 +1,9 @@
 <div class="h-4 w-full rounded-full bg-gray-200 dark:bg-gray-700">
   @if (isIndeterminate()) {
-    <div class="bg-striped h-full w-full animate-pulse rounded-full bg-primary-600"></div>
+    <div class="bg-striped bg-primary-600 h-full w-full animate-pulse rounded-full"></div>
   } @else {
     <div
-      class="h-full rounded-full bg-primary-600 p-0.5 text-center text-xs font-medium leading-none text-primary-50 transition-transform"
+      class="bg-primary-600 text-primary-50 h-full rounded-full p-0.5 text-center text-xs leading-none font-medium transition-transform"
       [style]="barStyle()"
     >
       {{ progress() }}%

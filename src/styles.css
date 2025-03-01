@@ -1,8 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* @source '../node_modules/flowbite*.js'; */
+
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-primary-50: #fef2f2;
+  --color-primary-100: #ffe1e1;
+  --color-primary-200: #ffc9c9;
+  --color-primary-300: #fea3a3;
+  --color-primary-400: #fb6e6e;
+  --color-primary-500: #f24141;
+  --color-primary-600: #e02525;
+  --color-primary-700: #bc1919;
+  --color-primary-800: #9c1818;
+  --color-primary-900: #811b1b;
+  --color-primary-950: #460909;
+
+  --color-accent-50: #fefce8;
+  --color-accent-100: #fef9c3;
+  --color-accent-200: #fef08a;
+  --color-accent-300: #fde047;
+  --color-accent-400: #facc15;
+  --color-accent-500: #eab308;
+  --color-accent-600: #ca8a04;
+  --color-accent-700: #a16207;
+  --color-accent-800: #854d0e;
+  --color-accent-900: #713f12;
+  --color-accent-950: #422006;
+
+  --color-strava: #fc4c02;
+
+  --color-white: #fff;
+
+  --background-image-welcome-background: url("/assets/background.webp");
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+/* @layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+} */
 
 html,
 body {
