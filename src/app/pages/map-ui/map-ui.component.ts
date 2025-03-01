@@ -38,12 +38,9 @@ export class MapUiComponent implements OnInit {
   dataAvailable = computed(() => this.admSvc.isAvailable() && this.bordersSvc.isAvailable());
 
   showPopup = computed(() => this.selectedRegionId() !== undefined);
-  ef1 = effect(
-    () => {
-      console.log('selectedRegionId', this.selectedRegionId());
-    },
-    { allowSignalWrites: true },
-  );
+  ef1 = effect(() => {
+    console.log('selectedRegionId', this.selectedRegionId());
+  });
 
   unassignRegionId() {
     this.selectedRegionId.set(undefined);
