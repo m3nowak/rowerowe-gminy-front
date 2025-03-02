@@ -9,10 +9,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { AthleteService } from '../../services/athlete.service';
 import { UserStateService } from '../../services/user-state.service';
+import { AlertComponent } from '../../common-components/alert/alert.component';
 
 @Component({
   selector: 'app-login-purgatory',
-  imports: [ProgressComponent, StravaBtnComponent],
+  imports: [ProgressComponent, StravaBtnComponent, AlertComponent],
   templateUrl: './login-purgatory.component.html',
 })
 export class LoginPurgatoryComponent implements OnInit {

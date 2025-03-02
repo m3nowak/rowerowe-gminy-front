@@ -12,29 +12,16 @@
       <p>Wystąpił błąd podczas logowania. Spróbuj ponownie.</p>
       @switch (errorInfo()) {
         @case ("invalid_scope") {
-          <div
-            class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
-            role="alert"
-          >
-            <span class="font-medium">Błąd uprawnień</span> Aplikacja potrzebuje dostępu do Twoich
+          <app-alert [type]="'danger'">
+            <span class="font-medium">Błąd uprawnień!</span> Aplikacja potrzebuje dostępu do Twoich
             aktywności na Stravie. Podczas logowania zaznacz odpowiednie uprawnienia.
-          </div>
+          </app-alert>
         }
         @case ("invalid_code") {
-          <div
-            class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
-            role="alert"
-          >
-            Nieudana próba logowania.
-          </div>
+          <app-alert [type]="'danger'"> Nieudana próba logowania. </app-alert>
         }
         @case ("strava_error") {
-          <div
-            class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
-            role="alert"
-          >
-            <span class="font-medium">Błąd usługi Strava</span>
-          </div>
+          <app-alert [type]="'danger'"> Błąd usługi Strava. </app-alert>
         }
         @default {
           <p>{{ errorInfo() }}</p>

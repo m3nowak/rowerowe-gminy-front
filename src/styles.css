@@ -8,7 +8,9 @@
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
 
+/* @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *)); */
 @custom-variant dark (&:is(.dark *));
+/* Disable dark mode for now */
 
 @theme {
   --color-primary-50: #fef2f2;

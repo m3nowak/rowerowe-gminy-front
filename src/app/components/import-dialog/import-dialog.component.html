@@ -10,12 +10,9 @@
   }
 }
 @if (eligibleForImport() === "error") {
-  <div
-    class="mb-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
-    role="alert"
-  >
+  <app-alert [type]="'danger'">
     <span class="font-medium">Błąd pobierania danych.</span> Spróbuj ponownie później.
-  </div>
+  </app-alert>
 
   <div class="flex justify-end gap-2 py-4">
     <button appBtn (click)="athleteInfo.refetch()">Ponów próbę</button>
@@ -26,13 +23,10 @@
 }
 
 @if (eligibleForImport() === "ineligible") {
-  <div
-    class="mb-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
-    role="alert"
-  >
+  <app-alert [type]="'danger'">
     <span class="font-medium">Opcja zablokowana.</span> Import możesz wykonać tylko raz na 14 dni.
-    Ostatnie uruchomienie: {{ lastImport()?.toLocal()?.toISODate() }}
-  </div>
+    Ostatnie uruchomienie: {{ lastImport()?.toLocal()?.toISODate() }}</app-alert
+  >
   @if (includeCloseOption()) {
     <div class="flex justify-end py-4">
       <button appBtn main (click)="onClose()">Zamknij</button>
@@ -62,29 +56,18 @@
   </div>
   <div class="rounded-b border-t border-gray-200 py-6 rtl:space-x-reverse dark:border-gray-600">
     @if (triggerBacklogMutation.isIdle()) {
-      <div
-        class="mb-4 rounded-lg border border-blue-300 bg-blue-50 p-4 text-sm text-blue-800 dark:bg-gray-800 dark:text-blue-400"
-        role="alert"
-      >
-        Import możesz wykonać tylko raz na 14 dni.
-      </div>
+      <app-alert [type]="'info'"> Import możesz wykonać tylko raz na 14 dni. </app-alert>
     }
     @if (triggerBacklogMutation.isError()) {
-      <div
-        class="mb-4 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
-        role="alert"
-      >
+      <app-alert [type]="'danger'">
         <span class="font-medium">Błąd!</span> Uruchomienie importu się nie powiodło.
-      </div>
+      </app-alert>
     }
     @if (triggerBacklogMutation.isSuccess()) {
-      <div
-        class="mb-4 rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-800 dark:bg-gray-800 dark:text-green-400"
-        role="alert"
-      >
+      <app-alert [type]="'success'">
         <span class="font-medium">Sukces!</span> Import danych został pomyślnie uruchomiony. Wkrótce
         zobaczysz swoje aktywności na mapie.
-      </div>
+      </app-alert>
     }
     <div class="flex items-center justify-end space-x-2">
       @if (triggerBacklogMutation.isPending()) {

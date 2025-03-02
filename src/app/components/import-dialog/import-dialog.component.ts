@@ -22,10 +22,11 @@ import {
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { AthleteService } from '../../services/athlete.service';
 import { ProgressComponent } from '../../common-components/progress/progress.component';
+import { AlertComponent } from '../../common-components/alert/alert.component';
 
 @Component({
   selector: 'app-import-dialog',
-  imports: [BtnDirective, ReactiveFormsModule, NgIconComponent, ProgressComponent],
+  imports: [BtnDirective, ReactiveFormsModule, NgIconComponent, ProgressComponent, AlertComponent],
   providers: [provideIcons({ tablerRotateClockwise, tablerCloudDown, tablerClock, tablerCheck })],
   templateUrl: './import-dialog.component.html',
   styleUrl: './import-dialog.component.css',
@@ -56,7 +57,7 @@ export class ImportDialogComponent {
     return 'ineligible';
   });
 
-  lastImport = computed(() => this.athleteInfo.data()?.stravaAccountCreatedAt?.toLocal());
+  lastImport = computed(() => this.athleteInfo.data()?.lastBacklogSync?.toLocal());
 
   lastImportEffect = effect(() => {
     const li = this.lastImport();
