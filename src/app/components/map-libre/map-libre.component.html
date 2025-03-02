@@ -1,10 +1,9 @@
 <mgl-map
   class="h-full"
   [style]="(mapDisplaySettings$ | async)!"
-  [zoom]="[4]"
+  [zoom]="[5]"
   (mapLoad)="onMapLoad($event)"
   [attributionControl]="false"
-  [maxBounds]="bounds()"
   [minZoom]="4"
   [center]="center()"
   (moveEnd)="onMoveEnd($event)"
@@ -27,7 +26,7 @@
       [paint]="{
         'fill-antialias': true,
         'fill-color': ['match', ['get', 'unlockedArea'], 'Y', '#e11d48', '#000000'],
-        'fill-opacity': ['match', ['get', 'unlockedArea'], 'Y', 0.7, 0.05],
+        'fill-opacity': ['match', ['get', 'unlockedArea'], 'Y', 0.7, 0.1],
       }"
     />
     <!-- <mgl-layer

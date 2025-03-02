@@ -8,7 +8,6 @@ import {
 } from '@maplibre/ngx-maplibre-gl';
 import {
   Map as LibreMap,
-  LngLatBounds,
   LngLatLike,
   MapGeoJSONFeature,
   MapLibreEvent,
@@ -21,6 +20,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MapDisplayService } from '../../services/map-display.service';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
 import { CustomNGXLoggerService } from 'ngx-logger';
+import { pointToPointTransitionTarget } from '../../utils/geo';
 
 @Component({
   selector: 'app-map-libre',
@@ -40,11 +40,6 @@ export class MapLibreComponent implements OnDestroy {
   mapCp: LibreMap | undefined;
 
   center = signal<LngLatLike>([19.42366667, 52.11433333]);
-
-  bounds = signal(
-    new LngLatBounds([9.127, 43.99], [29.16, 59.845]), // + 0.01 degree tolerance
-    // new LngLatBounds([14.127, 48.99], [24.16, 54.845]), // + 0.01 degree tolerance
-  );
 
   loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'MapLibreComponent' },
@@ -85,9 +80,18 @@ export class MapLibreComponent implements OnDestroy {
   }
 
   onMoveEnd(evt: MapLibreEvent): void {
-    console.log('Map move end event', evt);
-    console.log('moved to', evt.target.getCenter());
-    // Handle map move end event here
+    const center = evt.target.getCenter();
+    const isOob = !this.geoFeatureDataSvc.pointInRegion('PL', [center.lng, center.lat]);
+    this.loggerSvc.info('Center is outside PL:', isOob);
+    if (isOob) {
+      const closestPoint = this.geoFeatureDataSvc.nearestPointInRegion('PL', [
+        center.lng,
+        center.lat,
+      ]);
+      this.loggerSvc.info('Closest point in PL:', closestPoint);
+      // We don't want to set the center on a boundary, because it can cause a loop, so we add a small offset
+      this.center.set(pointToPointTransitionTarget([center.lng, center.lat], closestPoint));
+    }
   }
 
   ngOnDestroy(): void {
@@ -115,5 +119,22 @@ export class MapLibreComponent implements OnDestroy {
 
   onMapLoad(mapP: LibreMap) {
     this.mapCp = mapP;
+    // const bbox = this.geoFeatureDataSvc.regionBBox('PL')!;
+    this.fitMapToRegion('PL');
+  }
+
+  fitMapToRegion(regionId: string) {
+    const bbox = this.geoFeatureDataSvc.regionBBox(regionId);
+    if (bbox) {
+      this.mapCp!.fitBounds(
+        [
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]],
+        ],
+        {
+          padding: 20,
+        },
+      );
+    }
   }
 }
