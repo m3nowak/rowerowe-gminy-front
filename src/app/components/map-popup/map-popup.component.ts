@@ -10,7 +10,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AdmService } from '../../services/adm.service';
-import { environment } from '../../../environments/environment';
 import { BtnDirective } from '../../common-components/btn.directive';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { RegionsService } from '../../services/regions.service';
