@@ -1,6 +1,6 @@
 <mgl-map
   class="h-full"
-  [style]="(mapDisplaySettings$ | async)!"
+  [style]="'/assets/map-style.json'"
   [zoom]="[5]"
   (mapLoad)="onMapLoad($event)"
   [attributionControl]="false"

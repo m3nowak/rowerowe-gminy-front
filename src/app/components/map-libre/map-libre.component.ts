@@ -14,10 +14,9 @@ import {
   MapMouseEvent,
 } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
-import { filter, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { MapDisplayService } from '../../services/map-display.service';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { pointToPointTransitionTarget } from '../../utils/geo';
@@ -46,10 +45,7 @@ export class MapLibreComponent implements OnDestroy {
   });
   activeRoute = inject(ActivatedRoute);
   bordersService = inject(BordersService);
-  mapDisplaySvc = inject(MapDisplayService);
   geoFeatureDataSvc = inject(GeoFeatureDataService);
-
-  mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(filter((s) => s !== undefined));
 
   // Yeah, i give up on typing this, this expression is bugged
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,15 +65,6 @@ export class MapLibreComponent implements OnDestroy {
 
   routeSub: Subscription | undefined;
   bordersServiceSub: Subscription | undefined;
-  mapDisplaySvcSub: Subscription | undefined;
-
-  constructor() {
-    this.mapDisplaySvcSub = this.mapDisplaySvc.currentSettings$.subscribe((style) => {
-      if (this.mapCp && style) {
-        this.mapCp.setStyle(style);
-      }
-    });
-  }
 
   onMoveEnd(evt: MapLibreEvent): void {
     const center = evt.target.getCenter();
@@ -100,9 +87,6 @@ export class MapLibreComponent implements OnDestroy {
     }
     if (this.bordersServiceSub) {
       this.bordersServiceSub.unsubscribe();
-    }
-    if (this.mapDisplaySvcSub) {
-      this.mapDisplaySvcSub.unsubscribe();
     }
   }
 
