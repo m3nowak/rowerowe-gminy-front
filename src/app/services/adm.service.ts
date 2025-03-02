@@ -1,11 +1,13 @@
 import { HttpClient, HttpEventType, HttpProgressEvent, HttpRequest } from '@angular/common/http';
 import { computed, inject, Injectable, OnDestroy, signal } from '@angular/core';
-import { filter, of, shareReplay, Subscription, switchMap, tap } from 'rxjs';
+import { filter, map, of, shareReplay, Subscription, switchMap, tap } from 'rxjs';
 import { AdmInfo } from '../models/adm-info';
 import { environment } from '../../environments/environment';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { LoadingInfo } from '../models/loading_info';
 import { gunzip } from '../utils/gunzip';
+
+const UNKNOWN_COA_URL = '/assets/placeholders/coa-unknown-raw.webp';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +45,27 @@ export class AdmService implements OnDestroy {
       return admInfo.get(regionIdshort);
     }
     return undefined;
+  }
+
+  getCoa(regionId: string) {
+    const admInfo = this.getAdmInfo(regionId);
+    if (!admInfo) {
+      return of(UNKNOWN_COA_URL);
+    }
+    const coaLink = admInfo.coa_link;
+    if (coaLink) {
+      const downloadUrl = environment.coaBaseUrl + coaLink;
+      const request = new HttpRequest<Blob>('GET', downloadUrl, {
+        responseType: 'blob',
+      });
+      const request$ = this.http.request<Blob>(request).pipe(
+        filter((event) => event.type === HttpEventType.Response),
+        map((event) => URL.createObjectURL(event.body!)),
+      );
+      return request$;
+    } else {
+      return of(UNKNOWN_COA_URL);
+    }
   }
 
   private _startDownload() {

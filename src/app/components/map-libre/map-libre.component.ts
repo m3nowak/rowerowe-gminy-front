@@ -6,14 +6,19 @@ import {
   GeoJSONSourceComponent,
   LayerComponent,
 } from '@maplibre/ngx-maplibre-gl';
-import { Map as LibreMap, LngLatBounds, MapGeoJSONFeature, MapMouseEvent } from 'maplibre-gl';
+import {
+  Map as LibreMap,
+  LngLatLike,
+  MapGeoJSONFeature,
+  MapLibreEvent,
+  MapMouseEvent,
+} from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
-import { filter, Subscription } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { MapDisplayService } from '../../services/map-display.service';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
 import { CustomNGXLoggerService } from 'ngx-logger';
+import { pointToPointTransitionTarget } from '../../utils/geo';
 
 @Component({
   selector: 'app-map-libre',
@@ -21,7 +26,6 @@ import { CustomNGXLoggerService } from 'ngx-logger';
     BaseMapComponent,
     GeoJSONSourceComponent,
     LayerComponent,
-    AsyncPipe,
     ControlComponent,
     AttributionControlDirective,
   ],
@@ -32,20 +36,14 @@ export class MapLibreComponent implements OnDestroy {
 
   mapCp: LibreMap | undefined;
 
-  bounds = signal(
-    new LngLatBounds([9.127, 43.99], [29.16, 59.845]), // + 0.01 degree tolerance
-    // new LngLatBounds([14.127, 48.99], [24.16, 54.845]), // + 0.01 degree tolerance
-  );
+  center = signal<LngLatLike>([19.42366667, 52.11433333]);
 
   loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'MapLibreComponent' },
   });
   activeRoute = inject(ActivatedRoute);
   bordersService = inject(BordersService);
-  mapDisplaySvc = inject(MapDisplayService);
   geoFeatureDataSvc = inject(GeoFeatureDataService);
-
-  mapDisplaySettings$ = this.mapDisplaySvc.currentSettings$.pipe(filter((s) => s !== undefined));
 
   // Yeah, i give up on typing this, this expression is bugged
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,7 +53,7 @@ export class MapLibreComponent implements OnDestroy {
       return true;
     }
     if (regionId) {
-      const filter2 = ['any', ['==', ['index-of', regionId, ['get', 'ID']], 0]];
+      const filter2 = ['==', ['get', 'ID'], regionId];
       this.loggerSvc.info('Borders selected filter', filter2);
       return filter2;
     } else {
@@ -65,14 +63,20 @@ export class MapLibreComponent implements OnDestroy {
 
   routeSub: Subscription | undefined;
   bordersServiceSub: Subscription | undefined;
-  mapDisplaySvcSub: Subscription | undefined;
 
-  constructor() {
-    this.mapDisplaySvcSub = this.mapDisplaySvc.currentSettings$.subscribe((style) => {
-      if (this.mapCp && style) {
-        this.mapCp.setStyle(style);
-      }
-    });
+  onMoveEnd(evt: MapLibreEvent): void {
+    const center = evt.target.getCenter();
+    const isOob = !this.geoFeatureDataSvc.pointInRegion('PL', [center.lng, center.lat]);
+    this.loggerSvc.info('Center is outside PL:', isOob);
+    if (isOob) {
+      const closestPoint = this.geoFeatureDataSvc.nearestPointInRegion('PL', [
+        center.lng,
+        center.lat,
+      ]);
+      this.loggerSvc.info('Closest point in PL:', closestPoint);
+      // We don't want to set the center on a boundary, because it can cause a loop, so we add a small offset
+      this.center.set(pointToPointTransitionTarget([center.lng, center.lat], closestPoint));
+    }
   }
 
   ngOnDestroy(): void {
@@ -81,9 +85,6 @@ export class MapLibreComponent implements OnDestroy {
     }
     if (this.bordersServiceSub) {
       this.bordersServiceSub.unsubscribe();
-    }
-    if (this.mapDisplaySvcSub) {
-      this.mapDisplaySvcSub.unsubscribe();
     }
   }
 
@@ -100,5 +101,22 @@ export class MapLibreComponent implements OnDestroy {
 
   onMapLoad(mapP: LibreMap) {
     this.mapCp = mapP;
+    // const bbox = this.geoFeatureDataSvc.regionBBox('PL')!;
+    this.fitMapToRegion('PL');
+  }
+
+  fitMapToRegion(regionId: string) {
+    const bbox = this.geoFeatureDataSvc.regionBBox(regionId);
+    if (bbox) {
+      this.mapCp!.fitBounds(
+        [
+          [bbox[0], bbox[1]],
+          [bbox[2], bbox[3]],
+        ],
+        {
+          padding: 20,
+        },
+      );
+    }
   }
 }
