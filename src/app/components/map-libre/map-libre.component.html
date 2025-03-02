@@ -2,11 +2,12 @@
   class="h-full"
   [style]="(mapDisplaySettings$ | async)!"
   [zoom]="[4]"
-  [center]="[19.42366667, 52.11433333]"
   (mapLoad)="onMapLoad($event)"
   [attributionControl]="false"
   [maxBounds]="bounds()"
   [minZoom]="4"
+  [center]="center()"
+  (moveEnd)="onMoveEnd($event)"
 >
   <mgl-control
     mglAttribution
