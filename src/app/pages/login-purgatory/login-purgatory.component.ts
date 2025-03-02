@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, computed, effect } from '@angular/core';
+import { Component, inject, OnInit, computed } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ProgressComponent } from '../../common-components/progress/progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,10 +9,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { AthleteService } from '../../services/athlete.service';
 import { UserStateService } from '../../services/user-state.service';
+import { AlertComponent } from '../../common-components/alert/alert.component';
 
 @Component({
   selector: 'app-login-purgatory',
-  imports: [ProgressComponent, StravaBtnComponent],
+  imports: [ProgressComponent, StravaBtnComponent, AlertComponent],
   templateUrl: './login-purgatory.component.html',
 })
 export class LoginPurgatoryComponent implements OnInit {
@@ -25,12 +26,18 @@ export class LoginPurgatoryComponent implements OnInit {
     partialConfig: { context: 'LoginPurgatory' },
   });
 
-  willRedirect = signal(false);
-
   loginMutation = injectMutation(() => ({
     mutationFn: (params: { code: string; scope: string }) =>
       lastValueFrom(this.extAuthSvc.feedTokenResposive(params.code, params.scope)),
-    onSuccess: (isFirstLogin) => {
+    onError: (error) => {
+      this.loggerSvc.error(`Failed to login: ${error}`);
+    },
+    onSuccess: (authResp) => {
+      if (!authResp.success) {
+        this.loggerSvc.error(`Failed to login: ${authResp.errorCode}`);
+        return;
+      }
+      const isFirstLogin = authResp.isFirstLogin;
       this.loggerSvc.info('Not first login, redirecting to home');
       if (isFirstLogin) {
         this.userStateSvc.markFirstLogin();
@@ -44,30 +51,45 @@ export class LoginPurgatoryComponent implements OnInit {
 
   queryParams = toSignal(this.route.queryParamMap);
 
-  loginPending = computed(() => {
-    return (
-      this.queryParams()?.get('code') &&
-      this.queryParams()?.get('scope') &&
-      !this.loginMutation.isError()
-    );
+  sufficentParams = computed(() => {
+    return this.queryParams()?.get('code') !== null && this.queryParams()?.get('scope') !== null;
   });
 
-  lmEffect = effect(() => {
-    this.loggerSvc.info(`LM State: ${this.loginMutation.status()}`);
+  pageState = computed(() => {
+    if (!this.sufficentParams()) {
+      return 'error';
+    } else if (this.loginMutation.isError()) {
+      return 'error';
+    } else if (this.loginMutation.isSuccess()) {
+      if (this.loginMutation.data().success) {
+        return 'redirecting';
+      } else {
+        return 'error';
+      }
+    } else if (this.loginMutation.isPending()) {
+      return 'loading';
+    } else {
+      // Something broke, possibly mutation didn't trigger
+      return 'error';
+    }
+  });
+
+  errorInfo = computed(() => {
+    if (this.loginMutation.isSuccess()) {
+      const successData = this.loginMutation.data();
+      if (!successData.success) {
+        return successData.errorCode;
+      }
+    }
+    return undefined;
   });
 
   ngOnInit() {
-    const code = this.route.snapshot.queryParamMap.get('code');
-    const scope = this.route.snapshot.queryParamMap.get('scope');
-    if (code && scope) {
+    if (this.sufficentParams()) {
+      this.loggerSvc.info('Sufficent params, triggering login mutation');
+      const code = this.route.snapshot.queryParamMap.get('code')!;
+      const scope = this.route.snapshot.queryParamMap.get('scope')!;
       this.loginMutation.mutate({ code, scope });
-    } else {
-      this.willRedirect.set(this.extAuthSvc.isLoggedIn() && !this.extAuthSvc.isExpired());
-      if (this.willRedirect()) {
-        this.loggerSvc.info('Already logged in, redirecting to home');
-        this.userStateSvc.unmarkFirstLogin();
-        this.router.navigate(['home']);
-      }
     }
   }
 }
