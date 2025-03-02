@@ -15,7 +15,6 @@ import {
 } from 'maplibre-gl';
 import { BordersService } from '../../services/borders.service';
 import { Subscription } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { GeoFeatureDataService } from '../../services/geo-feature-data.service';
 import { CustomNGXLoggerService } from 'ngx-logger';
@@ -27,7 +26,6 @@ import { pointToPointTransitionTarget } from '../../utils/geo';
     BaseMapComponent,
     GeoJSONSourceComponent,
     LayerComponent,
-    AsyncPipe,
     ControlComponent,
     AttributionControlDirective,
   ],
