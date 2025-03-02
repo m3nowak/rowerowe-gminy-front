@@ -55,7 +55,7 @@ export class MapLibreComponent implements OnDestroy {
       return true;
     }
     if (regionId) {
-      const filter2 = ['any', ['==', ['index-of', regionId, ['get', 'ID']], 0]];
+      const filter2 = ['==', ['get', 'ID'], regionId];
       this.loggerSvc.info('Borders selected filter', filter2);
       return filter2;
     } else {

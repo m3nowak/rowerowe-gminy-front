@@ -1,7 +1,9 @@
-import { computed, inject, Injectable, OnDestroy, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { HttpClient, HttpEventType, HttpProgressEvent, HttpRequest } from '@angular/common/http';
 import { filter, of, shareReplay, Subscription, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { polygon, lineString, point } from '@turf/helpers';
+import { centerOfMass } from '@turf/center-of-mass';
 
 import { FeatureCollection } from 'geojson';
 import { CustomNGXLoggerService } from 'ngx-logger';
@@ -23,6 +25,27 @@ export class BordersService implements OnDestroy {
   private _borderInfo = signal<FeatureCollection | undefined>(undefined);
 
   borderInfo = computed(() => this._borderInfo());
+
+  countryBorder = computed(() => {
+    const borderInfo = this._borderInfo();
+    if (borderInfo) {
+      return borderInfo.features.find((f) => f.properties!['ID'] === 'PL');
+    }
+    return undefined;
+  });
+
+  countryCenter = computed(() => {
+    const border = this.countryBorder();
+    if (border) {
+      this.loggerSvc.info('Country border', border);
+      if (border.geometry.type === 'Polygon') {
+        const borderPolygon = polygon(border.geometry.coordinates);
+        this.loggerSvc.info('Country border polygon', borderPolygon);
+        return centerOfMass(borderPolygon).geometry.coordinates;
+      }
+    }
+    return undefined;
+  });
 
   isAvailable = computed(() => this._borderInfo() !== undefined);
 
