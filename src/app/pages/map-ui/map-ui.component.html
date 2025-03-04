@@ -1,15 +1,19 @@
 <div class="h-full">
   @if (dataAvailable()) {
     <div class="flex h-full portrait:flex-col">
-      <app-map-libre class="grow basis-3/5" [(regionId)]="selectedRegionId" />
+      <app-map-libre class="grow basis-3/5" [(regionId)]="selectedRegionId" #map />
       <!-- Pop-up on mobile devices -->
       <div
-        class="basis-2/5 border-gray-200 portrait:border-t-2 portrait:md:hidden landscape:border-l-2 landscape:lg:hidden"
+        class="basis-2/5 overflow-y-auto border-gray-200 portrait:border-t-2 portrait:md:hidden landscape:border-l-2 landscape:lg:hidden"
         [class.hidden]="!showPopup()"
         id="static-popup"
       >
         <div class="h-full p-4">
-          <app-map-popup (exit)="unassignRegionId()" [(regionId)]="selectedRegionId" />
+          <app-map-popup
+            (exit)="unassignRegionId()"
+            [(regionId)]="selectedRegionId"
+            (regionFocused)="regionFocused()"
+          />
         </div>
       </div>
     </div>
@@ -25,6 +29,7 @@
           <app-map-popup
             class="block h-full"
             (exit)="unassignRegionId()"
+            (regionFocused)="regionFocused()"
             [(regionId)]="selectedRegionId"
           />
         </div>

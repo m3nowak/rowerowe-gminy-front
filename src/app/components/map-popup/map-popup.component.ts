@@ -3,10 +3,9 @@ import {
   computed,
   effect,
   ElementRef,
-  EventEmitter,
   inject,
   model,
-  Output,
+  output,
   ViewChild,
 } from '@angular/core';
 import { AdmService } from '../../services/adm.service';
@@ -17,14 +16,18 @@ import { lastValueFrom } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { CustomNGXLoggerService } from 'ngx-logger';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { tablerZoom } from '@ng-icons/tabler-icons';
 
 @Component({
   selector: 'app-map-popup',
-  imports: [BtnDirective, DatePipe],
+  imports: [BtnDirective, DatePipe, NgIconComponent],
+  providers: [provideIcons({ tablerZoom })],
   templateUrl: './map-popup.component.html',
 })
 export class MapPopupComponent {
-  @Output() exit = new EventEmitter();
+  exit = output();
+  regionFocused = output();
 
   @ViewChild('coaImage') coaImageRef!: ElementRef<HTMLImageElement>;
 
@@ -134,6 +137,11 @@ export class MapPopupComponent {
 
   closeBtnPressed() {
     this.exit.emit();
+  }
+
+  focusRegion() {
+    this.loggerSvc.info('COA double click');
+    this.regionFocused.emit();
   }
 
   onImageError(event: Event) {
