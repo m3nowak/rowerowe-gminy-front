@@ -66,7 +66,8 @@ export class MapLibreComponent implements OnDestroy {
 
   onMoveEnd(evt: MapLibreEvent): void {
     const center = evt.target.getCenter();
-    const isOob = !this.geoFeatureDataSvc.pointInRegion('PL', [center.lng, center.lat]);
+    // const isOob = !this.geoFeatureDataSvc.pointInRegion('PL', [center.lng, center.lat]);
+    const isOob = !this.isCenterInCountry();
     this.loggerSvc.info('Center is outside PL:', isOob);
     if (isOob) {
       const closestPoint = this.geoFeatureDataSvc.nearestPointInRegion('PL', [
@@ -105,7 +106,16 @@ export class MapLibreComponent implements OnDestroy {
     this.fitMapToRegion('PL');
   }
 
-  fitMapToRegion(regionId: string) {
+  isCenterInCountry(): boolean {
+    const center = this.mapCp!.getCenter();
+    return this.geoFeatureDataSvc.pointInRegion('PL', [center.lng, center.lat]);
+  }
+
+  fitMapToRegion(regionId: string, padding = 20): void {
+    if (!this.isCenterInCountry()) {
+      // If we move now, we will conflict with the onMoveEnd event
+      return;
+    }
     const bbox = this.geoFeatureDataSvc.regionBBox(regionId);
     if (bbox) {
       this.mapCp!.fitBounds(
@@ -114,7 +124,7 @@ export class MapLibreComponent implements OnDestroy {
           [bbox[2], bbox[3]],
         ],
         {
-          padding: 20,
+          padding,
         },
       );
     }

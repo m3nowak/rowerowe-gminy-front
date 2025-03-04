@@ -12,13 +12,13 @@
         }
       </h3>
     </div>
-    <div>
+    <button (dblclick)="focusRegion()">
       <img
         class="h-auto max-h-20 min-h-20 w-auto max-w-20 min-w-20 object-contain"
         [src]="coaLink()"
         [alt]="'Herb ' + regionInfo()?.name"
       />
-    </div>
+    </button>
   </div>
 
   @if (regionInfo(); as regionInfo) {
@@ -55,7 +55,8 @@
 
   <div class="grow"></div>
 
-  <div class="flex flex-row items-start justify-end gap-2">
+  <div class="flex min-w-fit flex-row items-start justify-end gap-2">
+    <button appBtn (click)="focusRegion()"><ng-icon name="tablerZoom" /></button>
     <button appBtn (click)="switchToParent()">Wyżej</button>
     <button appBtn (click)="closeBtnPressed()" main>Zamknij</button>
   </div>

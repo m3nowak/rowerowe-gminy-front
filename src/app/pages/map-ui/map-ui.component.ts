@@ -8,6 +8,7 @@ import { FirstLoginModalComponent } from '../../components/first-login-modal/fir
 import { ActivatedRoute } from '@angular/router';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { UserStateService } from '../../services/user-state.service';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-map-ui',
@@ -15,6 +16,8 @@ import { UserStateService } from '../../services/user-state.service';
   templateUrl: './map-ui.component.html',
 })
 export class MapUiComponent implements OnInit {
+  @ViewChild('map', { static: false }) mapElement!: MapLibreComponent;
+
   admSvc = inject(AdmService);
   bordersSvc = inject(BordersService);
   route = inject(ActivatedRoute);
@@ -44,6 +47,14 @@ export class MapUiComponent implements OnInit {
 
   unassignRegionId() {
     this.selectedRegionId.set(undefined);
+  }
+
+  regionFocused() {
+    const regionId = this.selectedRegionId();
+    if (regionId) {
+      this.loggerSvc.info('regionFocused', regionId);
+      this.mapElement.fitMapToRegion(regionId, 50);
+    }
   }
 
   ngOnInit(): void {
