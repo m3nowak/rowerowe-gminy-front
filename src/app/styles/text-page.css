@@ -1,0 +1,19 @@
+/* Simple set of rules for all text-only pages */
+@reference "../../styles.css";
+
+h2 {
+  @apply pt-4 pb-2 text-4xl font-extrabold dark:text-white;
+}
+p {
+  @apply py-4;
+}
+ul {
+  @apply list-inside list-disc;
+}
+li {
+  @apply py-2;
+}
+
+a {
+  @apply text-blue-800;
+}
