@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, computed } from '@angular/core';
+import { Component, inject, computed, signal } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ProgressComponent } from '../../common-components/progress/progress.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -10,13 +10,14 @@ import { CustomNGXLoggerService } from 'ngx-logger';
 import { AthleteService } from '../../services/athlete.service';
 import { UserStateService } from '../../services/user-state.service';
 import { AlertComponent } from '../../common-components/alert/alert.component';
+import { BtnDirective } from '../../common-components/btn.directive';
 
 @Component({
   selector: 'app-login-purgatory',
-  imports: [ProgressComponent, StravaBtnComponent, AlertComponent],
+  imports: [ProgressComponent, StravaBtnComponent, AlertComponent, BtnDirective, RouterLink],
   templateUrl: './login-purgatory.component.html',
 })
-export class LoginPurgatoryComponent implements OnInit {
+export class LoginPurgatoryComponent {
   extAuthSvc = inject(AuthService);
   athleteSvc = inject(AthleteService);
   route = inject(ActivatedRoute);
@@ -25,6 +26,8 @@ export class LoginPurgatoryComponent implements OnInit {
   loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'LoginPurgatory' },
   });
+
+  tosAccepted = signal(false);
 
   loginMutation = injectMutation(() => ({
     mutationFn: (params: { code: string; scope: string }) =>
@@ -58,6 +61,8 @@ export class LoginPurgatoryComponent implements OnInit {
   pageState = computed(() => {
     if (!this.sufficentParams()) {
       return 'error';
+    } else if (!this.tosAccepted()) {
+      return 'pending';
     } else if (this.loginMutation.isError()) {
       return 'error';
     } else if (this.loginMutation.isSuccess()) {
@@ -84,7 +89,8 @@ export class LoginPurgatoryComponent implements OnInit {
     return undefined;
   });
 
-  ngOnInit() {
+  acceptTos() {
+    this.tosAccepted.set(true);
     if (this.sufficentParams()) {
       this.loggerSvc.info('Sufficent params, triggering login mutation');
       const code = this.route.snapshot.queryParamMap.get('code')!;
