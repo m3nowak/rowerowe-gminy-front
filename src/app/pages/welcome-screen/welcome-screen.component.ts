@@ -6,10 +6,11 @@ import { Router, RouterLink } from '@angular/router';
 import { BtnDirective } from '../../common-components/btn.directive';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { tablerMap } from '@ng-icons/tabler-icons';
+import { FooterComponent } from '../../components/footer/footer.component';
 
 @Component({
   selector: 'app-welcome-screen',
-  imports: [StravaBtnComponent, BtnDirective, RouterLink, NgIcon],
+  imports: [StravaBtnComponent, BtnDirective, RouterLink, NgIcon, FooterComponent],
   providers: [provideIcons({ tablerMap })],
   templateUrl: './welcome-screen.component.html',
   styleUrls: ['./welcome-screen.component.css'],
