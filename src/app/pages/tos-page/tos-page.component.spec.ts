@@ -8,9 +8,8 @@ describe('TosPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TosPageComponent]
-    })
-    .compileComponents();
+      imports: [TosPageComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TosPageComponent);
     component = fixture.componentInstance;
