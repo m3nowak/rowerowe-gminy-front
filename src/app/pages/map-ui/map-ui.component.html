@@ -4,16 +4,18 @@
       <app-map-libre class="grow basis-3/5" [(regionId)]="selectedRegionId" #map />
       <!-- Pop-up on mobile devices -->
       <div
-        class="basis-2/5 overflow-y-auto border-gray-200 portrait:border-t-2 portrait:md:hidden landscape:border-l-2 landscape:lg:hidden"
+        class="basis-2/5 border-gray-200 portrait:border-t-2 portrait:md:hidden landscape:border-l-2 landscape:lg:hidden"
         [class.hidden]="!showPopup()"
         id="static-popup"
       >
-        <div class="h-full p-4">
+        <div class="flex h-full flex-col overflow-y-auto p-4">
           <app-map-popup
+            class="grow"
             (exit)="unassignRegionId()"
             [(regionId)]="selectedRegionId"
             (regionFocused)="regionFocused()"
           />
+          <div class="portrait:h-4 landscape:hidden"></div>
         </div>
       </div>
     </div>
