@@ -3,6 +3,10 @@ import { WelcomeScreenComponent } from './pages/welcome-screen/welcome-screen.co
 import { RemoveQueryParamsGuard } from './guards/remove-query-params.guard';
 import { LoginPurgatoryComponent } from './pages/login-purgatory/login-purgatory.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
+import { AboutPageComponent } from './pages/about-page/about-page.component';
+import { TosPageComponent } from './pages/tos-page/tos-page.component';
+import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
+import { GdprPageComponent } from './pages/gdpr-page/gdpr-page.component';
 
 export const routes: Routes = [
   {
@@ -16,4 +20,8 @@ export const routes: Routes = [
     canActivate: [RemoveQueryParamsGuard],
   },
   { path: '', component: WelcomeScreenComponent },
+  { path: 'about', component: AboutPageComponent },
+  { path: 'about/tos', component: TosPageComponent },
+  { path: 'about/privacy', component: PrivacyPageComponent },
+  { path: 'about/gdpr', component: GdprPageComponent },
 ];
