@@ -8,6 +8,8 @@ import { DateTime } from 'luxon';
 import { LoginResponseError, StravaScopes } from '../api/models';
 import { catchError, map, Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import posthog from 'posthog-js';
+import { CookieService } from 'ngx-cookie-service';
 
 const TOKEN_KEY = 'authToken';
 
@@ -27,6 +29,11 @@ export interface AuthResposeErr {
   errorCode: string;
 }
 
+interface AuthInfo {
+  stravaId: number;
+  stravaUsername: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -36,15 +43,42 @@ export class AuthService {
   });
   authSvc = inject(ApiAuthService);
   router = inject(Router);
+  cookieSvc = inject(CookieService);
 
-  currentToken = signal<string | undefined>(localStorage.getItem(TOKEN_KEY) ?? undefined);
+  currentToken = signal<string | undefined>(this.cookieSvc.get(TOKEN_KEY) ?? undefined);
+
+  curentAuthInfo = computed<AuthInfo | undefined>(() => {
+    const token = this.currentToken();
+    if (!token) return undefined;
+    const decoded = jose.decodeJwt(token) as { sub: string; preferred_username: string };
+    if (decoded) {
+      return {
+        stravaId: parseInt(decoded.sub),
+        stravaUsername: decoded.preferred_username,
+      };
+    }
+    return undefined;
+  });
+
+  posthogAuthEffect = effect(() => {
+    const authInfo = this.curentAuthInfo();
+    if (authInfo) {
+      posthog.identify(authInfo.stravaId.toString(), {
+        username: authInfo.stravaUsername,
+      });
+    } else {
+      posthog.reset();
+    }
+  });
 
   localStorageEffect = effect(() => {
     const token = this.currentToken();
     if (token) {
-      localStorage.setItem(TOKEN_KEY, token);
+      this.cookieSvc.set(TOKEN_KEY, token);
+      // localStorage.setItem(TOKEN_KEY, token);
     } else {
-      localStorage.removeItem(TOKEN_KEY);
+      this.cookieSvc.delete(TOKEN_KEY);
+      // localStorage.removeItem(TOKEN_KEY);
     }
   });
 

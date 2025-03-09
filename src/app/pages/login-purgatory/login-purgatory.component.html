@@ -1,7 +1,13 @@
 <div class="grid h-full grid-cols-1 place-content-center place-items-center gap-4 p-6">
   @switch (pageState()) {
     @case ("pending") {
-      <p>
+      <app-cookie-popup
+        class="h-fit"
+        [displayCurrentConsents]="false"
+        [userLoggedIn]="false"
+        (selectionMade)="retryTos()"
+      />
+      <!-- <p>
         Logując się do aplikacji Rowerowe Gminy akceptujesz
         <a class="text-blue-600 underline" routerLink="/about/tos">Regulamin</a> oraz
         <a class="text-blue-600 underline" routerLink="/about/privacy">Politykę prywatności</a>
@@ -9,7 +15,7 @@
       <div class="flex flex-row gap-2">
         <a routerLink="/" appBtn>Odmawiam</a>
         <button appBtn main (click)="acceptTos()">Akceptuję</button>
-      </div>
+      </div> -->
     }
     @case ("loading") {
       <app-progress class="w-9/12" />

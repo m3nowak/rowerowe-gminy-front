@@ -1,7 +1,7 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, effect } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ProgressComponent } from '../../common-components/progress/progress.component';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
@@ -10,11 +10,13 @@ import { CustomNGXLoggerService } from 'ngx-logger';
 import { AthleteService } from '../../services/athlete.service';
 import { UserStateService } from '../../services/user-state.service';
 import { AlertComponent } from '../../common-components/alert/alert.component';
-import { BtnDirective } from '../../common-components/btn.directive';
+import posthog from 'posthog-js';
+import { UserConsentsService } from '../../services/user-consents.service';
+import { CookiePopupComponent } from '../../components/cookie-popup/cookie-popup.component';
 
 @Component({
   selector: 'app-login-purgatory',
-  imports: [ProgressComponent, StravaBtnComponent, AlertComponent, BtnDirective, RouterLink],
+  imports: [ProgressComponent, StravaBtnComponent, AlertComponent, CookiePopupComponent],
   templateUrl: './login-purgatory.component.html',
 })
 export class LoginPurgatoryComponent {
@@ -23,11 +25,12 @@ export class LoginPurgatoryComponent {
   route = inject(ActivatedRoute);
   router = inject(Router);
   userStateSvc = inject(UserStateService);
+  userConsentsSvc = inject(UserConsentsService);
   loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'LoginPurgatory' },
   });
 
-  tosAccepted = signal(false);
+  tosAccepted = computed(() => this.userConsentsSvc.userCanLogIn());
 
   loginMutation = injectMutation(() => ({
     mutationFn: (params: { code: string; scope: string }) =>
@@ -47,7 +50,7 @@ export class LoginPurgatoryComponent {
       } else {
         this.userStateSvc.unmarkFirstLogin();
       }
-
+      posthog.capture('login', { firstLogin: isFirstLogin });
       this.router.navigate(['home']);
     },
   }));
@@ -89,8 +92,23 @@ export class LoginPurgatoryComponent {
     return undefined;
   });
 
+  mutationTrigger = effect(() => {
+    if (this.sufficentParams() && this.tosAccepted()) {
+      const code = this.route.snapshot.queryParamMap.get('code')!;
+      const scope = this.route.snapshot.queryParamMap.get('scope')!;
+      this.loginMutation.mutate({ code, scope });
+    }
+  });
+
+  retryTos() {
+    this.loggerSvc.info('Retrying tos, user consent is: ', this.tosAccepted());
+    if (!this.tosAccepted()) {
+      this.router.navigate(['/']);
+    }
+  }
+
   acceptTos() {
-    this.tosAccepted.set(true);
+    // this.tosAccepted.set(true);
     if (this.sufficentParams()) {
       this.loggerSvc.info('Sufficent params, triggering login mutation');
       const code = this.route.snapshot.queryParamMap.get('code')!;
