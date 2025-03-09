@@ -2,7 +2,7 @@
   @switch (pageState()) {
     @case ("pending") {
       <app-cookie-popup
-        class="h-fit"
+        class="h-fit max-w-(--breakpoint-lg)"
         [displayCurrentConsents]="false"
         [userLoggedIn]="false"
         (selectionMade)="retryTos()"
