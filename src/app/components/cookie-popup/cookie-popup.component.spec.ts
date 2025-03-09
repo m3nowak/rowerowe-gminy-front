@@ -8,9 +8,8 @@ describe('CookiePopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CookiePopupComponent]
-    })
-    .compileComponents();
+      imports: [CookiePopupComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CookiePopupComponent);
     component = fixture.componentInstance;
