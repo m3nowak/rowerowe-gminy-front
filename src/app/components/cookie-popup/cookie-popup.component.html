@@ -46,9 +46,9 @@
   }
   <div class="flex flex-wrap space-y-2 space-x-2">
     @if (!userLoggedIn()) {
-      <button appBtn (click)="rejectSelected()">Odrzuć</button>
+      <button appBtn (click)="rejectSelected()" class="m-1">Odrzuć</button>
     }
-    <button appBtn (click)="requiredSelected()">Niezbędne ciastka</button>
-    <button appBtn main (click)="trackingSelected()">Akceptuje Wszystkie</button>
+    <button appBtn (click)="requiredSelected()" class="m-1">Niezbędne ciastka</button>
+    <button appBtn main (click)="trackingSelected()" class="m-1">Akceptuje Wszystkie</button>
   </div>
 </div>
