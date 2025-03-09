@@ -1,0 +1,54 @@
+<div class="flex flex-col space-y-4">
+  <p>
+    Ta strona korzysta z ciasteczek, aby zapewnić najlepsze doświadczenia użytkownika. Dowiedz się
+    więcej o naszej <a routerLink="/about/privacy" class="text-blue-500">polityce prywatności</a>.
+    Akceptując wszystkie ciasteczka zgadzasz się również na wykorzystanie twoich danych w celach
+    analitycznych. Strona wykorzystuje usługi Cloudflare, które mogą niezależnie ustawiać ciasteczka
+    w celu poprawy bezpieczeństwa aplikacji.
+  </p>
+  @if (!userLoggedIn()) {
+    <p>
+      Aby korzystać z tej strony musisz również zaakceptować
+      <a routerLink="/about/privacy" class="text-blue-500">regulamin</a>. Jeżeli nie zgadzasz się z
+      jego treścią, naciśnij przycisk Odrzuć.
+    </p>
+  }
+  @if (userConcentsSvc.consentLevel() === "tracking") {
+    <app-alert type="success">
+      <strong>Dziękuję!</strong> Rowerowe Gminy nie zawierają żadnych reklam. Włączając śledzenie
+      przyczyniasz się do rozwoju strony.
+    </app-alert>
+  }
+  @if (userConcentsSvc.consentLevel() === "required") {
+    <app-alert type="info">
+      Rowerowe Gminy nie zawierają żadnych reklam. Jeżeli chcesz pomóc w rozwoju strony, zaakceptuj
+      wszystkie ciasteczka.
+    </app-alert>
+  }
+  @if (displayCurrentConsents()) {
+    <p>
+      Aktualne ustawienia prywatności:
+      @switch (userConcentsSvc.consentLevel()) {
+        @case ("rejected") {
+          <strong>Odrzucone</strong>
+        }
+        @case ("required") {
+          <strong>Niezbędne ciasteczka</strong>
+        }
+        @case ("tracking") {
+          <strong>Wszystkie ciasteczka</strong>
+        }
+        @case ("unknown") {
+          <strong>Brak zgody</strong>
+        }
+      }
+    </p>
+  }
+  <div class="flex flex-wrap space-y-2 space-x-2">
+    @if (!userLoggedIn()) {
+      <button appBtn (click)="rejectSelected()">Odrzuć</button>
+    }
+    <button appBtn (click)="requiredSelected()">Niezbędne ciastka</button>
+    <button appBtn main (click)="trackingSelected()">Akceptuje Wszystkie</button>
+  </div>
+</div>

@@ -2,10 +2,20 @@
   <h2 class="py-4 text-4xl font-extrabold dark:text-white">Opcje użytkownika</h2>
   <hr class="py-4" />
 
-  <h3 class="py-4 text-3xl font-bold dark:text-white">Import aktywności</h3>
-  <app-import-dialog class="my-2" [includeCloseOption]="false" />
-  <hr class="py-4" />
+  @if (authSvc.isLoggedIn()) {
+    <h3 class="py-4 text-3xl font-bold dark:text-white">Import aktywności</h3>
+    <app-import-dialog class="py-2" [includeCloseOption]="false" />
+  }
+
+  <h3 class="py-4 text-3xl font-bold dark:text-white">Ustawienia prywatności</h3>
+  <app-cookie-popup
+    class="py-2"
+    [userLoggedIn]="authSvc.isLoggedIn()"
+    [displayCurrentConsents]="true"
+  />
+
+  <hr class="my-4 py-4" />
   <div class="flex justify-end">
-    <a appBtn routerLink="/home">Powrót</a>
+    <a appBtn [routerLink]="authSvc.isLoggedIn() ? '/home' : '/'">Powrót</a>
   </div>
 </div>
