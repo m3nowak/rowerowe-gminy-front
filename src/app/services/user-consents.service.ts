@@ -2,6 +2,7 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import posthog from 'posthog-js';
+import { environment } from '../../environments/environment';
 
 const CONSENT_KEY = 'rg-consent';
 
@@ -37,7 +38,6 @@ export class UserConsentsService {
   private posthogAllow(allow: boolean) {
     posthog.set_config({
       persistence: allow ? 'localStorage+cookie' : 'memory',
-      disable_persistence: !allow,
     });
     if (allow) {
       posthog.opt_in_capturing();
@@ -60,13 +60,29 @@ export class UserConsentsService {
         break;
       case 'required':
         posthog.opt_out_capturing();
-        this.cookieSvc.set(CONSENT_KEY, concentLevel);
+        this.cookieSvc.set(
+          CONSENT_KEY,
+          concentLevel,
+          undefined,
+          '/',
+          undefined,
+          environment.production,
+          'Strict',
+        );
         this.userGaveAnswer.set(true);
         this.posthogAllow(false);
         break;
       case 'tracking':
         posthog.opt_in_capturing();
-        this.cookieSvc.set(CONSENT_KEY, concentLevel);
+        this.cookieSvc.set(
+          CONSENT_KEY,
+          concentLevel,
+          undefined,
+          '/',
+          undefined,
+          environment.production,
+          'Strict',
+        );
         this.userGaveAnswer.set(true);
         this.posthogAllow(true);
         break;
