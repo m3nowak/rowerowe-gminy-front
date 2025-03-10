@@ -34,27 +34,45 @@ export class UserConsentsService {
     return consentLevel === 'required' || consentLevel === 'tracking';
   });
 
+  private posthogAllow(allow: boolean) {
+    posthog.set_config({
+      persistence: allow ? 'localStorage+cookie' : 'memory',
+      disable_persistence: !allow,
+    });
+    if (allow) {
+      posthog.opt_in_capturing();
+      posthog.persistence?.save();
+    } else {
+      posthog.opt_out_capturing();
+      posthog.persistence?.clear();
+    }
+  }
+
   consentLevelEffect = effect(() => {
     const concentLevel = this.consentLevel();
+    this.loggerSvc.info('Consent level changed', concentLevel);
     switch (concentLevel) {
       case 'rejected':
         posthog.opt_out_capturing();
         this.cookieSvc.delete(CONSENT_KEY);
         this.userGaveAnswer.set(true);
+        this.posthogAllow(false);
         break;
       case 'required':
         posthog.opt_out_capturing();
         this.cookieSvc.set(CONSENT_KEY, concentLevel);
         this.userGaveAnswer.set(true);
+        this.posthogAllow(false);
         break;
       case 'tracking':
         posthog.opt_in_capturing();
         this.cookieSvc.set(CONSENT_KEY, concentLevel);
         this.userGaveAnswer.set(true);
+        this.posthogAllow(true);
         break;
       case 'unknown':
         posthog.opt_out_capturing();
-        this.loggerSvc.warn('Unknown consent level');
+        this.posthogAllow(false);
         break;
     }
   });
