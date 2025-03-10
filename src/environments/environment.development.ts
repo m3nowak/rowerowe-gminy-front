@@ -10,4 +10,5 @@ export const environment = {
   apiBaseUrl: 'http://localhost:8000',
   posthogKey: 'phc_ckzJ8Pkw8Aja17asBkb75O42iIGKx50uICW6E9wIEom',
   posthogHost: 'https://eu.i.posthog.com',
+  production: false,
 };

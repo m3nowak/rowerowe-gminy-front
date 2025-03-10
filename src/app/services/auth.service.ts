@@ -73,8 +73,17 @@ export class AuthService {
 
   localStorageEffect = effect(() => {
     const token = this.currentToken();
+    const expiration = this.loginExpiresAt();
     if (token) {
-      this.cookieSvc.set(TOKEN_KEY, token);
+      this.cookieSvc.set(
+        TOKEN_KEY,
+        token,
+        expiration!.toJSDate(),
+        '/',
+        undefined,
+        environment.production,
+        'Strict',
+      );
       // localStorage.setItem(TOKEN_KEY, token);
     } else {
       this.cookieSvc.delete(TOKEN_KEY);
