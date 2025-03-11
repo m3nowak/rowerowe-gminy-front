@@ -6,6 +6,7 @@ import { StravaBtnComponent } from '../../common-components/strava-btn/strava-bt
 import { FooterComponent } from '../../components/footer/footer.component';
 import { UserConsentsService } from '../../services/user-consents.service';
 import { CookiePopupComponent } from '../../components/cookie-popup/cookie-popup.component';
+import { Title, Meta } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-welcome-screen',
@@ -20,6 +21,20 @@ export class WelcomeScreenComponent {
 
   stravaAuthSvc = inject(AuthService);
   userConsentsSvc = inject(UserConsentsService);
+  title = inject(Title);
+  meta = inject(Meta);
+
+  constructor() {
+    this.title.setTitle('Rowerowe Gminy');
+    this.meta.updateTag({
+      name: 'description',
+      content: 'Rowerowe Gminy - Śledź przejechane gminy na rowerze!',
+    });
+    this.meta.updateTag({
+      name: 'keywords',
+      content: 'rowerowe, gminy, rower, strava, turystyka, polska, powiaty, województwa',
+    });
+  }
 
   loginClick() {
     this.logger.info('Login clicked');
