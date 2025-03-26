@@ -28,13 +28,15 @@
           @if (visitInfo.isSuccess()) {
             <li>Liczba aktywności: {{ visitInfo.data().visitedCount }}</li>
             @if (visitInfo.data().lastVisited) {
-              <li class="text-strava font-bold">
+              <li>
+                Ostatnia aktywność: {{ visitInfo.data().lastVisited | date: "YYYY-MM-dd" }} -
                 <a
                   href="https://www.strava.com/activities/{{ visitInfo.data().lastActivityId }}"
                   target="_blank"
                   rel="noopener noreferrer"
+                  class="text-strava font-bold"
                 >
-                  Ostatnia aktywność: {{ visitInfo.data().lastVisited | date: "YYYY-MM-dd" }}
+                  Zobacz na Strava
                 </a>
               </li>
             }
