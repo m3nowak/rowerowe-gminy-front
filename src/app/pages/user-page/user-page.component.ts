@@ -33,7 +33,6 @@ export class UserPageComponent implements OnInit {
     mutationFn: () => lastValueFrom(this.deleteAccountSvc.deleteAccount()),
     onSuccess: () => {
       this.authSvc.logOut();
-      console.log(this.modal);
       this.modal.hide();
       this.router.navigate(['/']);
     },
