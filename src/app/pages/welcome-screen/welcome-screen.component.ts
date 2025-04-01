@@ -7,19 +7,31 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { UserConsentsService } from '../../services/user-consents.service';
 import { CookiePopupComponent } from '../../components/cookie-popup/cookie-popup.component';
 import { Title, Meta } from '@angular/platform-browser';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { tablerMap } from '@ng-icons/tabler-icons';
+import { BtnDirective } from '../../common-components/btn.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-welcome-screen',
-  imports: [StravaBtnComponent, FooterComponent, CookiePopupComponent],
+  imports: [
+    StravaBtnComponent,
+    FooterComponent,
+    CookiePopupComponent,
+    NgIcon,
+    BtnDirective,
+    RouterLink,
+  ],
   templateUrl: './welcome-screen.component.html',
   styleUrls: ['./welcome-screen.component.css'],
+  providers: [provideIcons({ tablerMap })],
 })
 export class WelcomeScreenComponent {
   logger = inject(CustomNGXLoggerService).getNewInstance({
     partialConfig: { context: 'WelcomeScreen' },
   });
 
-  stravaAuthSvc = inject(AuthService);
+  authSvc = inject(AuthService);
   userConsentsSvc = inject(UserConsentsService);
   title = inject(Title);
   meta = inject(Meta);
@@ -38,6 +50,6 @@ export class WelcomeScreenComponent {
 
   loginClick() {
     this.logger.info('Login clicked');
-    this.stravaAuthSvc.logIn();
+    this.authSvc.logIn();
   }
 }

@@ -13,17 +13,17 @@
 /* Disable dark mode for now */
 
 @theme {
-  --color-primary-50: #fef2f2;
-  --color-primary-100: #ffe1e1;
-  --color-primary-200: #ffc9c9;
-  --color-primary-300: #fea3a3;
-  --color-primary-400: #fb6e6e;
-  --color-primary-500: #f24141;
-  --color-primary-600: #e02525;
-  --color-primary-700: #bc1919;
-  --color-primary-800: #9c1818;
-  --color-primary-900: #811b1b;
-  --color-primary-950: #460909;
+  --color-primary-50: #f4fbea;
+  --color-primary-100: #e6f6d1;
+  --color-primary-200: #ceefa7;
+  --color-primary-300: #ade274;
+  --color-primary-400: #87cf3d;
+  --color-primary-500: #70b72b;
+  --color-primary-600: #55921e;
+  --color-primary-700: #41701b;
+  --color-primary-800: #37591b;
+  --color-primary-900: #2f4c1b;
+  --color-primary-950: #16290a;
 
   --color-accent-50: #fefce8;
   --color-accent-100: #fef9c3;

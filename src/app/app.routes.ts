@@ -7,6 +7,7 @@ import { AboutPageComponent } from './pages/about-page/about-page.component';
 import { TosPageComponent } from './pages/tos-page/tos-page.component';
 import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
 import { GdprPageComponent } from './pages/gdpr-page/gdpr-page.component';
+import { UserLoggedInGuard } from './guards/user-logged-in.guard';
 
 export const routes: Routes = [
   {
@@ -17,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./pages/map-ui/map-ui.component').then((m) => m.MapUiComponent),
-    canActivate: [RemoveQueryParamsGuard],
+    canActivate: [UserLoggedInGuard, RemoveQueryParamsGuard],
   },
   { path: '', component: WelcomeScreenComponent },
   { path: 'about', component: AboutPageComponent },
