@@ -14,11 +14,13 @@
     [displayCurrentConsents]="true"
   />
 
-  <h3 class="py-4 text-3xl font-bold dark:text-white">Usuń konto</h3>
-  <span> Ta opcja usuwa twoje konto oraz wszystkie dane zapisane w aplikacji. </span>
-  <div class="flex justify-end">
-    <button appBtn (click)="modal.show()">Usuń konto</button>
-  </div>
+  @if (authSvc.isLoggedIn()) {
+    <h3 class="py-4 text-3xl font-bold dark:text-white">Usuń konto</h3>
+    <span> Ta opcja usuwa twoje konto oraz wszystkie dane zapisane w aplikacji. </span>
+    <div class="flex justify-end">
+      <button appBtn (click)="modal.show()">Usuń konto</button>
+    </div>
+  }
 
   <hr class="my-4 py-4" />
   <div class="flex justify-end">
