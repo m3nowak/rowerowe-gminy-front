@@ -9,6 +9,7 @@ import { AuthService } from './services/auth.service';
 import { RegionsService } from './services/regions.service';
 import { ActivitiesService } from './services/activities.service';
 import { AthletesService } from './services/athletes.service';
+import { UserService } from './services/user.service';
 
 /**
  * Module that provides all services and configuration.
@@ -23,6 +24,7 @@ import { AthletesService } from './services/athletes.service';
     RegionsService,
     ActivitiesService,
     AthletesService,
+    UserService,
     ApiConfiguration
   ],
 })
