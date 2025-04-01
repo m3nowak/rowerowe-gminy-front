@@ -7,14 +7,12 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface ApiUserUserIdUnlockedGetUserUnlocked$Params {
-  user_id: number;
+export interface DeleteAccountUserDelete$Params {
 }
 
-export function apiUserUserIdUnlockedGetUserUnlocked(http: HttpClient, rootUrl: string, params: ApiUserUserIdUnlockedGetUserUnlocked$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<string>>> {
-  const rb = new RequestBuilder(rootUrl, apiUserUserIdUnlockedGetUserUnlocked.PATH, 'get');
+export function deleteAccountUserDelete(http: HttpClient, rootUrl: string, params?: DeleteAccountUserDelete$Params, context?: HttpContext): Observable<StrictHttpResponse<'OK' | 'ERROR'>> {
+  const rb = new RequestBuilder(rootUrl, deleteAccountUserDelete.PATH, 'delete');
   if (params) {
-    rb.path('user_id', params.user_id, {});
   }
 
   return http.request(
@@ -22,9 +20,9 @@ export function apiUserUserIdUnlockedGetUserUnlocked(http: HttpClient, rootUrl: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<string>>;
+      return r as StrictHttpResponse<'OK' | 'ERROR'>;
     })
   );
 }
 
-apiUserUserIdUnlockedGetUserUnlocked.PATH = '/api/user/{user_id}/unlocked';
+deleteAccountUserDelete.PATH = '/user';

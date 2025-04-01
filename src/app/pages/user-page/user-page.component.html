@@ -14,8 +14,53 @@
     [displayCurrentConsents]="true"
   />
 
+  <h3 class="py-4 text-3xl font-bold dark:text-white">Usuń konto</h3>
+  <span> Ta opcja usuwa twoje konto oraz wszystkie dane zapisane w aplikacji. </span>
+  <div class="flex justify-end">
+    <button appBtn (click)="modal.show()">Usuń konto</button>
+  </div>
+
   <hr class="my-4 py-4" />
   <div class="flex justify-end">
     <a appBtn [routerLink]="authSvc.isLoggedIn() ? '/home' : '/'">Powrót</a>
+  </div>
+</div>
+
+<div
+  id="delete-account-modal"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed top-0 right-0 left-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-x-hidden overflow-y-auto md:inset-0"
+>
+  <div class="relative max-h-full w-full max-w-2xl p-4">
+    <!-- Modal content -->
+    <div class="relative rounded-lg bg-white shadow-sm dark:bg-gray-700">
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between rounded-t border-b border-gray-200 p-4 md:p-5 dark:border-gray-600"
+      >
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Usuwanie konta</h3>
+        <button
+          type="button"
+          class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+          (click)="modal.hide()"
+        >
+          <ng-icon name="tablerX" />
+          <span class="sr-only">Zamknij okno</span>
+        </button>
+      </div>
+      <div class="space-y-4 p-4 md:p-5">
+        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+          Czy na pewno chcesz usunąć swoje konto? Pamiętaj, że w każdej chwili możesz zalogować się
+          ponownie, a twoje konto zostanie utworzone na nowo.
+        </p>
+      </div>
+      <div
+        class="flex items-center justify-end space-x-2 rounded-b border-t border-gray-200 p-4 md:p-5 dark:border-gray-600"
+      >
+        <button appBtn main (click)="modal.hide()">Powrót</button>
+        <button appBtn (click)="deleteAccountMutation.mutate()">Usuń</button>
+      </div>
+    </div>
   </div>
 </div>
