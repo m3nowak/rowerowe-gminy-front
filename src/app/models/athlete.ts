@@ -6,4 +6,5 @@ export interface Athlete {
   lastBacklogSync?: DateTime;
   backlogSyncEligible: boolean;
   stravaAccountCreatedAt: DateTime;
+  unprocessedActivities: number;
 }

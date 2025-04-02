@@ -3,8 +3,8 @@
   <hr class="py-4" />
 
   @if (authSvc.isLoggedIn()) {
-    <h3 class="py-4 text-3xl font-bold dark:text-white">Import aktywności</h3>
-    <app-import-dialog class="py-2" [includeCloseOption]="false" />
+    <h3 class="py-4 text-3xl font-bold dark:text-white">Przetwarzane aktywności</h3>
+    <app-processing-stats />
   }
 
   <h3 class="py-4 text-3xl font-bold dark:text-white">Ustawienia prywatności</h3>

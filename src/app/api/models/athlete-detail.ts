@@ -6,4 +6,5 @@ export interface AthleteDetail {
   id: number;
   lastBacklogSync: (string | null);
   stravaAccountCreatedAt: string;
+  unprocessedActivities: number;
 }

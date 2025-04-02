@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { BtnDirective } from '../../common-components/btn.directive';
 import { Router, RouterLink } from '@angular/router';
-import { ImportDialogComponent } from '../../components/import-dialog/import-dialog.component';
 import { CookiePopupComponent } from '../../components/cookie-popup/cookie-popup.component';
 import { AuthService } from '../../services/auth.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -10,10 +9,17 @@ import { DeleteAccountService } from '../../services/delete-account.service';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { Modal } from 'flowbite';
+import { ProcessingStatsComponent } from '../../components/processing-stats/processing-stats.component';
 
 @Component({
   selector: 'app-user-page',
-  imports: [BtnDirective, RouterLink, ImportDialogComponent, CookiePopupComponent, NgIconComponent],
+  imports: [
+    BtnDirective,
+    RouterLink,
+    ProcessingStatsComponent,
+    CookiePopupComponent,
+    NgIconComponent,
+  ],
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css',
   providers: [provideIcons({ tablerX })],
