@@ -30,6 +30,8 @@ export class ActivitiesService extends BaseService {
    * To access only the response body, use `backlogActivitiesBacklogPost()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
+   *
+   * @deprecated
    */
   backlogActivitiesBacklogPost$Response(params: BacklogActivitiesBacklogPost$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
     return backlogActivitiesBacklogPost(this.http, this.rootUrl, params, context);
@@ -44,6 +46,8 @@ export class ActivitiesService extends BaseService {
    * To access the full response (for headers, for example), `backlogActivitiesBacklogPost$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
+   *
+   * @deprecated
    */
   backlogActivitiesBacklogPost(params: BacklogActivitiesBacklogPost$Params, context?: HttpContext): Observable<string> {
     return this.backlogActivitiesBacklogPost$Response(params, context).pipe(

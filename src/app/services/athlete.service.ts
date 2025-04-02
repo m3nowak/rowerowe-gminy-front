@@ -13,6 +13,7 @@ export class AthleteService {
   getCurrentAthlete(): Observable<Athlete> {
     return this.apiAthleteSvc.getLoggedInUserAthletesMeGet().pipe(
       map((response) => ({
+        unprocessedActivities: response.unprocessedActivities,
         id: response.id,
         createdAt: DateTime.fromISO(response.createdAt),
         lastBacklogSync: response.lastBacklogSync

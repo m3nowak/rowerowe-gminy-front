@@ -1,0 +1,8 @@
+<p>
+  Oczekujące aktywności:
+  @if (athleteInfo.data()) {
+    <span>{{ athleteInfo.data()?.unprocessedActivities }}</span>
+  } @else {
+    <span>Ładowanie...</span>
+  }
+</p>
