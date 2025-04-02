@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { AthleteService } from '../../services/athlete.service';
 import { injectQuery } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs/internal/lastValueFrom';
-
+import { lastValueFrom } from 'rxjs';
 @Component({
   selector: 'app-processing-stats',
   imports: [],
   templateUrl: './processing-stats.component.html',
-  styleUrl: './processing-stats.component.css',
+  styleUrls: ['./processing-stats.component.css'],
 })
 export class ProcessingStatsComponent {
   athleteSvc = inject(AthleteService);
