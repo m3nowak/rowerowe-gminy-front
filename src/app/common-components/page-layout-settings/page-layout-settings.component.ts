@@ -5,6 +5,6 @@ import { FooterComponent } from '../../components/footer/footer.component';
   selector: 'app-page-layout-settings',
   imports: [FooterComponent],
   templateUrl: './page-layout-settings.component.html',
-  styleUrl: './page-layout-settings.component.css',
+  styleUrls: ['./page-layout-settings.component.css'],
 })
 export class PageLayoutSettingsComponent {}
