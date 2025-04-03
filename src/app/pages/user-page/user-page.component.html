@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-(--breakpoint-md) items-center justify-between px-2 py-2 md:py-12">
+<app-page-layout-settings>
   <h2 class="py-4 text-4xl font-extrabold dark:text-white">Opcje użytkownika</h2>
   <hr class="py-4" />
 
@@ -26,8 +26,7 @@
   <div class="flex justify-end">
     <a appBtn [routerLink]="authSvc.isLoggedIn() ? '/home' : '/'">Powrót</a>
   </div>
-</div>
-
+</app-page-layout-settings>
 <div
   id="delete-account-modal"
   tabindex="-1"
