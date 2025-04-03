@@ -15,15 +15,28 @@
       </div>
       <!-- Modal body -->
       <div class="space-y-6 p-6">
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-          Witaj w aplikacji Rowerowe Gminy! Jest to twoje pierwsze logowanie, dlatego prosimy o
-          zaimportowanie Twoich dotychczasowych aktywności ze Stravy, abyśmy mogli zwizualizować
-          odwiedzone przez Ciebie gminy. Po zakończeniu importu zobaczysz mapę z oznaczonymi
-          miejscami, w których już byłeś, oraz dowiesz się, które gminy czekają jeszcze na odkrycie!
-          Wszystkie nowe aktywności będą automatycznie importowane na bieżąco.
+        <p class="text-justify text-base leading-relaxed text-gray-500 dark:text-gray-400">
+          Witaj w aplikacji Rowerowe Gminy! <br />
+          Jest to Twoje pierwsze logowanie, potrzebujemy więc trochę czasu, aby zaimportować
+          wszystkie Twoje aktywności. Po zakończeniu tego procesu, będziesz móc swobodnie korzystać
+          z aplikacji. W międzyczasie możesz wykorzystać tę chwilę na
+          <a class="text-blue-500" href="https://www.strava.com/clubs/rowerowegminy" target="_blank"
+            >dołączenie do naszego klubu na Strava!</a
+          >
+          Aplikacja jest ciągle rozwijana, więc jeśli masz jakieś pytania lub sugestie, nie wahaj
+          się napisać do nas poprzez klub!
         </p>
         <hr class="py-2" />
-        <app-import-dialog [includeCloseOption]="true" (close)="onClose()" />
+        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+          Liczbę oczekujących aktywności możesz również śledzić w sekcji "Użytkownik".
+          <app-processing-stats [delayedStart]="true" />
+        </p>
+      </div>
+      <div
+        class="flex items-center justify-end space-x-2 rounded-b border-t border-gray-200 p-4 md:p-5 dark:border-gray-600"
+      >
+        <a href="https://www.strava.com/clubs/rowerowegminy" target="_blank" appBtn>Klub</a>
+        <button appBtn main (click)="close()">Zamknij</button>
       </div>
     </div>
   </div>

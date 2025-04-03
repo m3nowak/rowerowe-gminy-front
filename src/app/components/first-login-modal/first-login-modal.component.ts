@@ -3,11 +3,13 @@ import { Modal, ModalOptions } from 'flowbite';
 
 import { UserStateService } from '../../services/user-state.service';
 import { ActivityService } from '../../services/activity.service';
-import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
+
+import { BtnDirective } from '../../common-components/btn.directive';
+import { ProcessingStatsComponent } from '../processing-stats/processing-stats.component';
 
 @Component({
   selector: 'app-first-login-modal',
-  imports: [ImportDialogComponent],
+  imports: [BtnDirective, ProcessingStatsComponent],
   templateUrl: './first-login-modal.component.html',
 })
 export class FirstLoginModalComponent implements OnInit {
@@ -43,7 +45,7 @@ export class FirstLoginModalComponent implements OnInit {
     }
   }
 
-  onClose() {
+  close() {
     this.userStateSvc.unmarkFirstLogin();
     this.modal.hide();
   }
