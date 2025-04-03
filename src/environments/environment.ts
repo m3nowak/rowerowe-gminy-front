@@ -9,6 +9,6 @@ export const environment = {
   localBaseUrl: 'https://rowerowegminy.pl/',
   apiBaseUrl: 'https://api.rowerowegminy.pl',
   posthogKey: 'phc_ckzJ8Pkw8Aja17asBkb75O42iIGKx50uICW6E9wIEom',
-  posthogHost: 'https://eu.i.posthog.com',
+  posthogHost: 'https://ph.rowerowegminy.pl',
   production: true,
 };
