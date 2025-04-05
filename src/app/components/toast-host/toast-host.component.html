@@ -1,0 +1,23 @@
+<div class="fixed right-5 bottom-5 flex flex-col gap-y-2" id="toast-host">
+  @if (toastVisible()) {
+    <div
+      role="alert"
+      class="flex w-full max-w-xs flex-col items-center rounded-lg bg-white p-4 text-gray-500 shadow-sm dark:bg-gray-800 dark:text-gray-400"
+    >
+      <div class="flex">
+        <div class="text-sm font-normal">Sesja wygasła. Zaloguj się ponownie</div>
+        <button
+          type="button"
+          class="-mx-1.5 -my-1.5 ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-900 focus:ring-2 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white"
+          (click)="hideToast()"
+          aria-label="Close"
+        >
+          <span class="sr-only">Close</span>
+          <ng-icon name="tablerX" />
+        </button>
+      </div>
+      <div class="h-2 w-full"></div>
+      <div class="bg-primary-500 h-1 w-full rounded-sm"></div>
+    </div>
+  }
+</div>

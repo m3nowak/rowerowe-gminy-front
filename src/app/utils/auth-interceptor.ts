@@ -4,9 +4,9 @@ import { AuthService } from '../services/auth.service';
 
 export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
   const authSvc = inject(AuthService);
-  if (authSvc.currentToken() && !authSvc.isExpired()) {
+  if (authSvc.isLoggedIn() && !authSvc.isExpired()) {
     const newReq = req.clone({
-      headers: req.headers.append('Authorization', `Bearer ${authSvc.currentToken()}`),
+      headers: req.headers.append('Authorization', `Bearer ${authSvc.authTokenGetter()}`),
     });
     return next(newReq);
   } else {

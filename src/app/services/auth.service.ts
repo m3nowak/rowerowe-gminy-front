@@ -1,15 +1,17 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { environment } from '../../environments/environment';
 import { AuthService as ApiAuthService } from '../api/services';
 import * as jose from 'jose';
 import { DateTime } from 'luxon';
 import { LoginResponseError, StravaScopes } from '../api/models';
-import { catchError, map, Observable } from 'rxjs';
+import { catchError, filter, map, Observable, switchMap, timer } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import posthog from 'posthog-js';
-import { CookieService } from 'ngx-cookie-service';
+//import { CookieService } from 'ngx-cookie-service';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { ToastService } from './toast.service';
 
 const TOKEN_KEY = 'authToken';
 
@@ -39,16 +41,47 @@ interface AuthInfo {
 })
 export class AuthService {
   private loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
-    partialConfig: { context: 'ExtAuth' },
+    partialConfig: { context: 'AuthService' },
   });
   authSvc = inject(ApiAuthService);
+  toastSvc = inject(ToastService);
   router = inject(Router);
-  cookieSvc = inject(CookieService);
+  // cookieSvc = inject(CookieService);
 
-  currentToken = signal<string | undefined>(this.cookieSvc.get(TOKEN_KEY) ?? undefined);
+  private authToken = signal<string | undefined>(undefined);
+  authTokenGetter = computed(() => this.authToken());
+
+  private getTokenExp(token: string) {
+    if (!token) return undefined;
+    const decoded = jose.decodeJwt(token);
+    if (decoded && decoded.exp) {
+      const expiration = DateTime.fromSeconds(decoded.exp).toUTC();
+      return expiration;
+    }
+    return undefined;
+  }
+
+  private isTokenExpired(token: string) {
+    const expiration = this.getTokenExp(token);
+    if (!expiration) return true;
+    const now = DateTime.utc();
+    return expiration < now;
+  }
+
+  constructor() {
+    this.loggerSvc.debug('AuthService initialized');
+    const tokenFromStorage = localStorage.getItem(TOKEN_KEY);
+    if (tokenFromStorage) {
+      if (!this.isTokenExpired(tokenFromStorage)) {
+        this.authToken.set(tokenFromStorage);
+      } else {
+        this.toastSvc.openLogoutToast();
+      }
+    }
+  }
 
   curentAuthInfo = computed<AuthInfo | undefined>(() => {
-    const token = this.currentToken();
+    const token = this.authToken();
     if (!token) return undefined;
     const decoded = jose.decodeJwt(token) as { sub: string; preferred_username: string };
     if (decoded) {
@@ -60,7 +93,7 @@ export class AuthService {
     return undefined;
   });
 
-  posthogAuthEffect = effect(() => {
+  private posthogAuthEffect = effect(() => {
     const authInfo = this.curentAuthInfo();
     if (authInfo) {
       posthog.identify(authInfo.stravaId.toString(), {
@@ -71,28 +104,27 @@ export class AuthService {
     }
   });
 
-  localStorageEffect = effect(() => {
-    const token = this.currentToken();
-    const expiration = this.loginExpiresAt();
+  private localStorageEffect = effect(() => {
+    const token = this.authToken();
     if (token) {
-      this.cookieSvc.set(
-        TOKEN_KEY,
-        token,
-        expiration!.toJSDate(),
-        '/',
-        undefined,
-        environment.production,
-        'Strict',
-      );
-      // localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(TOKEN_KEY, token);
+      // this.cookieSvc.set(
+      //   TOKEN_KEY,
+      //   token,
+      //   expiration!.toJSDate(),
+      //   '/',
+      //   undefined,
+      //   environment.production,
+      //   'Strict',
+      // );
     } else {
-      this.cookieSvc.delete(TOKEN_KEY);
-      // localStorage.removeItem(TOKEN_KEY);
+      // this.cookieSvc.delete(TOKEN_KEY);
+      localStorage.removeItem(TOKEN_KEY);
     }
   });
 
   loginExpiresAt = computed(() => {
-    const token = this.currentToken();
+    const token = this.authToken();
     if (!token) return undefined;
     const decoded = jose.decodeJwt(token);
     if (decoded && decoded.exp) {
@@ -102,10 +134,25 @@ export class AuthService {
     return undefined;
   });
 
-  isLoggedIn = computed(() => this.currentToken() !== undefined && !this.isExpired());
+  private expirationObservable = toObservable(this.loginExpiresAt).pipe(
+    filter((val) => val !== undefined),
+    switchMap((val) => {
+      this.loggerSvc.debug('Will be revoked at:', val.toString());
+      return timer(val.toJSDate());
+    }),
+  );
+
+  private expirationSub = this.expirationObservable.subscribe(() => {
+    this.loggerSvc.info('Token expired');
+    this.authToken.set(undefined);
+    this.router.navigate(['']);
+    this.toastSvc.openLogoutToast();
+  });
+
+  isLoggedIn = computed(() => this.authToken() !== undefined && !this.isExpired());
 
   scopes = computed<string[]>(() => {
-    const token = this.currentToken();
+    const token = this.authToken();
     if (!token) return [];
     const decoded = jose.decodeJwt(token) as { extras?: { scopes?: string[] } };
     if (decoded && decoded.extras && decoded.extras.scopes) {
@@ -132,12 +179,12 @@ export class AuthService {
   }
 
   logOut() {
-    this.currentToken.set(undefined);
+    this.authToken.set(undefined);
     this.router.navigate(['']);
   }
 
   dumpTokenInfo() {
-    const token = this.currentToken();
+    const token = this.authToken();
     if (!token) {
       this.loggerSvc.info('No token found');
       return;
@@ -156,7 +203,7 @@ export class AuthService {
     return this.authSvc.loginLoginPost({ body: { code, scopes: stravaScopes } }).pipe(
       map((res) => {
         this.loggerSvc.info('Token exchanged:', res);
-        this.currentToken.set(res.access_token);
+        this.authToken.set(res.access_token);
         return {
           success: true as const,
           isFirstLogin: res.isFirstLogin,
@@ -172,19 +219,5 @@ export class AuthService {
         return [{ success: false as const, errorCode: errInfo.cause }];
       }),
     );
-  }
-
-  feedToken(params: Params) {
-    //example response:
-    //http://localhost:4200/exchange_token?state=&code=<TOKEN>&scope=read
-    this.loggerSvc.info('Token received:', params);
-    const code = params['code'];
-    const scopes = params['scope'].split(',');
-    if (code) {
-      this.authSvc.loginLoginPost({ body: { code, scopes } }).subscribe((res) => {
-        this.loggerSvc.info('Token exchanged:', res);
-        this.currentToken.set(res.access_token);
-      });
-    }
   }
 }

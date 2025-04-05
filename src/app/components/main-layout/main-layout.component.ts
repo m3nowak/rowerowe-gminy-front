@@ -7,9 +7,10 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerLogin, tablerLogout, tablerMenu2, tablerUser } from '@ng-icons/tabler-icons';
 import { StravaBtnComponent } from '../../common-components/strava-btn/strava-btn.component';
 import { BtnDirective } from '../../common-components/btn.directive';
+import { ToastHostComponent } from '../toast-host/toast-host.component';
 @Component({
   selector: 'app-main-layout',
-  imports: [NgIconComponent, StravaBtnComponent, BtnDirective, RouterLink],
+  imports: [NgIconComponent, StravaBtnComponent, BtnDirective, RouterLink, ToastHostComponent],
   providers: [provideIcons({ tablerLogout, tablerLogin, tablerMenu2, tablerUser })],
   templateUrl: './main-layout.component.html',
 })

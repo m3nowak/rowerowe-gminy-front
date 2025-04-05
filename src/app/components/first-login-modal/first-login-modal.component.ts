@@ -20,6 +20,10 @@ export class FirstLoginModalComponent implements OnInit {
 
   isOpen = model<boolean>(false);
 
+  updateIsOpen() {
+    this.isOpen.set(!this.modal.isHidden());
+  }
+
   ngOnInit(): void {
     const $targetEl = document.getElementById('first-login-modal');
     const options: ModalOptions = {
@@ -27,14 +31,18 @@ export class FirstLoginModalComponent implements OnInit {
       backdrop: 'dynamic',
       backdropClasses: 'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
       closable: false,
+
       onHide: () => {
         console.log('modal is hidden');
+        this.updateIsOpen();
       },
       onShow: () => {
         console.log('modal is shown');
+        this.updateIsOpen();
       },
       onToggle: () => {
         console.log('modal has been toggled');
+        this.updateIsOpen();
       },
     };
     this.modal = new Modal($targetEl, options);

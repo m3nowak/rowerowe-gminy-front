@@ -19,7 +19,7 @@ export class RegionsService {
   }
 
   currentUnlockedRegions = toSignal(
-    toObservable(this.authSvc.currentToken).pipe(
+    toObservable(this.authSvc.isLoggedIn).pipe(
       switchMap((token) => iif(() => !!token, this.unlockedRegions(), of(new Set<string>()))),
     ),
   );
