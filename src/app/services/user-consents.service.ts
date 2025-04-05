@@ -49,9 +49,9 @@ export class UserConsentsService {
   }
 
   consentLevelEffect = effect(() => {
-    const concentLevel = this.consentLevel();
-    this.loggerSvc.info('Consent level changed', concentLevel);
-    switch (concentLevel) {
+    const consentLevel = this.consentLevel();
+    this.loggerSvc.info('Consent level changed', consentLevel);
+    switch (consentLevel) {
       case 'rejected':
         this.cookieSvc.delete(CONSENT_KEY);
         this.userGaveAnswer.set(true);
@@ -60,7 +60,7 @@ export class UserConsentsService {
       case 'required':
         this.cookieSvc.set(
           CONSENT_KEY,
-          concentLevel,
+          consentLevel,
           365,
           '/',
           undefined,
@@ -73,7 +73,7 @@ export class UserConsentsService {
       case 'tracking':
         this.cookieSvc.set(
           CONSENT_KEY,
-          concentLevel,
+          consentLevel,
           365,
           '/',
           undefined,

@@ -80,7 +80,7 @@ export class AuthService {
     }
   }
 
-  curentAuthInfo = computed<AuthInfo | undefined>(() => {
+  currentAuthInfo = computed<AuthInfo | undefined>(() => {
     const token = this.authToken();
     if (!token) return undefined;
     const decoded = jose.decodeJwt(token) as { sub: string; preferred_username: string };
@@ -94,7 +94,7 @@ export class AuthService {
   });
 
   private posthogAuthEffect = effect(() => {
-    const authInfo = this.curentAuthInfo();
+    const authInfo = this.currentAuthInfo();
     if (authInfo) {
       posthog.identify(authInfo.stravaId.toString(), {
         username: authInfo.stravaUsername,
