@@ -10,7 +10,6 @@ import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { Modal } from 'flowbite';
 import { ProcessingStatsComponent } from '../../components/processing-stats/processing-stats.component';
-import { FooterComponent } from '../../components/footer/footer.component';
 import { PageLayoutSettingsComponent } from '../../common-components/page-layout-settings/page-layout-settings.component';
 
 @Component({
@@ -21,7 +20,6 @@ import { PageLayoutSettingsComponent } from '../../common-components/page-layout
     ProcessingStatsComponent,
     CookiePopupComponent,
     NgIconComponent,
-    FooterComponent,
     PageLayoutSettingsComponent,
   ],
   templateUrl: './user-page.component.html',

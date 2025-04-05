@@ -49,21 +49,19 @@ export class UserConsentsService {
   }
 
   consentLevelEffect = effect(() => {
-    const concentLevel = this.consentLevel();
-    this.loggerSvc.info('Consent level changed', concentLevel);
-    switch (concentLevel) {
+    const consentLevel = this.consentLevel();
+    this.loggerSvc.info('Consent level changed', consentLevel);
+    switch (consentLevel) {
       case 'rejected':
-        posthog.opt_out_capturing();
         this.cookieSvc.delete(CONSENT_KEY);
         this.userGaveAnswer.set(true);
         this.posthogAllow(false);
         break;
       case 'required':
-        posthog.opt_out_capturing();
         this.cookieSvc.set(
           CONSENT_KEY,
-          concentLevel,
-          undefined,
+          consentLevel,
+          365,
           '/',
           undefined,
           environment.production,
@@ -73,11 +71,10 @@ export class UserConsentsService {
         this.posthogAllow(false);
         break;
       case 'tracking':
-        posthog.opt_in_capturing();
         this.cookieSvc.set(
           CONSENT_KEY,
-          concentLevel,
-          undefined,
+          consentLevel,
+          365,
           '/',
           undefined,
           environment.production,
@@ -87,7 +84,6 @@ export class UserConsentsService {
         this.posthogAllow(true);
         break;
       case 'unknown':
-        posthog.opt_out_capturing();
         this.posthogAllow(false);
         break;
     }

@@ -20,6 +20,8 @@ export class ProcessingStatsComponent implements OnInit {
   // Signal to control query enablement
   queryTrigger = signal(false);
 
+  active = input(true);
+
   snf = toSignal(
     toObservable(this.queryTrigger).pipe(
       filter((val) => val === true),
@@ -29,7 +31,7 @@ export class ProcessingStatsComponent implements OnInit {
     ),
   );
 
-  queryEnabled = computed(() => this.snf() || !this.delayedStart());
+  queryEnabled = computed(() => (this.snf() || !this.delayedStart()) && this.active());
   qeef = effect(() => {
     this.loggerSvc.debug('Query enabled:', this.queryEnabled());
   });
