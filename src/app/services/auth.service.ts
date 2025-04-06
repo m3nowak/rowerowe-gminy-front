@@ -174,7 +174,7 @@ export class AuthService {
     stravaUrl.searchParams.set('response_type', 'code');
     stravaUrl.searchParams.set('redirect_uri', environment.localBaseUrl + 'authorized');
     stravaUrl.searchParams.set('approval_prompt', 'force');
-    stravaUrl.searchParams.set('scope', 'read,activity:read');
+    stravaUrl.searchParams.set('scope', 'read,activity:read,activity:write');
     window.location.href = stravaUrl.href;
   }
 
