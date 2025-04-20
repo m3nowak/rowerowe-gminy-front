@@ -1,12 +1,13 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserAccountService } from '../../services/user-account.service';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
-import { lastValueFrom } from 'rxjs';
+import { filter, lastValueFrom, tap } from 'rxjs';
 import { BtnDirective } from '../../common-components/btn.directive';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { UserSettings, UserSettingsPartial } from '../../models/user';
 import { AlertComponent } from '../../common-components/alert/alert.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user-settings',
@@ -15,6 +16,8 @@ import { AlertComponent } from '../../common-components/alert/alert.component';
   styleUrl: './user-settings.component.css',
 })
 export class UserSettingsComponent {
+  updateOnChange = input.required<boolean>();
+
   queryClient = inject(QueryClient);
   userAccountSvc = inject(UserAccountService);
   private loggerSvc = inject(CustomNGXLoggerService).getNewInstance({
@@ -51,15 +54,14 @@ export class UserSettingsComponent {
 
   formBlockedEffect = effect(() => {
     if (this.formBlocked()) {
-      this.descUpdateOption.disable();
+      this.descUpdateOption.disable({ emitEvent: false });
     } else {
-      this.descUpdateOption.enable();
+      this.descUpdateOption.enable({ emitEvent: false });
     }
     this.loggerSvc.debug('Form blocked:', this.formBlocked());
   });
 
   rejectChanges() {
-    //this.queryClient.invalidateQueries({ queryKey: ['userSettings'] });
     this.loggerSvc.debug('Changes rejected');
     if (this.userSettingsQuery.isSuccess()) {
       this.setFormValues(this.userSettingsQuery.data());
@@ -76,4 +78,23 @@ export class UserSettingsComponent {
   }
 
   descUpdateOption = new FormControl(0);
+
+  descUpdateOptionChanged = toSignal(
+    this.descUpdateOption.valueChanges.pipe(
+      tap(() => {
+        this.loggerSvc.debug('Desc update option changed:', this.descUpdateOption.value);
+      }),
+      filter((value) => {
+        const usq = this.userSettingsQuery.data();
+        return value !== undefined && usq !== undefined && value !== usq.updateStravaDesc;
+      }),
+    ),
+  );
+
+  descUpdateOptionChangedEffect = effect(() => {
+    if (this.updateOnChange()) {
+      this.descUpdateOptionChanged();
+      this.acceptChanges();
+    }
+  });
 }

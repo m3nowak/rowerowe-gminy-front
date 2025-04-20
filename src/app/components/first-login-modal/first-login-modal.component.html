@@ -33,6 +33,8 @@
           Liczbę oczekujących aktywności możesz również śledzić w sekcji "Użytkownik".
           <app-processing-stats [delayedStart]="true" [active]="isOpen()" />
         </p>
+        <hr class="py-2" />
+        <app-user-settings [updateOnChange]="true" />
       </div>
       <div
         class="flex items-center justify-end space-x-2 rounded-b border-t border-gray-200 p-4 md:p-5 dark:border-gray-600"

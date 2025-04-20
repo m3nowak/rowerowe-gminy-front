@@ -16,7 +16,7 @@
 
   @if (authSvc.isLoggedIn()) {
     <h3 class="py-4 text-3xl font-bold dark:text-white">Ustawienia użytkownika</h3>
-    <app-user-settings />
+    <app-user-settings [updateOnChange]="false" />
     <h3 class="py-4 text-3xl font-bold dark:text-white">Usuń konto</h3>
     <span> Ta opcja usuwa twoje konto oraz wszystkie dane zapisane w aplikacji. </span>
     <div class="flex justify-end">
