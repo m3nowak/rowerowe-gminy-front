@@ -5,7 +5,7 @@ import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class DeleteAccountService {
+export class UserAccountService {
   private apiUserSvc = inject(UserService);
 
   deleteAccount(): Observable<void> {
