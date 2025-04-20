@@ -5,12 +5,13 @@ import { CookiePopupComponent } from '../../components/cookie-popup/cookie-popup
 import { AuthService } from '../../services/auth.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { tablerX } from '@ng-icons/tabler-icons';
-import { DeleteAccountService } from '../../services/delete-account.service';
+import { UserAccountService } from '../../services/user-account.service';
 import { injectMutation } from '@tanstack/angular-query-experimental';
 import { lastValueFrom } from 'rxjs';
 import { Modal } from 'flowbite';
 import { ProcessingStatsComponent } from '../../components/processing-stats/processing-stats.component';
 import { PageLayoutSettingsComponent } from '../../common-components/page-layout-settings/page-layout-settings.component';
+import { UserSettingsComponent } from '../../components/user-settings/user-settings.component';
 
 @Component({
   selector: 'app-user-page',
@@ -21,6 +22,7 @@ import { PageLayoutSettingsComponent } from '../../common-components/page-layout
     CookiePopupComponent,
     NgIconComponent,
     PageLayoutSettingsComponent,
+    UserSettingsComponent,
   ],
   templateUrl: './user-page.component.html',
   styleUrl: './user-page.component.css',
@@ -28,7 +30,7 @@ import { PageLayoutSettingsComponent } from '../../common-components/page-layout
 })
 export class UserPageComponent implements OnInit {
   authSvc = inject(AuthService);
-  deleteAccountSvc = inject(DeleteAccountService);
+  deleteAccountSvc = inject(UserAccountService);
   router = inject(Router);
 
   modal!: Modal;

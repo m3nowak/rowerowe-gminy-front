@@ -4,3 +4,11 @@ export interface StravaInfo {
   username?: string;
   id: number;
 }
+
+export interface UserSettings {
+  updateStravaDesc: number;
+}
+
+export interface UserSettingsPartial {
+  updateStravaDesc?: number;
+}

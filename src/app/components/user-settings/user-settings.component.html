@@ -1,0 +1,37 @@
+@if (userSettingsQuery.isLoading()) {
+  <span>Ładowanie...</span>
+}
+@if (userSettingsQuery.isError()) {
+  <span>Wystąpił błąd.</span>
+}
+@if (userSettingsQuery.isSuccess()) {
+  <form>
+    <label
+      for="desc-update-option"
+      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+      >Aktualizuj opis aktywności na Strava</label
+    >
+    <app-alert [type]="'info'">
+      Opcja ta pozwala na automatyczną aktualizację opisu aktywności na Strava o informacje na temat
+      nowo odwiedzonych gmin oraz o twoim ogólnym postępie.
+    </app-alert>
+    <select
+      [formControl]="descUpdateOption"
+      id="desc-update-option"
+      class="focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+    >
+      <option [value]="0">Nie aktualizuj opisu</option>
+      <option [value]="10">Aktualizuj opis, tylko gdy odwiedzę nowe gminy</option>
+      <option [value]="20">Aktualizuj opis zawsze</option>
+    </select>
+    <div class="flex flex-wrap justify-end gap-2 py-2">
+      @if (formBlocked()) {
+        <button appBtn (click)="rejectChanges()" disabled>Odrzuć zmiany</button>
+        <button appBtn main (click)="acceptChanges()" disabled>Zapisz zmiany</button>
+      } @else {
+        <button appBtn (click)="rejectChanges()">Odrzuć zmiany</button>
+        <button appBtn main (click)="acceptChanges()">Zapisz zmiany</button>
+      }
+    </div>
+  </form>
+}
