@@ -6,10 +6,11 @@ import { ActivityService } from '../../services/activity.service';
 
 import { BtnDirective } from '../../common-components/btn.directive';
 import { ProcessingStatsComponent } from '../processing-stats/processing-stats.component';
+import { UserSettingsComponent } from '../user-settings/user-settings.component';
 
 @Component({
   selector: 'app-first-login-modal',
-  imports: [BtnDirective, ProcessingStatsComponent],
+  imports: [BtnDirective, ProcessingStatsComponent, UserSettingsComponent],
   templateUrl: './first-login-modal.component.html',
 })
 export class FirstLoginModalComponent implements OnInit {
