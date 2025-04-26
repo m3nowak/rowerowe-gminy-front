@@ -36,11 +36,13 @@ export class LoginPurgatoryComponent {
     mutationFn: (params: { code: string; scope: string }) =>
       lastValueFrom(this.extAuthSvc.feedTokenResposive(params.code, params.scope)),
     onError: (error) => {
+      posthog.capture('login_error', { error });
       this.loggerSvc.error(`Failed to login: ${error}`);
     },
     onSuccess: (authResp) => {
       if (!authResp.success) {
         this.loggerSvc.error(`Failed to login: ${authResp.errorCode}`);
+        posthog.capture('login_fail', { error: authResp.errorCode });
         return;
       }
       const isFirstLogin = authResp.isFirstLogin;
