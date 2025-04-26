@@ -7,6 +7,7 @@ import { BtnDirective } from '../../common-components/btn.directive';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { UserSettings, UserSettingsPartial } from '../../models/user';
 import { AlertComponent } from '../../common-components/alert/alert.component';
+import posthog from 'posthog-js';
 
 @Component({
   selector: 'app-user-settings',
@@ -78,6 +79,7 @@ export class UserSettingsComponent {
     }
     this.loggerSvc.debug('Changes accepted');
     this.loggerSvc.debug('Desc update option:', this.descUpdateOption.value ?? undefined);
+    posthog.capture('user_settings_update', { descUpdateOption: this.descUpdateOption.value });
     const userSettings: UserSettingsPartial = {
       updateStravaDesc: this.descUpdateOption.value ?? undefined,
     };

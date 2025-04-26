@@ -12,6 +12,7 @@ import { Modal } from 'flowbite';
 import { ProcessingStatsComponent } from '../../components/processing-stats/processing-stats.component';
 import { PageLayoutSettingsComponent } from '../../common-components/page-layout-settings/page-layout-settings.component';
 import { UserSettingsComponent } from '../../components/user-settings/user-settings.component';
+import posthog from 'posthog-js';
 
 @Component({
   selector: 'app-user-page',
@@ -47,4 +48,9 @@ export class UserPageComponent implements OnInit {
       this.router.navigate(['/']);
     },
   }));
+
+  deleteAccountConfirm() {
+    posthog.capture('account_delete');
+    this.deleteAccountMutation.mutate();
+  }
 }
