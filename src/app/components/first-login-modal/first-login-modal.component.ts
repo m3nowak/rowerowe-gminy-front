@@ -1,4 +1,4 @@
-import { Component, inject, model, OnInit } from '@angular/core';
+import { Component, inject, model, OnInit, ViewChild } from '@angular/core';
 import { Modal, ModalOptions } from 'flowbite';
 
 import { UserStateService } from '../../services/user-state.service';
@@ -18,6 +18,8 @@ export class FirstLoginModalComponent implements OnInit {
   activitySvc = inject(ActivityService);
 
   modal!: Modal;
+
+  @ViewChild(UserSettingsComponent) userSettings!: UserSettingsComponent;
 
   isOpen = model<boolean>(false);
 
@@ -56,6 +58,7 @@ export class FirstLoginModalComponent implements OnInit {
 
   close() {
     this.userStateSvc.unmarkFirstLogin();
+    this.userSettings.acceptChanges();
     this.modal.hide();
   }
 }

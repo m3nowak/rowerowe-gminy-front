@@ -2,12 +2,11 @@ import { Component, computed, effect, inject, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserAccountService } from '../../services/user-account.service';
 import { injectMutation, injectQuery, QueryClient } from '@tanstack/angular-query-experimental';
-import { filter, lastValueFrom, tap } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { BtnDirective } from '../../common-components/btn.directive';
 import { CustomNGXLoggerService } from 'ngx-logger';
 import { UserSettings, UserSettingsPartial } from '../../models/user';
 import { AlertComponent } from '../../common-components/alert/alert.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user-settings',
@@ -16,7 +15,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
   styleUrl: './user-settings.component.css',
 })
 export class UserSettingsComponent {
-  updateOnChange = input.required<boolean>();
+  active = input.required<boolean>();
+  hideButtons = input<boolean>(false);
 
   queryClient = inject(QueryClient);
   userAccountSvc = inject(UserAccountService);
@@ -38,7 +38,9 @@ export class UserSettingsComponent {
   }));
 
   private setFormValues(userSettings: UserSettings) {
-    this.descUpdateOption.setValue(userSettings.updateStravaDesc);
+    if (this.descUpdateOption.value !== userSettings.updateStravaDesc) {
+      this.descUpdateOption.setValue(userSettings.updateStravaDesc);
+    }
   }
 
   userSettingsLoadEffect = effect(() => {
@@ -49,7 +51,8 @@ export class UserSettingsComponent {
   });
 
   formBlocked = computed(
-    () => this.userSettingsQuery.isLoading() || this.userSettingsMutation.isPending(),
+    () =>
+      !this.active() || this.userSettingsQuery.isLoading() || this.userSettingsMutation.isPending(),
   );
 
   formBlockedEffect = effect(() => {
@@ -69,6 +72,10 @@ export class UserSettingsComponent {
   }
 
   acceptChanges() {
+    if (this.formBlocked()) {
+      this.loggerSvc.debug('Form blocked, changes not accepted');
+      return;
+    }
     this.loggerSvc.debug('Changes accepted');
     this.loggerSvc.debug('Desc update option:', this.descUpdateOption.value ?? undefined);
     const userSettings: UserSettingsPartial = {
@@ -78,23 +85,4 @@ export class UserSettingsComponent {
   }
 
   descUpdateOption = new FormControl(0);
-
-  descUpdateOptionChanged = toSignal(
-    this.descUpdateOption.valueChanges.pipe(
-      tap(() => {
-        this.loggerSvc.debug('Desc update option changed:', this.descUpdateOption.value);
-      }),
-      filter((value) => {
-        const usq = this.userSettingsQuery.data();
-        return value !== undefined && usq !== undefined && value !== usq.updateStravaDesc;
-      }),
-    ),
-  );
-
-  descUpdateOptionChangedEffect = effect(() => {
-    if (this.updateOnChange()) {
-      this.descUpdateOptionChanged();
-      this.acceptChanges();
-    }
-  });
 }
