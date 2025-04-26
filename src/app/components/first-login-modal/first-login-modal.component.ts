@@ -7,6 +7,7 @@ import { ActivityService } from '../../services/activity.service';
 import { BtnDirective } from '../../common-components/btn.directive';
 import { ProcessingStatsComponent } from '../processing-stats/processing-stats.component';
 import { UserSettingsComponent } from '../user-settings/user-settings.component';
+import { CustomNGXLoggerService } from 'ngx-logger';
 
 @Component({
   selector: 'app-first-login-modal',
@@ -16,6 +17,9 @@ import { UserSettingsComponent } from '../user-settings/user-settings.component'
 export class FirstLoginModalComponent implements OnInit {
   userStateSvc = inject(UserStateService);
   activitySvc = inject(ActivityService);
+  logger = inject(CustomNGXLoggerService).getNewInstance({
+    partialConfig: { context: 'FirstLoginModalComponent' },
+  });
 
   modal!: Modal;
 
@@ -36,15 +40,15 @@ export class FirstLoginModalComponent implements OnInit {
       closable: false,
 
       onHide: () => {
-        console.log('modal is hidden');
+        this.logger.debug('modal is hidden');
         this.updateIsOpen();
       },
       onShow: () => {
-        console.log('modal is shown');
+        this.logger.debug('modal is shown');
         this.updateIsOpen();
       },
       onToggle: () => {
-        console.log('modal has been toggled');
+        this.logger.debug('modal has been toggled');
         this.updateIsOpen();
       },
     };
@@ -58,7 +62,11 @@ export class FirstLoginModalComponent implements OnInit {
 
   close() {
     this.userStateSvc.unmarkFirstLogin();
-    this.userSettings.acceptChanges();
+    if (this.userSettings) {
+      this.userSettings.acceptChanges();
+    } else {
+      this.logger.debug('UserSettingsComponent is not available');
+    }
     this.modal.hide();
   }
 }
