@@ -22,7 +22,7 @@
       <option [value]="10">Tylko gdy odwiedzę nowe gminy</option>
       <option [value]="20">Aktualizuj opis zawsze</option>
     </select>
-    @if (!updateOnChange()) {
+    @if (!hideButtons()) {
       <div class="flex flex-wrap justify-end gap-2 py-2">
         @if (formBlocked()) {
           <button appBtn (click)="rejectChanges()" disabled>Odrzuć zmiany</button>
